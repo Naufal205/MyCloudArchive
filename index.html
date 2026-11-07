@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#091F46" />
-    <title>MyCloud Vault - Arsip Pribadi</title>
+    <title>MyCloud Vault - Arsip & Folder Pribadi</title>
 
     <script src="https://unpkg.com/@phosphor-icons/web" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" crossorigin="anonymous"></script>
@@ -272,6 +272,116 @@
         background: rgba(9, 31, 70, 0.8);
         padding: 3px;
       }
+
+      /* ===== Folder & Select Effects ===== */
+      .folder-card {
+        background: linear-gradient(135deg, rgba(55, 114, 156, 0.3), rgba(9, 31, 70, 0.8));
+        border: 1px solid rgba(118, 153, 174, 0.4);
+        border-radius: 16px;
+        transition: all 0.25s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        break-inside: avoid;
+        margin-bottom: 1rem;
+      }
+      .folder-card:hover {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, rgba(55, 114, 156, 0.5), rgba(9, 31, 70, 0.9));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -10px rgba(239, 191, 106, 0.3);
+      }
+      .card.selectable::after,
+      .folder-card.selectable::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 3px solid transparent;
+        border-radius: inherit;
+        pointer-events: none;
+        transition: all 0.2s;
+        z-index: 10;
+      }
+      .card.selected::after,
+      .folder-card.selected::after {
+        border-color: var(--primary);
+        background: rgba(239, 191, 106, 0.15);
+      }
+      .check-badge {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 2px solid var(--line);
+        z-index: 11;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        transition: all 0.2s;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .selectable .check-badge {
+        opacity: 1;
+      }
+      .selected .check-badge {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--bg);
+      }
+
+      /* View Mode Columns for Masonry Grid */
+      .view-sm {
+        columns: 3;
+      }
+      .view-md {
+        columns: 2;
+      }
+      .view-xl {
+        columns: 1;
+      }
+      @media (min-width: 768px) {
+        .view-sm {
+          columns: 5;
+        }
+        .view-md {
+          columns: 3;
+        }
+        .view-xl {
+          columns: 2;
+        }
+      }
+      @media (min-width: 1024px) {
+        .view-sm {
+          columns: 7;
+        }
+        .view-md {
+          columns: 4;
+        }
+        .view-xl {
+          columns: 3;
+        }
+      }
+      @media (min-width: 1280px) {
+        .view-sm {
+          columns: 8;
+        }
+        .view-md {
+          columns: 5;
+        }
+        .view-xl {
+          columns: 3;
+        }
+      }
+
       /* ===== Kartu: tilt + spotlight ===== */
       .tilt {
         position: relative;
@@ -857,987 +967,7 @@
         }
       }
     </style>
-    <style id="tailwind-build">
-      *,
-      :after,
-      :before {
-        --tw-border-spacing-x: 0;
-        --tw-border-spacing-y: 0;
-        --tw-translate-x: 0;
-        --tw-translate-y: 0;
-        --tw-rotate: 0;
-        --tw-skew-x: 0;
-        --tw-skew-y: 0;
-        --tw-scale-x: 1;
-        --tw-scale-y: 1;
-        --tw-pan-x: ;
-        --tw-pan-y: ;
-        --tw-pinch-zoom: ;
-        --tw-scroll-snap-strictness: proximity;
-        --tw-gradient-from-position: ;
-        --tw-gradient-via-position: ;
-        --tw-gradient-to-position: ;
-        --tw-ordinal: ;
-        --tw-slashed-zero: ;
-        --tw-numeric-figure: ;
-        --tw-numeric-spacing: ;
-        --tw-numeric-fraction: ;
-        --tw-ring-inset: ;
-        --tw-ring-offset-width: 0px;
-        --tw-ring-offset-color: #fff;
-        --tw-ring-color: rgba(239, 191, 106, 0.5);
-        --tw-ring-offset-shadow: 0 0 #0000;
-        --tw-ring-shadow: 0 0 #0000;
-        --tw-shadow: 0 0 #0000;
-        --tw-shadow-colored: 0 0 #0000;
-        --tw-blur: ;
-        --tw-brightness: ;
-        --tw-contrast: ;
-        --tw-grayscale: ;
-        --tw-hue-rotate: ;
-        --tw-invert: ;
-        --tw-saturate: ;
-        --tw-sepia: ;
-        --tw-drop-shadow: ;
-        --tw-backdrop-blur: ;
-        --tw-backdrop-brightness: ;
-        --tw-backdrop-contrast: ;
-        --tw-backdrop-grayscale: ;
-        --tw-backdrop-hue-rotate: ;
-        --tw-backdrop-invert: ;
-        --tw-backdrop-opacity: ;
-        --tw-backdrop-saturate: ;
-        --tw-backdrop-sepia: ;
-        --tw-contain-size: ;
-        --tw-contain-layout: ;
-        --tw-contain-paint: ;
-        --tw-contain-style: ;
-      }
-      ::backdrop {
-        --tw-border-spacing-x: 0;
-        --tw-border-spacing-y: 0;
-        --tw-translate-x: 0;
-        --tw-translate-y: 0;
-        --tw-rotate: 0;
-        --tw-skew-x: 0;
-        --tw-skew-y: 0;
-        --tw-scale-x: 1;
-        --tw-scale-y: 1;
-        --tw-pan-x: ;
-        --tw-pan-y: ;
-        --tw-pinch-zoom: ;
-        --tw-scroll-snap-strictness: proximity;
-        --tw-gradient-from-position: ;
-        --tw-gradient-via-position: ;
-        --tw-gradient-to-position: ;
-        --tw-ordinal: ;
-        --tw-slashed-zero: ;
-        --tw-numeric-figure: ;
-        --tw-numeric-spacing: ;
-        --tw-numeric-fraction: ;
-        --tw-ring-inset: ;
-        --tw-ring-offset-width: 0px;
-        --tw-ring-offset-color: #fff;
-        --tw-ring-color: rgba(239, 191, 106, 0.5);
-        --tw-ring-offset-shadow: 0 0 #0000;
-        --tw-ring-shadow: 0 0 #0000;
-        --tw-shadow: 0 0 #0000;
-        --tw-shadow-colored: 0 0 #0000;
-        --tw-blur: ;
-        --tw-brightness: ;
-        --tw-contrast: ;
-        --tw-grayscale: ;
-        --tw-hue-rotate: ;
-        --tw-invert: ;
-        --tw-saturate: ;
-        --tw-sepia: ;
-        --tw-drop-shadow: ;
-        --tw-backdrop-blur: ;
-        --tw-backdrop-brightness: ;
-        --tw-backdrop-contrast: ;
-        --tw-backdrop-grayscale: ;
-        --tw-backdrop-hue-rotate: ;
-        --tw-backdrop-invert: ;
-        --tw-backdrop-opacity: ;
-        --tw-backdrop-saturate: ;
-        --tw-backdrop-sepia: ;
-        --tw-contain-size: ;
-        --tw-contain-layout: ;
-        --tw-contain-paint: ;
-        --tw-contain-style: ;
-      }
-      *,
-      :after,
-      :before {
-        box-sizing: border-box;
-        border: 0 solid #7699ae;
-      }
-      :after,
-      :before {
-        --tw-content: "";
-      }
-      :host,
-      html {
-        line-height: 1.5;
-        -webkit-text-size-adjust: 100%;
-        -moz-tab-size: 4;
-        -o-tab-size: 4;
-        tab-size: 4;
-        font-family: ui-sans-serif, system-ui, sans-serif;
-        font-feature-settings: normal;
-        font-variation-settings: normal;
-        -webkit-tap-highlight-color: transparent;
-      }
-      body {
-        margin: 0;
-        line-height: inherit;
-      }
-      hr {
-        height: 0;
-        color: inherit;
-        border-top-width: 1px;
-      }
-      abbr:where([title]) {
-        -webkit-text-decoration: underline dotted;
-        text-decoration: underline dotted;
-      }
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        font-size: inherit;
-        font-weight: inherit;
-      }
-      a {
-        color: inherit;
-        text-decoration: inherit;
-      }
-      b,
-      strong {
-        font-weight: bolder;
-      }
-      code,
-      kbd,
-      pre,
-      samp {
-        font-family: ui-monospace, monospace;
-        font-size: 1em;
-      }
-      small {
-        font-size: 80%;
-      }
-      sub,
-      sup {
-        font-size: 75%;
-        line-height: 0;
-        position: relative;
-        vertical-align: baseline;
-      }
-      sub {
-        bottom: -0.25em;
-      }
-      sup {
-        top: -0.5em;
-      }
-      table {
-        text-indent: 0;
-        border-color: inherit;
-        border-collapse: collapse;
-      }
-      button,
-      input,
-      optgroup,
-      select,
-      textarea {
-        font-family: inherit;
-        font-size: 100%;
-        font-weight: inherit;
-        line-height: inherit;
-        letter-spacing: inherit;
-        color: inherit;
-        margin: 0;
-        padding: 0;
-      }
-      button,
-      select {
-        text-transform: none;
-      }
-      button,
-      input:where([type="button"]),
-      input:where([type="reset"]),
-      input:where([type="submit"]) {
-        -webkit-appearance: button;
-        appearance: button;
-        background-color: transparent;
-        background-image: none;
-      }
-      progress {
-        vertical-align: baseline;
-      }
-      [type="search"] {
-        -webkit-appearance: textfield;
-        appearance: textfield;
-        outline-offset: -2px;
-      }
-      summary {
-        display: list-item;
-      }
-      blockquote,
-      dd,
-      dl,
-      figure,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      hr,
-      p,
-      pre {
-        margin: 0;
-      }
-      fieldset {
-        margin: 0;
-        padding: 0;
-      }
-      menu,
-      ol,
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      dialog {
-        padding: 0;
-      }
-      textarea {
-        resize: vertical;
-      }
-      input::placeholder,
-      textarea::placeholder {
-        opacity: 1;
-        color: #7699ae;
-      }
-      [role="button"],
-      button {
-        cursor: pointer;
-      }
-      :disabled {
-        cursor: default;
-      }
-      audio,
-      canvas,
-      embed,
-      iframe,
-      img,
-      object,
-      svg,
-      video {
-        display: block;
-        vertical-align: middle;
-      }
-      img,
-      video {
-        max-width: 100%;
-        height: auto;
-      }
-      .fixed {
-        position: fixed;
-      }
-      .absolute {
-        position: absolute;
-      }
-      .relative {
-        position: relative;
-      }
-      .sticky {
-        position: sticky;
-      }
-      .inset-0 {
-        inset: 0;
-      }
-      .left-3 {
-        left: 0.75rem;
-      }
-      .right-2 {
-        right: 0.5rem;
-      }
-      .right-3 {
-        right: 0.75rem;
-      }
-      .top-0 {
-        top: 0;
-      }
-      .top-1\/2 {
-        top: 50%;
-      }
-      .z-10 {
-        z-index: 10;
-      }
-      .z-40 {
-        z-index: 40;
-      }
-      .z-\[60\] {
-        z-index: 60;
-      }
-      .z-\[65\] {
-        z-index: 65;
-      }
-      .z-\[70\] {
-        z-index: 70;
-      }
-      .z-\[80\] {
-        z-index: 80;
-      }
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .my-5 {
-        margin-top: 1.25rem;
-        margin-bottom: 1.25rem;
-      }
-      .my-auto {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .mb-1 {
-        margin-bottom: 0.25rem;
-      }
-      .mb-1\.5 {
-        margin-bottom: 0.375rem;
-      }
-      .mb-2 {
-        margin-bottom: 0.5rem;
-      }
-      .mb-3 {
-        margin-bottom: 0.75rem;
-      }
-      .mb-4 {
-        margin-bottom: 1rem;
-      }
-      .mb-5 {
-        margin-bottom: 1.25rem;
-      }
-      .mb-6 {
-        margin-bottom: 1.5rem;
-      }
-      .mr-1 {
-        margin-right: 0.25rem;
-      }
-      .mr-2 {
-        margin-right: 0.5rem;
-      }
-      .mt-1 {
-        margin-top: 0.25rem;
-      }
-      .mt-1\.5 {
-        margin-top: 0.375rem;
-      }
-      .mt-2 {
-        margin-top: 0.5rem;
-      }
-      .mt-2\.5 {
-        margin-top: 0.625rem;
-      }
-      .mt-3 {
-        margin-top: 0.75rem;
-      }
-      .mt-4 {
-        margin-top: 1rem;
-      }
-      .mt-5 {
-        margin-top: 1.25rem;
-      }
-      .mt-6 {
-        margin-top: 1.5rem;
-      }
-      .block {
-        display: block;
-      }
-      .flex {
-        display: flex;
-      }
-      .inline-flex {
-        display: inline-flex;
-      }
-      .grid {
-        display: grid;
-      }
-      .hidden {
-        display: none;
-      }
-      .aspect-\[4\/3\] {
-        aspect-ratio: 4/3;
-      }
-      .aspect-square {
-        aspect-ratio: 1/1;
-      }
-      .\!h-8 {
-        height: 2rem !important;
-      }
-      .h-1\.5 {
-        height: 0.375rem;
-      }
-      .h-10 {
-        height: 2.5rem;
-      }
-      .h-11 {
-        height: 2.75rem;
-      }
-      .h-12 {
-        height: 3rem;
-      }
-      .h-14 {
-        height: 3.5rem;
-      }
-      .h-16 {
-        height: 4rem;
-      }
-      .h-2 {
-        height: 0.5rem;
-      }
-      .h-24 {
-        height: 6rem;
-      }
-      .h-9 {
-        height: 2.25rem;
-      }
-      .h-\[34px\] {
-        height: 34px;
-      }
-      .h-\[78vh\] {
-        height: 78vh;
-      }
-      .h-full {
-        height: 100%;
-      }
-      .h-px {
-        height: 1px;
-      }
-      .max-h-\[42vh\] {
-        max-height: 42vh;
-      }
-      .max-h-\[78vh\] {
-        max-height: 78vh;
-      }
-      .min-h-0 {
-        min-height: 0;
-      }
-      .min-h-\[120px\] {
-        min-height: 120px;
-      }
-      .min-h-\[200px\] {
-        min-height: 200px;
-      }
-      .min-h-screen {
-        min-height: 100vh;
-      }
-      .\!w-8 {
-        width: 2rem !important;
-      }
-      .w-10 {
-        width: 2.5rem;
-      }
-      .w-11 {
-        width: 2.75rem;
-      }
-      .w-12 {
-        width: 3rem;
-      }
-      .w-14 {
-        width: 3.5rem;
-      }
-      .w-16 {
-        width: 4rem;
-      }
-      .w-20 {
-        width: 5rem;
-      }
-      .w-24 {
-        width: 6rem;
-      }
-      .w-9 {
-        width: 2.25rem;
-      }
-      .w-\[min\(92vw\,420px\)\] {
-        width: min(92vw, 420px);
-      }
-      .w-\[min\(96vw\,1000px\)\] {
-        width: min(96vw, 1000px);
-      }
-      .w-full {
-        width: 100%;
-      }
-      .min-w-0 {
-        min-width: 0;
-      }
-      .min-w-\[52px\] {
-        min-width: 52px;
-      }
-      .max-w-7xl {
-        max-width: 80rem;
-      }
-      .max-w-\[150px\] {
-        max-width: 150px;
-      }
-      .max-w-\[94vw\] {
-        max-width: 94vw;
-      }
-      .max-w-md {
-        max-width: 28rem;
-      }
-      .max-w-sm {
-        max-width: 24rem;
-      }
-      .flex-1 {
-        flex: 1 1 0%;
-      }
-      .shrink-0 {
-        flex-shrink: 0;
-      }
-      .flex-grow {
-        flex-grow: 1;
-      }
-      .-translate-y-1\/2 {
-        --tw-translate-y: -50%;
-      }
-      .transform {
-        transform: translate(var(--tw-translate-x), var(--tw-translate-y));
-      }
-      .cursor-pointer {
-        cursor: pointer;
-      }
-      .touch-none {
-        touch-action: none;
-      }
-      .select-none {
-        user-select: none;
-      }
-      .columns-2 {
-        columns: 2;
-      }
-      .grid-cols-1 {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-      }
-      .grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .grid-cols-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .grid-cols-5 {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
-      .grid-cols-6 {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-      }
-      .col-span-full {
-        grid-column: 1 / -1;
-      }
-      .flex-col {
-        flex-direction: column;
-      }
-      .items-start {
-        align-items: flex-start;
-      }
-      .items-center {
-        align-items: center;
-      }
-      .justify-center {
-        justify-content: center;
-      }
-      .justify-between {
-        justify-content: space-between;
-      }
-      .gap-1 {
-        gap: 0.25rem;
-      }
-      .gap-1\.5 {
-        gap: 0.375rem;
-      }
-      .gap-2 {
-        gap: 0.5rem;
-      }
-      .gap-2\.5 {
-        gap: 0.625rem;
-      }
-      .gap-3 {
-        gap: 0.75rem;
-      }
-      .gap-3\.5 {
-        gap: 0.875rem;
-      }
-      .gap-4 {
-        gap: 1rem;
-      }
-      .gap-6 {
-        gap: 1.5rem;
-      }
-      .space-y-2 > :not([hidden]) ~ :not([hidden]) {
-        margin-top: 0.5rem;
-      }
-      .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) {
-        margin-top: 0.625rem;
-      }
-      .space-y-3 > :not([hidden]) ~ :not([hidden]) {
-        margin-top: 0.75rem;
-      }
-      .space-y-4 > :not([hidden]) ~ :not([hidden]) {
-        margin-top: 1rem;
-      }
-      .overflow-auto {
-        overflow: auto;
-      }
-      .overflow-hidden {
-        overflow: hidden;
-      }
-      .overflow-x-auto {
-        overflow-x: auto;
-      }
-      .overflow-y-auto {
-        overflow-y: auto;
-      }
-      .truncate {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .break-all {
-        word-break: break-all;
-      }
-      .rounded-2xl {
-        border-radius: 1rem;
-      }
-      .rounded-3xl {
-        border-radius: 1.5rem;
-      }
-      .rounded-\[10px\] {
-        border-radius: 10px;
-      }
-      .rounded-full {
-        border-radius: 9999px;
-      }
-      .rounded-md {
-        border-radius: 0.375rem;
-      }
-      .rounded-xl {
-        border-radius: 0.75rem;
-      }
-      .border {
-        border-width: 1px;
-      }
-      .border-2 {
-        border-width: 2px;
-      }
-      .border-b {
-        border-bottom-width: 1px;
-      }
-      .border-b-2 {
-        border-bottom-width: 2px;
-      }
-      .border-t {
-        border-top-width: 1px;
-      }
-      .border-transparent {
-        border-color: transparent;
-      }
-      .border-slate-700 {
-        border-color: #37729c;
-      }
-      .border-teal-400 {
-        border-color: #efbf6a;
-      }
-      .bg-black {
-        background-color: #000;
-      }
-      .bg-black\/65 {
-        background-color: rgba(0, 0, 0, 0.65);
-      }
-      .bg-black\/75 {
-        background-color: rgba(0, 0, 0, 0.75);
-      }
-      .bg-amber-400 {
-        background-color: #efbf6a;
-      }
-      .bg-red-500 {
-        background-color: #a55d35;
-      }
-      .bg-teal-400 {
-        background-color: #efbf6a;
-      }
-      .bg-teal-500 {
-        background-color: #37729c;
-      }
-      .bg-slate-900 {
-        background-color: #091f46;
-      }
-      .bg-slate-950 {
-        background-color: #05122b;
-      }
-      .bg-gradient-to-br {
-        background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
-      }
-      .bg-gradient-to-r {
-        background-image: linear-gradient(to right, var(--tw-gradient-stops));
-      }
-      .from-teal-400 {
-        --tw-gradient-from: #efbf6a;
-      }
-      .from-violet-500 {
-        --tw-gradient-from: #37729c;
-      }
-      .from-violet-600 {
-        --tw-gradient-from: #37729c;
-      }
-      .to-cyan-400 {
-        --tw-gradient-to: #37729c;
-      }
-      .to-cyan-500 {
-        --tw-gradient-to: #7699ae;
-      }
-      .to-emerald-400 {
-        --tw-gradient-to: #efbf6a;
-      }
-      .to-fuchsia-500 {
-        --tw-gradient-to: #a55d35;
-      }
-      .to-fuchsia-600 {
-        --tw-gradient-to: #a55d35;
-      }
-      .object-contain {
-        object-fit: contain;
-      }
-      .object-cover {
-        object-fit: cover;
-      }
-      .p-1 {
-        padding: 0.25rem;
-      }
-      .p-2 {
-        padding: 0.5rem;
-      }
-      .p-3 {
-        padding: 0.75rem;
-      }
-      .p-4 {
-        padding: 1rem;
-      }
-      .p-5 {
-        padding: 1.25rem;
-      }
-      .p-6 {
-        padding: 1.5rem;
-      }
-      .p-8 {
-        padding: 2rem;
-      }
-      .px-3 {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-      .px-4 {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-      .px-5 {
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
-      }
-      .px-6 {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-      }
-      .py-1 {
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
-      }
-      .py-1\.5 {
-        padding-top: 0.375rem;
-        padding-bottom: 0.375rem;
-      }
-      .py-2 {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-      }
-      .py-2\.5 {
-        padding-top: 0.625rem;
-        padding-bottom: 0.625rem;
-      }
-      .py-20 {
-        padding-top: 5rem;
-        padding-bottom: 5rem;
-      }
-      .py-3 {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-      }
-      .py-6 {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-      }
-      .\!pl-9 {
-        padding-left: 2.25rem !important;
-      }
-      .\!pr-11 {
-        padding-right: 2.75rem !important;
-      }
-      .text-center {
-        text-align: center;
-      }
-      .text-2xl {
-        font-size: 1.5rem;
-        line-height: 2rem;
-      }
-      .text-3xl {
-        font-size: 1.875rem;
-        line-height: 2.25rem;
-      }
-      .text-5xl {
-        font-size: 3rem;
-        line-height: 1;
-      }
-      .text-7xl {
-        font-size: 4.5rem;
-        line-height: 1;
-      }
-      .text-\[10px\] {
-        font-size: 10px;
-      }
-      .text-\[11px\] {
-        font-size: 11px;
-      }
-      .text-base {
-        font-size: 1rem;
-        line-height: 1.5rem;
-      }
-      .text-lg {
-        font-size: 1.125rem;
-        line-height: 1.75rem;
-      }
-      .text-sm {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-      }
-      .text-xl {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-      }
-      .text-xs {
-        font-size: 0.75rem;
-        line-height: 1rem;
-      }
-      .font-bold {
-        font-weight: 700;
-      }
-      .font-extrabold {
-        font-weight: 800;
-      }
-      .font-medium {
-        font-weight: 500;
-      }
-      .font-semibold {
-        font-weight: 600;
-      }
-      .text-amber-400 {
-        color: #efbf6a;
-      }
-      .text-red-400 {
-        color: #a55d35;
-      }
-      .text-slate-200 {
-        color: #e9e4de;
-      }
-      .text-slate-300 {
-        color: #e9e4de;
-      }
-      .text-slate-400 {
-        color: #7699ae;
-      }
-      .text-slate-500 {
-        color: #7699ae;
-      }
-      .text-slate-900 {
-        color: #091f46;
-      }
-      .text-teal-300 {
-        color: #efbf6a;
-      }
-      .text-white {
-        color: #ffffff;
-      }
-      .shadow-lg {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25);
-      }
-      .transition {
-        transition-property: all;
-        transition-duration: 0.15s;
-      }
-      @media (min-width: 640px) {
-        .sm\:block {
-          display: block;
-        }
-        .sm\:flex {
-          display: flex;
-        }
-        .sm\:hidden {
-          display: none;
-        }
-        .sm\:grid-cols-3 {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        .sm\:p-10 {
-          padding: 2.5rem;
-        }
-        .sm\:px-6 {
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
-        }
-        .sm\:text-lg {
-          font-size: 1.125rem;
-        }
-      }
-      @media (min-width: 768px) {
-        .md\:w-64 {
-          width: 16rem;
-        }
-        .md\:w-\[22rem\] {
-          width: 22rem;
-        }
-        .md\:columns-3 {
-          columns: 3;
-        }
-        .md\:grid-cols-2 {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .md\:grid-cols-3 {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        .md\:grid-cols-4 {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
-        .md\:flex-row {
-          flex-direction: row;
-        }
-        .md\:border-l {
-          border-left-width: 1px;
-        }
-        .md\:border-t-0 {
-          border-top-width: 0;
-        }
-      }
-      @media (min-width: 1024px) {
-        .lg\:columns-4 {
-          columns: 4;
-        }
-        .lg\:grid-cols-5 {
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-        }
-      }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <!-- Latar -->
@@ -1863,10 +993,12 @@
           <div class="flex items-center gap-2.5">
             <div
               id="hdrAvatar"
-              class="w-9 h-9 rounded-full bg-gradient-to-br from-[#EFBF6A] to-[#A55D35] text-[#091F46] font-extrabold flex items-center justify-center text-sm cursor-pointer hover:scale-105 transition"
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-[#EFBF6A] to-[#A55D35] text-[#091F46] font-extrabold flex items-center justify-center text-sm cursor-pointer hover:scale-105 transition overflow-hidden border border-[#EFBF6A]/50"
               title="Edit Profile"
+              onclick="openProfileModal()"
             >
-              ?
+              <span id="hdrAvatarInit">?</span>
+              <img id="hdrAvatarImg" class="w-full h-full object-cover hidden" />
             </div>
             <div class="hidden sm:flex flex-col leading-tight"><span id="hdrName" class="text-sm font-bold text-[#E9E4DE]">Guest</span><span id="hdrKey" class="text-[10px] text-[#EFBF6A]">Vault: -</span></div>
           </div>
@@ -1918,7 +1050,7 @@
 
         <!-- Area unggah -->
         <section class="fade-up" style="animation-delay: 0.25s">
-          <div id="dropZone" class="rounded-3xl p-8 sm:p-10 text-center cursor-pointer flex flex-col items-center gap-3">
+          <div id="dropZone" class="rounded-3xl p-8 sm:p-10 text-center cursor-pointer flex flex-col items-center gap-3 relative">
             <div class="up-icon w-16 h-16 rounded-2xl bg-[#37729C]/25 flex items-center justify-center">
               <i class="ph ph-upload-simple text-4xl text-[#EFBF6A]"></i>
             </div>
@@ -1948,12 +1080,52 @@
             <button class="pill btn" data-act="filter" data-f="document">Dokumen</button>
             <button class="pill btn" data-act="filter" data-f="edited">Hasil Editan</button>
           </div>
-          <div class="relative w-full md:w-64"><i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#7699AE]"></i><input id="searchInput" type="search" placeholder="Cari nama file..." class="field !pl-9" /></div>
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <div class="relative w-full md:w-64"><i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#7699AE]"></i><input id="searchInput" type="search" placeholder="Cari..." class="field !pl-9" /></div>
+
+            <!-- Pengaturan View Size -->
+            <div class="glass flex items-center p-1 rounded-xl shrink-0">
+              <button data-act="setView" data-s="sm" class="btn px-2 py-1.5 rounded-lg text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Small View"><i class="ph-bold ph-squares-four"></i></button>
+              <button data-act="setView" data-s="md" class="btn px-2 py-1.5 rounded-lg text-[#EFBF6A] bg-[#37729C]/30 view-btn on" title="Medium View"><i class="ph-bold ph-grid-four"></i></button>
+              <button data-act="setView" data-s="xl" class="btn px-2 py-1.5 rounded-lg text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Extra Large View"><i class="ph-bold ph-rectangle"></i></button>
+            </div>
+          </div>
         </section>
 
-        <!-- Galeri file -->
+        <!-- Navigation Breadcrumb & Toolbar Multi-Select -->
+        <section class="flex flex-col sm:flex-row justify-between items-center gap-3 bg-[#05122B]/40 p-3 rounded-2xl border border-[#37729C]/30">
+          <div id="breadcrumb" class="flex items-center gap-2 text-sm font-bold truncate w-full sm:w-auto">
+            <!-- Tombol Kembali yang tampil saat di dalam folder -->
+            <button id="btnBackFolder" data-act="navRoot" class="btn btn-ghost hidden px-2.5 py-1 rounded-xl text-xs font-bold text-[#EFBF6A] items-center gap-1 border border-[#37729C]/50 bg-[#37729C]/20 hover:bg-[#37729C]/40">
+              <i class="ph-bold ph-arrow-left"></i> Kembali
+            </button>
+            <button data-act="navRoot" class="text-[#EFBF6A] hover:underline flex items-center gap-1"><i class="ph-fill ph-house"></i> Root</button>
+            <span id="bcSeparator" class="text-[#7699AE] hidden"><i class="ph-bold ph-caret-right"></i></span>
+            <span id="bcCurrentFolder" class="text-[#E9E4DE] hidden">Nama Folder</span>
+          </div>
+
+          <!-- Toolbar Selection & Tombol Folder Baru -->
+          <div id="selectToolbar" class="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <!-- Tombol Tambah Folder -->
+            <button onclick="openNewFolderModal()" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] flex items-center gap-1 border border-[#37729C]/60 bg-[#05122B]/50 hover:bg-[#37729C]/40">
+              <i class="ph-bold ph-folder-plus text-base"></i> Folder Baru
+            </button>
+
+            <button id="btnToggleSelect" data-act="toggleSelect" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#E9E4DE]"><i class="ph-bold ph-check-square-offset mr-1"></i> Pilih File</button>
+
+            <div id="selectActions" class="hidden items-center gap-2">
+              <span id="selectCount" class="text-xs font-bold text-[#EFBF6A] mr-2">0 dipilih</span>
+              <button data-act="moveSelected" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C] text-white hover:bg-[#37729C]/80"><i class="ph-bold ph-folder-open mr-1"></i> Pindahkan</button>
+              <button data-act="delSelected" class="btn btn-danger px-3 py-1.5 rounded-xl text-xs font-bold">
+                <i class="ph-bold ph-trash"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Galeri file & folder -->
         <section class="min-h-[200px]">
-          <div id="fileGrid" class="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4"></div>
+          <div id="fileGrid" class="view-md gap-4"></div>
           <div id="emptyState" class="hidden text-center py-20 fade-up">
             <i class="ph-duotone ph-folder-open text-7xl text-[#7699AE]"></i>
             <p id="emptyText" class="text-[#7699AE] mt-3">Belum ada file yang diarsipkan. Mulai unggah sekarang!</p>
@@ -1964,7 +1136,7 @@
       <!-- Tab: Teman -->
       <div id="friendsSec" class="main-sec hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
         <div class="glass p-6 rounded-2xl">
-          <h2 class="text-xl font-bold mb-4 text-[#E9E4DE]">Sistem Pertemanan</h2>
+          <h2 class="text-xl font-bold mb-4 text-[#E9E4DE]">Sistem Pertemanan Realtime</h2>
           <div class="flex gap-2 mb-6">
             <input id="searchFriend" class="field flex-1" placeholder="Cari username atau email teman..." />
             <button onclick="addFriend()" class="btn btn-primary px-6 rounded-xl">Add Friend</button>
@@ -1978,8 +1150,8 @@
       <div id="groupsSec" class="main-sec hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
         <div class="glass p-6 rounded-2xl">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-[#E9E4DE]">Group Shared Gallery</h2>
-            <button onclick="createGroup()" class="btn btn-primary px-4 py-2 rounded-xl">Buat Grup</button>
+            <h2 class="text-xl font-bold text-[#E9E4DE]">Group Shared Gallery Cloud</h2>
+            <button onclick="createGroup()" class="btn btn-primary px-4 py-2 rounded-xl"><i class="ph-bold ph-users-three mr-1"></i> Buat Grup Baru</button>
           </div>
           <div id="groupList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
         </div>
@@ -2279,7 +1451,7 @@
 
     <!-- Modal: Edit Profil -->
     <div id="profileModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
         <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Edit Profile</h3>
         <div
           class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer"
@@ -2291,7 +1463,15 @@
         <input type="file" id="profFile" class="hidden" accept="image/*" /><button onclick="document.getElementById('profFile').click()" class="text-xs text-[#EFBF6A] hover:underline mb-4 block mx-auto">Ganti Foto Profil</button>
         <div class="space-y-3 text-left">
           <div><label class="text-xs text-[#7699AE]">Username</label><input id="profName" type="text" class="field mt-1" /></div>
-          <div><label class="text-xs text-[#7699AE]">Bio</label><textarea id="profBio" class="field mt-1" rows="2"></textarea></div>
+          <div><label class="text-xs text-[#7699AE]">Bio</label><textarea id="profBio" class="field mt-1" rows="2" placeholder="Tulis bio singkat..."></textarea></div>
+          <div>
+            <label class="text-xs text-[#7699AE] flex items-center gap-1"><i class="ph-bold ph-instagram-logo text-[#EFBF6A]"></i> Username Instagram</label>
+            <input id="profInsta" type="text" class="field mt-1" placeholder="cth: naufal_22" />
+          </div>
+          <div>
+            <label class="text-xs text-[#7699AE] flex items-center gap-1"><i class="ph-bold ph-whatsapp-logo text-[#25D366]"></i> Nomor WhatsApp</label>
+            <input id="profWA" type="text" class="field mt-1" placeholder="cth: 08123456789" />
+          </div>
         </div>
         <div class="grid grid-cols-2 gap-3 mt-5">
           <button
@@ -2303,6 +1483,57 @@
           >
             Batal</button
           ><button onclick="saveProfile()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: View User Profile -->
+    <div id="viewUserModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+        <div id="vUserAvatar" class="w-20 h-20 mx-auto rounded-full bg-[#0D2652] mb-3 border-2 border-[#EFBF6A] flex items-center justify-center text-2xl font-bold text-[#EFBF6A]">?</div>
+        <h3 id="vUserName" class="font-extrabold text-lg text-[#E9E4DE]">Username</h3>
+        <p id="vUserBio" class="text-xs text-[#7699AE] mt-1 mb-4">No bio set</p>
+
+        <div class="flex justify-center items-center gap-4 py-3 border-t border-b border-[#37729C]/40 mb-5" id="vUserSocials"></div>
+
+        <button
+          onclick="
+            document.getElementById('viewUserModal').classList.add('hidden');
+            document.getElementById('viewUserModal').classList.remove('flex');
+          "
+          class="btn btn-ghost w-full py-2.5 rounded-xl text-sm font-semibold"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal: Buat / Rename Folder -->
+    <div id="folderModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+        <div class="w-14 h-14 mx-auto bg-[#37729C]/30 text-[#EFBF6A] rounded-2xl flex items-center justify-center text-3xl mb-3 border border-[#EFBF6A]/30">
+          <i class="ph-fill ph-folder"></i>
+        </div>
+        <h3 id="fmTitle" class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Folder Baru</h3>
+        <input type="text" id="fmInput" class="field text-center mb-5 font-bold" placeholder="Nama folder..." />
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="closeFolderModal()" class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold">Batal</button>
+          <button onclick="saveFolderModal()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Pindah Folder -->
+    <div id="moveModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm flex flex-col pop-in max-h-[80vh]">
+        <h3 class="font-extrabold text-lg mb-1 text-[#E9E4DE] text-center">Pindahkan ke...</h3>
+        <p class="text-xs text-[#7699AE] text-center mb-4">Pilih folder tujuan</p>
+
+        <div class="overflow-y-auto flex-1 pr-2 space-y-2 mb-4 scrollbar-hide" id="moveFolderList"></div>
+
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#37729C]/40">
+          <button onclick="closeMoveModal()" class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold">Batal</button>
+          <button onclick="confirmMove()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Pindah</button>
         </div>
       </div>
     </div>
@@ -2328,27 +1559,33 @@
       </div>
     </div>
 
-    <!-- Modal: Galeri Grup -->
+    <!-- Modal: Galeri Grup Cloud -->
     <div id="groupGalleryModal" class="hidden fixed inset-0 z-[80] flex-col bg-[#091F46]">
       <header class="glass p-4 flex justify-between items-center z-10">
-        <h3 id="ggTitle" class="font-bold text-lg text-[#E9E4DE]">Grup</h3>
-        <button
-          onclick="
-            document.getElementById('groupGalleryModal').classList.add('hidden');
-            document.getElementById('groupGalleryModal').classList.remove('flex');
-          "
-          class="btn btn-ghost px-4 py-2 rounded-xl text-sm"
-        >
-          Tutup
-        </button>
+        <div>
+          <h3 id="ggTitle" class="font-bold text-lg text-[#E9E4DE]">Grup Shared Gallery</h3>
+          <p class="text-xs text-[#7699AE]" id="ggMembers">Anggota: -</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="addMemberToGroup()" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] border border-[#37729C]"><i class="ph-bold ph-user-plus mr-1"></i> Undang Teman</button>
+          <button
+            onclick="
+              document.getElementById('groupGalleryModal').classList.add('hidden');
+              document.getElementById('groupGalleryModal').classList.remove('flex');
+            "
+            class="btn btn-ghost px-4 py-2 rounded-xl text-sm"
+          >
+            Tutup
+          </button>
+        </div>
       </header>
       <div class="p-6 flex-1 overflow-auto">
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-sm text-[#7699AE]" id="ggMembers">Anggota: -</p>
-          <button onclick="document.getElementById('ggFile').click()" class="btn btn-primary px-4 py-2 rounded-xl text-sm"><i class="ph-bold ph-upload-simple mr-2"></i>Upload Foto</button>
+        <div class="flex justify-between items-center mb-6">
+          <p class="text-xs text-[#7699AE]">Foto yang diunggah ke sini langsung muncul secara otomatis di semua anggota grup.</p>
+          <button onclick="document.getElementById('ggFile').click()" class="btn btn-primary px-4 py-2 rounded-xl text-sm shrink-0"><i class="ph-bold ph-upload-simple mr-2"></i>Upload Foto Grup</button>
           <input type="file" id="ggFile" class="hidden" multiple accept="image/*" />
         </div>
-        <div id="ggGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"></div>
+        <div id="ggGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
       </div>
     </div>
 
@@ -2359,15 +1596,16 @@
       (() => {
         "use strict";
         /* =====================================================================
-           UTIL
+           UTIL & HELPERS
            ===================================================================== */
         const $ = (s) => document.querySelector(s);
         const $$ = (s) => [...document.querySelectorAll(s)];
-        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+        const esc = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
         const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
         const uid = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
         const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
         const fine = matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced;
+
         function fmtBytes(b) {
           if (!b) return "0 B";
           const k = 1024,
@@ -2375,7 +1613,59 @@
           const i = Math.min(u.length - 1, Math.floor(Math.log(b) / Math.log(k)));
           return parseFloat((b / Math.pow(k, i)).toFixed(i ? 1 : 0)) + " " + u[i];
         }
+
         const fmtDate = (ts) => new Date(ts).toLocaleString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+        function extOf(name) {
+          const parts = String(name || "").split(".");
+          return parts.length > 1 ? parts.pop().toLowerCase() : "";
+        }
+
+        function catOf(mime, name) {
+          const ext = extOf(name);
+          if (/^image\//.test(mime) || ["jpg", "jpeg", "png", "gif", "webp", "heic", "svg", "bmp"].includes(ext)) return "image";
+          if (/^video\//.test(mime) || ["mp4", "webm", "mkv", "mov", "avi"].includes(ext)) return "video";
+          if (/^audio\//.test(mime) || ["mp3", "wav", "ogg", "flac", "m4a"].includes(ext)) return "audio";
+          return "document";
+        }
+
+        function visibleFolders() {
+          let list = S.folders.filter((f) => (S.currentFolder ? f.parentId === S.currentFolder : !f.parentId));
+          if (S.search) {
+            const q = S.search.toLowerCase();
+            list = list.filter((f) => f.name.toLowerCase().includes(q));
+          }
+          return list;
+        }
+
+        function visibleFiles() {
+          let list = S.files.filter((f) => (S.currentFolder ? f.folderId === S.currentFolder : !f.folderId));
+          if (S.filter !== "all") {
+            if (S.filter === "live") list = list.filter((f) => f.category === "video" || f.isLive);
+            else if (S.filter === "edited") list = list.filter((f) => f.edited);
+            else list = list.filter((f) => f.category === S.filter);
+          }
+          if (S.search) {
+            const q = S.search.toLowerCase();
+            list = list.filter((f) => f.name.toLowerCase().includes(q));
+          }
+          return list;
+        }
+
+        function updateStats() {
+          const countEl = $("#statCount"),
+            sizeEl = $("#statSize"),
+            barEl = $("#deviceBar"),
+            devEl = $("#statDevice");
+          const totalSize = S.files.reduce((acc, f) => acc + (f.size || 0), 0);
+          if (countEl) countTo(countEl, S.files.length, (v) => Math.round(v).toString());
+          if (sizeEl) sizeEl.textContent = fmtBytes(totalSize);
+          const maxBytes = 2 * 1024 * 1024 * 1024 * 1024; // 2 TB
+          const pct = Math.min(100, Math.max(0.5, (totalSize / maxBytes) * 100));
+          if (barEl) barEl.style.width = pct.toFixed(2) + "%";
+          if (devEl) devEl.textContent = fmtBytes(totalSize) + " / 2 TB";
+        }
+
         function toast(msg, type = "info", ms = 3200) {
           const icons = { info: "ph-info", success: "ph-check-circle", error: "ph-warning-circle" };
           const el = document.createElement("div");
@@ -2387,6 +1677,7 @@
             setTimeout(() => el.remove(), 380);
           }, ms);
         }
+
         function confirmBox(title, msg, okLabel = "Hapus") {
           return new Promise((res) => {
             $("#cfTitle").textContent = title;
@@ -2406,6 +1697,7 @@
           });
         }
         const confirmOpen = () => !$("#confirm").classList.contains("hidden");
+
         function countTo(el, to, fmt) {
           const from = parseFloat(el.dataset.v || 0);
           el.dataset.v = to;
@@ -2422,12 +1714,14 @@
             if (p < 1) requestAnimationFrame(step);
           })(t0);
         }
+
         function loadBitmap(blob) {
           if (window.createImageBitmap) {
             return createImageBitmap(blob).catch(() => loadViaImg(blob));
           }
           return loadViaImg(blob);
         }
+
         function loadViaImg(blob) {
           return new Promise((res, rej) => {
             const u = URL.createObjectURL(blob),
@@ -2443,7 +1737,9 @@
             im.src = u;
           });
         }
+
         const srcSize = (s) => ({ w: s.naturalWidth || s.width, h: s.naturalHeight || s.height });
+
         function newCanvas(w, h) {
           const c = document.createElement("canvas");
           c.width = w;
@@ -2451,7 +1747,9 @@
           c.getContext("2d", { willReadFrequently: true });
           return c;
         }
+
         const toBlobP = (cv2, type, q) => new Promise((res) => cv2.toBlob(res, type, q));
+
         async function makeThumb(blob, mime) {
           try {
             const src = await loadBitmap(blob);
@@ -2470,20 +1768,46 @@
             return null;
           }
         }
+
         /* =====================================================================
-           STATE & CLOUD URLS
+           STATE & CONFIG SUPABASE
            ===================================================================== */
-        const S = { account: null, files: [], friends: [], filter: "all", search: "", urls: new Map() };
+        const S = {
+          account: null,
+          files: [],
+          folders: [],
+          friends: [],
+          groups: [],
+          filter: "all",
+          search: "",
+          urls: new Map(),
+          currentFolder: null,
+          viewSize: "md",
+          isSelecting: false,
+          selectedItems: new Set(),
+        };
+
+        const SUPABASE_URL = "https://yfvddvhdixjhuwoqaebz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_Y2FnuTV0HpR2GliMxw1nEQ_TToYiHuy";
+        let sb = null;
+        try {
+          if (window.supabase && /^https?:\/\//.test(SUPABASE_URL)) {
+            sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+          }
+        } catch (e) {
+          console.warn("Supabase init optional warning:", e);
+        }
 
         function urlFor(rec, kind) {
           const isThumb = kind === "thumb";
           const path = isThumb ? rec.thumb_path || rec.path : rec.path;
 
           if (path && sb) {
-            return sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
+            try {
+              return sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
+            } catch (e) {}
           }
 
-          // Fallback untuk file yang baru saja diupload di sesi ini (sebelum di-reload)
           const k = rec.id + ":" + kind;
           if (!S.urls.has(k)) {
             const b = isThumb ? rec.thumb || rec.blob : rec.blob;
@@ -2493,40 +1817,27 @@
         }
 
         function revokeFor(id) {
-          for (const k of [...S.urls.keys()])
+          for (const k of [...S.urls.keys()]) {
             if (k.startsWith(id + ":")) {
               URL.revokeObjectURL(S.urls.get(k));
               S.urls.delete(k);
             }
+          }
         }
+
         function revokeAll() {
           S.urls.forEach((u) => URL.revokeObjectURL(u));
           S.urls.clear();
         }
 
-        /* =====================================================================
-           AKUN (Supabase Auth & Config)
-           ===================================================================== */
-        const SUPABASE_URL = "https://yfvddvhdixjhuwoqaebz.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_Y2FnuTV0HpR2GliMxw1nEQ_TToYiHuy";
-        let sb = null;
-        try {
-          if (window.supabase && /^https?:\/\//.test(SUPABASE_URL)) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        } catch (e) {
-          console.error(e);
-        }
-        function needSupabase() {
-          if (sb) return false;
-          authShake();
-          toast(!window.supabase ? "Library Supabase belum termuat" : "Isi SUPABASE_URL di kode terlebih dahulu", "error", 4500);
-          return true;
-        }
         const accFromUser = (u) => {
           const m = u.user_metadata || {};
-          return { userKey: u.id, email: u.email || "", username: m.full_name || m.name || (u.email || "user").split("@")[0] };
+          return { userKey: u.id, email: u.email || "", username: m.full_name || m.name || (u.email || "user").split("@")[0], bio: m.bio || "", instagram: m.instagram || "", whatsapp: m.whatsapp || "", avatarUrl: m.avatar_url || "" };
         };
-        const authMsg = (m) => (/invalid login/i.test(m) ? "Email atau password salah" : /not confirmed/i.test(m) ? "Email belum dikonfirmasi. Cek inbox Anda." : /already registered/i.test(m) ? "Email sudah terdaftar. Silakan masuk." : m);
+
+        const authMsg = (m) => (/invalid login/i.test(m) ? "Email atau password salah" : /not confirmed/i.test(m) ? "Email belum dikonfirmasi." : /already registered/i.test(m) ? "Email sudah terdaftar." : m);
         const redirectUrl = () => location.origin + location.pathname;
+
         function switchAuth(tab) {
           const login = tab === "login";
           $("#tabLogin").classList.toggle("on", login);
@@ -2540,11 +1851,13 @@
           void show.offsetWidth;
           show.classList.add("fade-up");
         }
+
         function authBusy(on, text) {
           $("#authLoading").classList.toggle("hidden", !on);
           $("#authLoading").classList.toggle("flex", on);
           if (text) $("#authLoadingText").textContent = text;
         }
+
         function authShake() {
           const c = $("#authCard");
           c.classList.remove("shake");
@@ -2552,32 +1865,97 @@
           c.classList.add("shake");
         }
 
-        // Simpan data user ke tabel profiles biar bisa dicari
+        /* =====================================================================
+           PERSISTENCE & SAFE CALLS
+           ===================================================================== */
         async function upsertProfile(acc) {
           if (!sb) return;
-          const { error } = await sb.from("profiles").upsert({
-            id: acc.userKey,
-            username: acc.username,
-            email: acc.email,
-          });
-          if (error) console.error("Gagal sinkron profil:", error);
+          try {
+            await sb.from("profiles").upsert({
+              id: acc.userKey,
+              username: acc.username,
+              email: acc.email,
+              bio: acc.bio || "",
+              instagram: acc.instagram || "",
+              whatsapp: acc.whatsapp || "",
+              avatar_url: acc.avatarUrl || "",
+            });
+          } catch (e) {
+            console.warn(e);
+          }
         }
 
-        // Memuat daftar teman dari database
-        async function loadFriends() {
-          if (!sb) return;
-          const { data, error } = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
-          if (!error && data) {
-            S.friends = data;
-            if ($("#friendsSec") && !$("#friendsSec").classList.contains("hidden")) {
-              renderFriends();
+        async function loadFolders() {
+          if (!sb || !S.account) return;
+          try {
+            let res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
+            if (res.error) {
+              res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
             }
+            if (!res.error && res.data) {
+              S.folders = res.data;
+            }
+          } catch (e) {
+            S.folders = [];
+          }
+        }
+
+        async function loadFiles() {
+          if (!sb || !S.account) return;
+          try {
+            let res = await sb.from("files").select("*").eq("userKey", S.account.userKey);
+            if (res.error) {
+              res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
+            }
+            if (!res.error && res.data) {
+              S.files = res.data;
+            }
+          } catch (e) {
+            S.files = [];
+          }
+          renderGrid();
+          updateStats();
+        }
+
+        async function loadFriends() {
+          if (!sb || !S.account) return;
+          try {
+            let res = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
+            if (res.error) {
+              res = await sb.from("friends").select("*").eq("user_id", S.account.userKey);
+            }
+            if (res.data) {
+              S.friends = res.data;
+              if ($("#friendsSec") && !$("#friendsSec").classList.contains("hidden")) {
+                window.renderFriends();
+              }
+            }
+          } catch (e) {
+            S.friends = [];
+          }
+        }
+
+        async function loadGroups() {
+          if (!sb || !S.account) return;
+          try {
+            const { data: memberOf } = await sb.from("group_members").select("group_id").eq("user_id", S.account.userKey);
+            if (!memberOf || memberOf.length === 0) {
+              S.groups = [];
+              window.renderGroups();
+              return;
+            }
+            const groupIds = memberOf.map((m) => m.group_id);
+            const { data: groupsData } = await sb.from("groups").select("*").in("id", groupIds);
+            S.groups = groupsData || [];
+            window.renderGroups();
+          } catch (e) {
+            S.groups = [];
           }
         }
 
         async function doRegister(e) {
           e.preventDefault();
-          if (needSupabase()) return;
+          if (!sb) return toast("Supabase tidak aktif", "error");
           const email = $("#regUser").value.trim(),
             pw = $("#regPin").value,
             pw2 = $("#regPin2").value;
@@ -2606,18 +1984,19 @@
             authShake();
             switchAuth("login");
             $("#loginUser").value = email;
-            return toast("Email sudah terdaftar. Silakan masuk.", "error");
+            return toast("Email sudah terdaftar.", "error");
           }
           $("#regPin").value = $("#regPin2").value = "";
           if (!data.session) {
-            toast("Pendaftaran berhasil. Cek email untuk konfirmasi, lalu masuk.", "success", 6e3);
+            toast("Pendaftaran berhasil. Silakan masuk.", "success", 6e3);
             switchAuth("login");
             $("#loginUser").value = email;
           }
         }
+
         async function doLogin(e) {
           e.preventDefault();
-          if (needSupabase()) return;
+          if (!sb) return toast("Supabase tidak terhubung", "error");
           const email = $("#loginUser").value.trim(),
             pw = $("#loginPin").value;
           if (!email || !pw) {
@@ -2626,7 +2005,7 @@
           }
           $("#loginForm").classList.add("hidden");
           authBusy(true, "Memverifikasi...");
-          const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+          const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
           authBusy(false);
           $("#loginForm").classList.remove("hidden");
           if (error) {
@@ -2635,17 +2014,42 @@
             return toast(authMsg(error.message), "error", 4500);
           }
           $("#loginPin").value = "";
+          if (data && data.user) {
+            enterVault(await fetchProfileAcc(data.user));
+          }
         }
+
         async function doGoogle() {
-          if (needSupabase()) return;
+          if (!sb) return toast("Google Auth memerlukan konfigurasi Supabase", "error");
           const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: redirectUrl() } });
           if (error) toast(authMsg(error.message), "error", 4500);
         }
+
+        async function fetchProfileAcc(u) {
+          const acc = accFromUser(u);
+          if (!sb) return acc;
+          try {
+            const { data } = await sb.from("profiles").select("*").eq("id", u.id).maybeSingle();
+            if (data) {
+              acc.username = data.username || acc.username;
+              acc.bio = data.bio || "";
+              acc.instagram = data.instagram || "";
+              acc.whatsapp = data.whatsapp || "";
+              acc.avatarUrl = data.avatar_url || null;
+            }
+          } catch (e) {
+            console.warn("Profil error", e);
+          }
+          return acc;
+        }
+
         function enterVault(acc) {
           S.account = acc;
           $("#hdrName").textContent = acc.username;
           $("#hdrKey").textContent = "Archive: " + (acc.email || acc.userKey.slice(0, 8));
-          $("#hdrAvatar").textContent = acc.username[0].toUpperCase();
+
+          updateAvatarUI(acc.avatarUrl, acc.username);
+
           const a = $("#authScreen");
           a.style.transition = "opacity .4s";
           a.style.opacity = "0";
@@ -2657,263 +2061,271 @@
           $("#app").classList.add("flex");
           S.filter = "all";
           S.search = "";
+          S.currentFolder = null;
+          S.isSelecting = false;
+          S.selectedItems.clear();
           $("#searchInput").value = "";
           setFilterUI();
 
           upsertProfile(acc);
           loadFriends();
-          loadFiles();
+          loadGroups();
+          loadFolders().then(() => loadFiles());
         }
-        function leaveVault() {
-          closeLightbox(true);
-          revokeAll();
+
+        function updateAvatarUI(avatarUrl, username) {
+          const initEl = $("#hdrAvatarInit");
+          const imgEl = $("#hdrAvatarImg");
+          if (avatarUrl) {
+            imgEl.src = avatarUrl;
+            imgEl.classList.remove("hidden");
+            initEl.classList.add("hidden");
+          } else {
+            imgEl.classList.add("hidden");
+            initEl.classList.remove("hidden");
+            initEl.textContent = (username ? username[0] : "?").toUpperCase();
+          }
+        }
+
+        async function loadFolders() {
+          if (!sb || !S.account) return;
+          try {
+            let res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
+            if (res.error) {
+              res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
+            }
+            if (!res.error && res.data) {
+              S.folders = res.data;
+            }
+          } catch (e) {
+            S.folders = [];
+          }
+        }
+
+        async function loadFiles() {
+          if (!sb || !S.account) return;
+          try {
+            let res = await sb.from("files").select("*").eq("userKey", S.account.userKey);
+            if (res.error) {
+              res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
+            }
+            if (!res.error && res.data) {
+              S.files = res.data;
+            }
+          } catch (e) {
+            S.files = [];
+          }
+          renderGrid();
+          updateStats();
+        }
+
+        function logout() {
+          if (sb) sb.auth.signOut();
           S.account = null;
           S.files = [];
-          S.friends = [];
+          S.folders = [];
+          revokeAll();
           $("#app").classList.add("hidden");
           $("#app").classList.remove("flex");
           const a = $("#authScreen");
           a.classList.remove("hidden");
           a.style.opacity = "1";
-          renderGrid();
-          switchAuth("login");
-          const c = $("#authCard");
-          c.style.animation = "none";
-          void c.offsetWidth;
-          c.style.animation = "";
-          toast("Berhasil keluar dari akun", "info");
+          toast("Berhasil keluar", "info");
         }
-        async function logout() {
-          if (!sb) return leaveVault();
-          try {
-            await sb.auth.signOut();
-          } catch (e) {
-            leaveVault();
+
+        function updateAvatarUI(avatarUrl, username) {
+          const initEl = $("#hdrAvatarInit");
+          const imgEl = $("#hdrAvatarImg");
+          if (avatarUrl) {
+            imgEl.src = avatarUrl;
+            imgEl.classList.remove("hidden");
+            initEl.classList.add("hidden");
+          } else {
+            imgEl.classList.add("hidden");
+            initEl.classList.remove("hidden");
+            initEl.textContent = (username ? username[0] : "?").toUpperCase();
           }
         }
+
+        // Cek sesi otomatis saat reload
         if (sb) {
-          sb.auth.onAuthStateChange((event, session) => {
+          sb.auth.getSession().then(async ({ data: { session } }) => {
             if (session && session.user) {
-              if (!S.account || S.account.userKey !== session.user.id) {
-                const acc = accFromUser(session.user);
-                enterVault(acc);
-                toast(`Selamat datang, ${acc.username}!`, "success");
-              }
-            } else if (event === "SIGNED_OUT" && S.account) leaveVault();
+              const acc = await fetchProfileAcc(session.user);
+              enterVault(acc);
+            }
           });
         }
+
         /* =====================================================================
-           FILE: muat, unggah, hapus, unduh
+           UPLOAD FILE HANDLING
            ===================================================================== */
-        async function loadFiles() {
-          try {
-            const { data, error } = await sb.from("files").select("*").eq("userKey", S.account.userKey).order("createdAt", { ascending: false });
-            if (error) throw error;
-            S.files = data || [];
-          } catch (e) {
-            console.error(e);
-            S.files = [];
-            toast("Gagal memuat file dari cloud. Pastikan tabel Supabase sudah dibuat.", "error", 4000);
+        async function handleFiles(filesList) {
+          if (!filesList || !filesList.length) return;
+          if (!S.account) return toast("Silakan login terlebih dahulu", "error");
+
+          const files = Array.from(filesList);
+          const statusBox = $("#uploadStatus");
+          const statusText = $("#uploadText");
+          const progressBar = $("#uploadBar");
+
+          statusBox.classList.remove("hidden");
+          let total = files.length,
+            done = 0;
+
+          for (const file of files) {
+            statusText.textContent = `Mengunggah (${done + 1}/${total}): ${file.name}`;
+            progressBar.style.width = `${Math.round((done / total) * 100)}%`;
+
+            try {
+              let processFile = file;
+              const ext = extOf(file.name);
+
+              // Konversi HEIC jika ada
+              if (ext === "heic" && window.heic2any) {
+                try {
+                  const blob = await window.heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
+                  const resBlob = Array.isArray(blob) ? blob[0] : blob;
+                  processFile = new File([resBlob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+                } catch (e) {
+                  console.warn("HEIC conversion bypassed:", e);
+                }
+              }
+
+              const category = catOf(processFile.type, processFile.name);
+              const fileId = uid("f_");
+              const safeName = processFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+              const storagePath = `${S.account.userKey}/${fileId}_${safeName}`;
+              let thumbPath = null;
+              let imgWidth = null,
+                imgHeight = null;
+
+              if (category === "image") {
+                const thumbData = await makeThumb(processFile, processFile.type);
+                if (thumbData) {
+                  imgWidth = thumbData.w;
+                  imgHeight = thumbData.h;
+                  if (sb) {
+                    const tPath = `${S.account.userKey}/thumbs/t_${fileId}_${safeName}.jpg`;
+                    const { data: tUp } = await sb.storage.from("vault").upload(tPath, thumbData.blob, { upsert: true });
+                    if (tUp) thumbPath = tPath;
+                  }
+                }
+              }
+
+              if (sb) {
+                const { error: upErr } = await sb.storage.from("vault").upload(storagePath, processFile, { upsert: true });
+                if (upErr) throw upErr;
+              }
+
+              const rec = {
+                id: fileId,
+                userKey: S.account.userKey,
+                name: processFile.name,
+                size: processFile.size,
+                mime: processFile.type || "application/octet-stream",
+                category,
+                isLive: false,
+                edited: false,
+                createdAt: Date.now(),
+                w: imgWidth,
+                h: imgHeight,
+                path: storagePath,
+                thumb_path: thumbPath,
+                folderId: S.currentFolder || null,
+                blob: processFile,
+              };
+
+              if (sb) {
+                await sb.from("files").insert({
+                  id: rec.id,
+                  userKey: rec.userKey,
+                  name: rec.name,
+                  size: rec.size,
+                  mime: rec.mime,
+                  category: rec.category,
+                  isLive: rec.isLive,
+                  edited: rec.edited,
+                  createdAt: rec.createdAt,
+                  w: rec.w,
+                  h: rec.h,
+                  path: rec.path,
+                  thumb_path: rec.thumb_path,
+                  folderId: rec.folderId,
+                });
+              }
+
+              S.files.unshift(rec);
+            } catch (err) {
+              console.error("Upload error:", err);
+              toast(`Gagal mengunggah ${file.name}`, "error");
+            }
+            done++;
+            progressBar.style.width = `${Math.round((done / total) * 100)}%`;
           }
+
+          statusText.textContent = "Upload selesai!";
+          setTimeout(() => statusBox.classList.add("hidden"), 1500);
+          toast(`${total} file berhasil diunggah!`, "success");
           renderGrid();
           updateStats();
         }
-        const MIME = {
-          pdf: "application/pdf",
-          txt: "text/plain",
-          csv: "text/csv",
-          json: "application/json",
-          mp4: "video/mp4",
-          mov: "video/quicktime",
-          webm: "video/webm",
-          mp3: "audio/mpeg",
-          wav: "audio/wav",
-          m4a: "audio/mp4",
-          ogg: "audio/ogg",
-          jpg: "image/jpeg",
-          jpeg: "image/jpeg",
-          png: "image/png",
-          webp: "image/webp",
-          gif: "image/gif",
-          heic: "image/heic",
-          heif: "image/heif",
-          zip: "application/zip",
-        };
-        const extOf = (n) => (n.split(".").pop() || "").toLowerCase();
-        function categorize(mime) {
-          if (mime.startsWith("image/")) return "image";
-          if (mime.startsWith("video/")) return "video";
-          if (mime.startsWith("audio/")) return "audio";
-          return "document";
-        }
-        async function buildRecord(file, setText) {
-          const name = file.name || "file_" + Date.now();
-          const lower = name.toLowerCase(),
-            ext = extOf(lower);
-          let mime = file.type || MIME[ext] || "application/octet-stream";
-          let blob = file,
-            original = null;
-          if (/\.(heic|heif)$/.test(lower) || /hei[cf]/.test(mime)) {
-            if (typeof heic2any === "function") {
-              setText("Mengonversi HEIC: " + name);
-              const out = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.9 });
-              blob = Array.isArray(out) ? out[0] : out;
-              original = file;
-              mime = "image/jpeg";
-            } else {
-              toast("Library HEIC belum termuat, file disimpan tanpa preview", "error");
-            }
-          }
-          const category = categorize(mime);
-          const isLive = category === "video" ? /live/.test(lower) || (ext === "mov" && file.size < 15 * 1024 * 1024) : category === "image" && /mvimg|\.mp\.jpe?g|live/.test(lower);
-          const rec = { id: uid("f_"), userKey: S.account.userKey, name, size: file.size, mime, category, isLive, edited: false, createdAt: Date.now(), blob, original, thumb: null, w: 0, h: 0 };
-          if (category === "image") {
-            setText("Membuat pratinjau: " + name);
-            const t = await makeThumb(blob, mime);
-            if (t) {
-              rec.thumb = t.blob;
-              rec.w = t.h;
-              rec.h = t.h; // FIX aspect
-              rec.w = t.w;
-            }
-          }
-          return rec;
-        }
-        async function handleFiles(list) {
-          const files = [...list];
-          if (!files.length) return;
-          if (!S.account) return toast("Masuk dulu untuk mengunggah", "error");
-          const box = $("#uploadStatus"),
-            bar = $("#uploadBar"),
-            txt = $("#uploadText");
-          box.classList.remove("hidden");
-          let ok = 0;
 
-          for (let i = 0; i < files.length; i++) {
-            const f = files[i];
-            bar.style.width = (i / files.length) * 100 + "%";
-            const setText = (t) => (txt.textContent = `(${i + 1}/${files.length}) ${t}`);
-
-            try {
-              const rec = await buildRecord(f, setText);
-
-              setText("Mengunggah " + f.name + " ke Cloud...");
-              const mainPath = `${S.account.userKey}/${rec.id}`;
-              const { error: upErr } = await sb.storage.from("vault").upload(mainPath, rec.blob);
-              if (upErr) throw upErr;
-
-              let thumbPath = null;
-              if (rec.thumb) {
-                thumbPath = `${S.account.userKey}/${rec.id}_thumb`;
-                await sb.storage.from("vault").upload(thumbPath, rec.thumb);
-              }
-
-              const dbRec = {
-                id: rec.id,
-                userKey: S.account.userKey,
-                name: rec.name,
-                size: rec.size,
-                mime: rec.mime,
-                category: rec.category,
-                isLive: rec.isLive,
-                edited: rec.edited,
-                createdAt: rec.createdAt,
-                w: rec.w,
-                h: rec.h,
-                path: mainPath,
-                thumb_path: thumbPath,
-              };
-
-              const { error: dbErr } = await sb.from("files").insert(dbRec);
-              if (dbErr) throw dbErr;
-
-              // Simpan blob sementara ke state agar bisa langsung diakses tanpa request ulang
-              dbRec.blob = rec.blob;
-              dbRec.thumb = rec.thumb;
-
-              S.files.unshift(dbRec);
-              ok++;
-              renderGrid();
-              updateStats();
-            } catch (err) {
-              console.error(err);
-              toast(`Gagal menyimpan ${f.name}. Pastikan bucket Storage sudah dibuat.`, "error", 4500);
-            }
-          }
-          bar.style.width = "100%";
-          setTimeout(() => {
-            box.classList.add("hidden");
-            bar.style.width = "0%";
-          }, 500);
-          if (ok) toast(`${ok} file berhasil diunggah ke Cloud`, "success");
-        }
-        function downloadBlob(blob, name) {
-          const u = URL.createObjectURL(blob),
-            a = document.createElement("a");
-          a.href = u;
-          a.download = name;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          setTimeout(() => URL.revokeObjectURL(u), 5e3);
-        }
         async function downloadRec(rec) {
-          if (rec.blob) {
-            downloadBlob(rec.original || rec.blob, rec.name);
-            toast("Mengunduh " + rec.name, "info");
-          } else {
-            toast("Mengunduh " + rec.name + " dari Cloud...", "info");
-            try {
-              const { data, error } = await sb.storage.from("vault").download(rec.path);
-              if (error) throw error;
-              downloadBlob(data, rec.name);
-            } catch (e) {
-              toast("Gagal mengunduh file", "error");
-            }
+          try {
+            const url = urlFor(rec, "full");
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = rec.name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          } catch (e) {
+            toast("Gagal mengunduh file", "error");
           }
         }
+
         async function deleteRec(rec) {
-          const ok = await confirmBox("Hapus file ini?", `"${rec.name}" akan dihapus permanen dari Cloud.`);
+          const ok = await confirmBox("Hapus File?", `Yakin menghapus "${rec.name}"?`);
           if (!ok) return false;
+
           try {
-            await sb.from("files").delete().eq("id", rec.id);
-            const paths = [rec.path];
-            if (rec.thumb_path) paths.push(rec.thumb_path);
-            await sb.storage.from("vault").remove(paths);
+            if (sb) {
+              await sb.from("files").delete().eq("id", rec.id);
+              const paths = [];
+              if (rec.path) paths.push(rec.path);
+              if (rec.thumb_path) paths.push(rec.thumb_path);
+              if (paths.length) await sb.storage.from("vault").remove(paths);
+            }
+            S.files = S.files.filter((f) => f.id !== rec.id);
+            revokeFor(rec.id);
+            toast("File dihapus", "success");
+            renderGrid();
+            updateStats();
+            return true;
           } catch (e) {
             toast("Gagal menghapus file", "error");
             return false;
           }
-          revokeFor(rec.id);
-          S.files = S.files.filter((f) => f.id !== rec.id);
-          renderGrid();
-          updateStats();
-          toast("File berhasil dihapus", "success");
-          return true;
         }
-        async function updateStats() {
-          countTo($("#statCount"), S.files.length, (v) => String(Math.round(v)));
-          let usg = S.files.reduce((a, f) => a + (f.size || 0), 0);
-          countTo($("#statSize"), usg, (v) => fmtBytes(v));
 
-          $("#statDevice").textContent = `${fmtBytes(usg)} / 2 TB`;
-          $("#deviceBar").style.width = Math.max(0.1, Math.min(100, (usg / (2 * 1024 * 1024 * 1024 * 1024)) * 100)) + "%";
+        function folderCardHTML(f, i) {
+          const delay = Math.min(i, 16) * 35;
+          const isSel = S.selectedItems.has(f.id);
+          const selCls = S.isSelecting ? (isSel ? "selectable selected" : "selectable") : "";
+
+          return `<div class="folder-card relative tilt ${selCls}" data-act="folderClick" data-id="${f.id}" style="animation-delay:${delay}ms">
+            <div class="check-badge"><i class="ph-bold ph-check"></i></div>
+            <i class="ph-duotone ph-folder text-5xl text-[#EFBF6A] mb-2"></i>
+            <h4 class="font-bold text-[#E9E4DE] text-sm break-all truncate w-full px-2">${esc(f.name)}</h4>
+            <div class="flex gap-1.5 mt-3 absolute bottom-3 opacity-0 transition-opacity duration-200" style="backdrop-filter:blur(4px)">
+               <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="renameFolder" title="Ganti Nama" onclick="event.stopPropagation()"><i class="ph-bold ph-pencil-simple"></i></button>
+               <button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="delFolder" title="Hapus" onclick="event.stopPropagation()"><i class="ph-bold ph-trash"></i></button>
+            </div>
+            <style>.folder-card:hover > div { opacity: 1; }</style>
+          </div>`;
         }
-        /* =====================================================================
-           GALERI (masonry)
-           ===================================================================== */
-        function visibleFiles() {
-          const q = S.search.trim().toLowerCase();
-          return S.files.filter((f) => {
-            const okF =
-              S.filter === "all" ||
-              (S.filter === "image" && f.category === "image") ||
-              (S.filter === "live" && (f.category === "video" || f.isLive)) ||
-              (S.filter === "document" && (f.category === "document" || f.category === "audio")) ||
-              (S.filter === "edited" && f.edited);
-            return okF && (!q || f.name.toLowerCase().includes(q));
-          });
-        }
+
         function iconFor(f) {
           const e = extOf(f.name);
           if (e === "pdf") return { i: "ph-file-pdf", c: "text-[#A55D35]" };
@@ -2924,10 +2336,14 @@
           if (f.category === "audio") return { i: "ph-file-audio", c: "text-[#EFBF6A]" };
           return { i: "ph-file-text", c: "text-[#37729C]" };
         }
+
         function cardHTML(f, i) {
           const delay = Math.min(i, 16) * 35;
           let media = "",
             caption = "";
+          const isSel = S.selectedItems.has(f.id);
+          const selCls = S.isSelecting ? (isSel ? "selectable selected" : "selectable") : "";
+
           if (f.category === "image") {
             const ar = f.w && f.h ? `style="aspect-ratio:${f.w}/${f.h}"` : "";
             media = `<div class="checker w-full" ${ar}><img src="${urlFor(f, "thumb")}" alt="${esc(f.name)}" loading="lazy" decoding="async" draggable="false" class="w-full h-full block object-contain"></div>`;
@@ -2941,25 +2357,283 @@
           }
           const chips = (f.isLive ? '<span class="chip chip-live"><i class="ph-fill ph-play-circle"></i>LIVE</span>' : "") + (f.edited && !f.isLive ? '<span class="chip chip-edit"><i class="ph-fill ph-paint-brush"></i>EDIT</span>' : "");
           const showOverlayInfo = f.category !== "document" && f.category !== "audio";
-          return `<div class="card tilt" data-act="open" data-id="${f.id}" style="animation-delay:${delay}ms"><div class="relative">${media}${chips}<div class="card-overlay"><div class="min-w-0">${showOverlayInfo ? `<p class="text-xs font-semibold truncate text-[#E9E4DE]">${esc(f.name)}</p><p class="text-[10px] text-[#E9E4DE]/80">${fmtBytes(f.size)}</p>` : ""}</div><div class="flex gap-1.5 shrink-0">${f.category === "image" ? '<button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="edit" title="Edit di Studio"><i class="ph-bold ph-paint-brush"></i></button>' : ""}<button class="btn icon-btn bg-[#EFBF6A] hover:opacity-90 text-[#091F46]" data-act="dl" title="Unduh"><i class="ph-bold ph-download-simple"></i></button><button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="del" title="Hapus"><i class="ph-bold ph-trash"></i></button></div></div></div>${caption}</div>`;
+          return `<div class="card tilt ${selCls}" data-act="${S.isSelecting ? "toggleItem" : "open"}" data-id="${f.id}" style="animation-delay:${delay}ms">
+          <div class="check-badge"><i class="ph-bold ph-check"></i></div>
+          <div class="relative">${media}${chips}<div class="card-overlay"><div class="min-w-0">${showOverlayInfo ? `<p class="text-xs font-semibold truncate text-[#E9E4DE]">${esc(f.name)}</p><p class="text-[10px] text-[#E9E4DE]/80">${fmtBytes(f.size)}</p>` : ""}</div><div class="flex gap-1.5 shrink-0 z-20">${f.category === "image" ? '<button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="editCard" title="Edit di Studio"><i class="ph-bold ph-paint-brush"></i></button>' : ""}<button class="btn icon-btn bg-[#EFBF6A] hover:opacity-90 text-[#091F46]" data-act="dlCard" title="Unduh"><i class="ph-bold ph-download-simple"></i></button><button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="delCard" title="Hapus"><i class="ph-bold ph-trash"></i></button></div></div></div>${caption}</div>`;
         }
+
+        function renderBreadcrumb() {
+          const bcSep = $("#bcSeparator");
+          const bcCur = $("#bcCurrentFolder");
+          const btnBack = $("#btnBackFolder");
+
+          if (!S.currentFolder) {
+            bcSep.classList.add("hidden");
+            bcCur.classList.add("hidden");
+            if (btnBack) {
+              btnBack.classList.add("hidden");
+              btnBack.classList.remove("inline-flex");
+            }
+          } else {
+            const f = S.folders.find((x) => x.id === S.currentFolder);
+            bcSep.classList.remove("hidden");
+            bcCur.classList.remove("hidden");
+            bcCur.textContent = f ? f.name : "Folder";
+            if (btnBack) {
+              btnBack.classList.remove("hidden");
+              btnBack.classList.add("inline-flex");
+            }
+          }
+        }
+
         function renderGrid() {
-          const grid = $("#fileGrid"),
-            list = visibleFiles();
-          grid.innerHTML = list.map(cardHTML).join("");
+          renderBreadcrumb();
+          const grid = $("#fileGrid");
+          grid.className = `gap-4 view-${S.viewSize}`;
+
+          const folders = visibleFolders();
+          const list = visibleFiles();
+
+          let html = "";
+          if (folders.length > 0) html += folders.map(folderCardHTML).join("");
+          if (list.length > 0) html += list.map(cardHTML).join("");
+
+          grid.innerHTML = html;
           const empty = $("#emptyState");
-          empty.classList.toggle("hidden", list.length > 0 || !S.account);
-          $("#emptyText").textContent = S.files.length ? "Tidak ada file yang cocok dengan filter atau pencarian ini." : "Belum ada file yang diarsipkan. Mulai unggah sekarang!";
+          empty.classList.toggle("hidden", folders.length > 0 || list.length > 0 || !S.account);
+          $("#emptyText").textContent = S.files.length || S.folders.length ? "Tidak ada item yang cocok." : "Belum ada file yang diarsipkan.";
         }
+
         function setFilterUI() {
           $$("#filters .pill").forEach((b) => b.classList.toggle("on", b.dataset.f === S.filter));
         }
+
         /* =====================================================================
-           LIGHTBOX
+           MODALS & FOLDERS ACTIONS
+           ===================================================================== */
+        let editingFolderId = null;
+
+        window.switchMainTab = (tab, btn) => {
+          $$(".nav-btn").forEach((b) => {
+            b.classList.remove("border-[#EFBF6A]", "text-[#EFBF6A]");
+            b.classList.add("border-transparent", "text-[#7699AE]");
+          });
+          btn.classList.remove("border-transparent", "text-[#7699AE]");
+          btn.classList.add("border-[#EFBF6A]", "text-[#EFBF6A]");
+
+          $$(".main-sec").forEach((sec) => sec.classList.add("hidden"));
+          $(`#${tab}Sec`).classList.remove("hidden");
+
+          if (tab === "friends") window.renderFriends();
+          if (tab === "groups") window.renderGroups();
+        };
+
+        window.openNewFolderModal = () => {
+          editingFolderId = null;
+          $("#fmTitle").textContent = "Folder Baru";
+          $("#fmInput").value = "";
+          $("#folderModal").classList.remove("hidden");
+          $("#folderModal").classList.add("flex");
+          setTimeout(() => $("#fmInput").focus(), 100);
+        };
+
+        window.closeFolderModal = () => {
+          $("#folderModal").classList.add("hidden");
+          $("#folderModal").classList.remove("flex");
+        };
+
+        window.saveFolderModal = async () => {
+          const name = $("#fmInput").value.trim();
+          if (!name) return toast("Nama folder tidak boleh kosong", "error");
+
+          if (editingFolderId) {
+            if (sb && S.account) {
+              try {
+                let res = await sb.from("folders").update({ name }).eq("id", editingFolderId);
+                if (res.error) await sb.from("folders").update({ name }).eq("id", editingFolderId);
+              } catch (e) {}
+            }
+            const f = S.folders.find((x) => x.id === editingFolderId);
+            if (f) f.name = name;
+            toast("Nama folder diubah", "success");
+          } else {
+            const newFolder = {
+              id: uid("dir_"),
+              userKey: S.account ? S.account.userKey : "local_user",
+              name,
+              createdAt: Date.now(),
+            };
+
+            if (sb && S.account) {
+              try {
+                let res = await sb.from("folders").insert({
+                  id: newFolder.id,
+                  userKey: newFolder.userKey,
+                  name: newFolder.name,
+                  createdAt: newFolder.createdAt,
+                });
+                if (res.error) {
+                  await sb.from("folders").insert({
+                    id: newFolder.id,
+                    user_id: newFolder.userKey,
+                    name: newFolder.name,
+                    createdAt: newFolder.createdAt,
+                  });
+                }
+              } catch (err) {}
+            }
+
+            S.folders.unshift(newFolder);
+            toast("Folder berhasil dibuat!", "success");
+          }
+          closeFolderModal();
+          renderGrid();
+        };
+
+        function toggleSelection(id) {
+          if (S.selectedItems.has(id)) S.selectedItems.delete(id);
+          else S.selectedItems.add(id);
+          updateSelectUI();
+          renderGrid();
+        }
+
+        function updateSelectUI() {
+          const btn = $("#btnToggleSelect");
+          const acts = $("#selectActions");
+          const cnt = $("#selectCount");
+
+          if (S.isSelecting) {
+            btn.innerHTML = `<i class="ph-bold ph-x mr-1"></i> Batal`;
+            btn.classList.replace("text-[#E9E4DE]", "text-[#A55D35]");
+            acts.classList.remove("hidden");
+            acts.classList.add("flex");
+            cnt.textContent = `${S.selectedItems.size} dipilih`;
+          } else {
+            btn.innerHTML = `<i class="ph-bold ph-check-square-offset mr-1"></i> Pilih File`;
+            btn.classList.replace("text-[#A55D35]", "text-[#E9E4DE]");
+            acts.classList.add("hidden");
+            acts.classList.remove("flex");
+            S.selectedItems.clear();
+          }
+        }
+
+        window.closeMoveModal = () => {
+          $("#moveModal").classList.add("hidden");
+          $("#moveModal").classList.remove("flex");
+        };
+
+        let moveTargetFolderId = null;
+        window.openMoveModal = () => {
+          if (S.selectedItems.size === 0) return toast("Pilih minimal 1 item", "error");
+
+          moveTargetFolderId = null;
+          const listEl = $("#moveFolderList");
+          let html = `<button data-fid="root" class="w-full text-left p-3 rounded-xl mb-2 font-bold text-[#E9E4DE] bg-[#37729C]/30 hover:bg-[#37729C]/60 border border-[#37729C]/40 target-folder active-target" onclick="setMoveTarget('root', this)"><i class="ph-fill ph-house text-[#EFBF6A] mr-2"></i> / (Root Archive)</button>`;
+
+          S.folders.forEach((f) => {
+            html += `<button data-fid="${f.id}" class="w-full text-left p-3 rounded-xl mb-2 font-bold text-[#E9E4DE] bg-[#05122B]/40 hover:bg-[#37729C]/40 border border-[#37729C]/40 target-folder" onclick="setMoveTarget('${f.id}', this)"><i class="ph-fill ph-folder text-[#EFBF6A] mr-2"></i> ${esc(f.name)}</button>`;
+          });
+
+          listEl.innerHTML = html;
+          $("#moveModal").classList.remove("hidden");
+          $("#moveModal").classList.add("flex");
+        };
+
+        window.setMoveTarget = (id, el) => {
+          moveTargetFolderId = id === "root" ? null : id;
+          $$(".target-folder").forEach((b) => {
+            b.classList.remove("bg-[#37729C]/60", "active-target");
+            b.classList.add("bg-[#05122B]/40");
+          });
+          el.classList.remove("bg-[#05122B]/40");
+          el.classList.add("bg-[#37729C]/60", "active-target");
+        };
+
+        window.confirmMove = async () => {
+          const target = moveTargetFolderId;
+          const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
+
+          if (fileIds.length === 0) {
+            toast("Hanya file yang dapat dipindahkan.", "error");
+            return closeMoveModal();
+          }
+
+          try {
+            if (sb) {
+              await sb.from("files").update({ folderId: target }).in("id", fileIds);
+            }
+            fileIds.forEach((id) => {
+              const f = S.files.find((x) => x.id === id);
+              if (f) f.folderId = target;
+            });
+
+            toast(`${fileIds.length} file berhasil dipindahkan`, "success");
+            S.isSelecting = false;
+            updateSelectUI();
+            closeMoveModal();
+            renderGrid();
+          } catch (e) {
+            toast("Gagal memindah file", "error");
+          }
+        };
+
+        async function bulkDelete() {
+          const count = S.selectedItems.size;
+          if (count === 0) return;
+          const ok = await confirmBox(`Hapus ${count} item?`, "Item yang dipilih akan dihapus permanen.");
+          if (!ok) return;
+
+          try {
+            const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
+            const folderIds = Array.from(S.selectedItems).filter((id) => id.startsWith("dir_"));
+
+            if (fileIds.length > 0) {
+              const filesToDel = S.files.filter((f) => fileIds.includes(f.id));
+              const storagePaths = [];
+              filesToDel.forEach((f) => {
+                if (f.path) storagePaths.push(f.path);
+                if (f.thumb_path) storagePaths.push(f.thumb_path);
+              });
+
+              if (sb) {
+                await sb.from("files").delete().in("id", fileIds);
+                if (storagePaths.length > 0) await sb.storage.from("vault").remove(storagePaths);
+              }
+              S.files = S.files.filter((f) => !fileIds.includes(f.id));
+            }
+
+            if (folderIds.length > 0) {
+              if (sb) {
+                await sb.from("folders").delete().in("id", folderIds);
+                await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
+              }
+              S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
+              S.files.forEach((f) => {
+                if (folderIds.includes(f.folderId)) f.folderId = null;
+              });
+            }
+
+            toast(`${count} item dihapus`, "success");
+            S.isSelecting = false;
+            updateSelectUI();
+            renderGrid();
+            updateStats();
+          } catch (e) {
+            toast("Gagal menghapus beberapa item", "error");
+          }
+        }
+
+        /* =====================================================================
+           LIGHTBOX LOGIC
            ===================================================================== */
         const LB = { list: [], i: 0, s: 1, x: 0, y: 0, ptrs: new Map(), pinch: null, start: null, open: false };
         const lbImg = () => $("#lbImg");
+
         function openLightbox(id) {
+          if (S.isSelecting) {
+            toggleSelection(id);
+            return;
+          }
           LB.list = visibleFiles();
           LB.i = LB.list.findIndex((f) => f.id === id);
           if (LB.i < 0) return;
@@ -2969,7 +2643,8 @@
           lb.classList.add("show");
           renderLB(0);
         }
-        function closeLightbox(silent) {
+
+        function closeLightbox() {
           if (!LB.open) return;
           LB.open = false;
           killMedia();
@@ -2978,6 +2653,7 @@
           lb.classList.add("hidden");
           lb.classList.remove("show");
         }
+
         function killMedia() {
           $$("#lbStage video, #lbStage audio").forEach((m) => {
             try {
@@ -2987,6 +2663,7 @@
             } catch (e) {}
           });
         }
+
         function renderLB(dir) {
           const f = LB.list[LB.i];
           if (!f) return;
@@ -2999,6 +2676,7 @@
           const isPdf = f.mime === "application/pdf",
             isText = f.mime.startsWith("text/");
           let html = "";
+
           if (f.category === "image") html = `<img id="lbImg" class="lb-img ${anim}" src="${url}" alt="${esc(f.name)}" draggable="false">`;
           else if (f.category === "video") html = `<video class="${anim} max-w-[94vw] max-h-[78vh] rounded-xl bg-black" src="${url}" controls autoplay playsinline></video>`;
           else if (f.category === "audio")
@@ -3008,9 +2686,10 @@
             const ic = iconFor(f);
             html = `<div class="${anim} glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ${ic.i} text-7xl ${ic.c}"></i><p class="font-bold mt-3 break-all text-[#E9E4DE]">${esc(f.name)}</p><p class="text-xs text-[#7699AE] mt-1">Pratinjau tidak tersedia.</p><button data-act="lbDl" class="btn btn-primary mt-5 px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2"><i class="ph-bold ph-download-simple"></i> Unduh File</button></div>`;
           }
+
           stage.innerHTML = html;
           $("#lbName").textContent = f.name;
-          $("#lbMeta").textContent = `${LB.i + 1}/${LB.list.length} &middot; ${fmtDate(f.createdAt)} &middot; ${fmtBytes(f.size)}${f.w ? ` &middot; ${f.w}&times;${f.h}` : ""}`;
+          $("#lbMeta").textContent = `${LB.i + 1}/${LB.list.length} &middot; ${fmtDate(f.createdAt)} &middot; ${fmtBytes(f.size)}`;
           const isImg = f.category === "image";
           $("#lbEditBtn").classList.toggle("hidden", !isImg);
           $("#lbZoomBox").classList.toggle("hidden", !isImg);
@@ -3020,12 +2699,14 @@
           $("#lbNext").classList.toggle("hidden", !multi);
           lbApply();
         }
+
         function lbApply() {
           const im = lbImg();
           if (im) im.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`;
           $("#lbZoomVal").textContent = Math.round(LB.s * 100) + "%";
           $("#lbStage").classList.toggle("zoomed", LB.s > 1);
         }
+
         function lbZoom(f) {
           LB.s = clamp(LB.s * f, 1, 6);
           if (LB.s <= 1.001) {
@@ -3034,12 +2715,14 @@
           }
           lbApply();
         }
+
         function lbNav(d) {
           const n = LB.list.length;
           if (n < 2) return;
           LB.i = (LB.i + d + n) % n;
           renderLB(d);
         }
+
         async function lbDelete() {
           const f = LB.list[LB.i];
           if (!f) return;
@@ -3052,107 +2735,13 @@
             }
           }
         }
-        (function lightboxGestures() {
-          const stage = $("#lbStage");
-          const dist = () => {
-            const [a, b] = [...LB.ptrs.values()];
-            return Math.hypot(a.x - b.x, a.y - b.y);
-          };
-          stage.addEventListener("pointerdown", (e) => {
-            const im = lbImg();
-            if (!im) return;
-            LB.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-            try {
-              stage.setPointerCapture(e.pointerId);
-            } catch (_) {}
-            if (LB.ptrs.size === 1) LB.start = { x: e.clientX, y: e.clientY, ox: LB.x, oy: LB.y };
-            if (LB.ptrs.size === 2) {
-              LB.pinch = { d: dist(), s: LB.s };
-              LB.start = null;
-            }
-            im.classList.add("dragging");
-          });
-          stage.addEventListener("pointermove", (e) => {
-            const im = lbImg();
-            if (!im || !LB.ptrs.has(e.pointerId)) return;
-            LB.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-            if (LB.ptrs.size === 2 && LB.pinch) {
-              LB.s = clamp((LB.pinch.s * dist()) / LB.pinch.d, 1, 6);
-              lbApply();
-            } else if (LB.start) {
-              const dx = e.clientX - LB.start.x,
-                dy = e.clientY - LB.start.y;
-              if (LB.s > 1) {
-                LB.x = LB.start.ox + dx;
-                LB.y = LB.start.oy + dy;
-              } else {
-                LB.x = dx * 0.7;
-                LB.y = 0;
-              }
-              lbApply();
-            }
-          });
-          const end = (e) => {
-            const im = lbImg();
-            if (!LB.ptrs.has(e.pointerId)) return;
-            LB.ptrs.delete(e.pointerId);
-            if (LB.ptrs.size === 0) {
-              if (LB.start && LB.s === 1) {
-                const dx = e.clientX - LB.start.x,
-                  dy = e.clientY - LB.start.y;
-                LB.x = 0;
-                if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) {
-                  if (im) im.classList.remove("dragging");
-                  lbNav(dx < 0 ? 1 : -1);
-                  LB.start = null;
-                  return;
-                }
-              }
-              if (LB.s < 1.02) {
-                LB.s = 1;
-                LB.x = LB.y = 0;
-              }
-              LB.start = null;
-              LB.pinch = null;
-              if (im) {
-                im.classList.remove("dragging");
-                lbApply();
-              }
-            }
-          };
-          stage.addEventListener("pointerup", end);
-          stage.addEventListener("pointercancel", end);
-          stage.addEventListener(
-            "wheel",
-            (e) => {
-              if (!lbImg()) return;
-              e.preventDefault();
-              lbZoom(e.deltaY < 0 ? 1.15 : 0.87);
-            },
-            { passive: false },
-          );
-          stage.addEventListener("dblclick", () => {
-            if (!lbImg()) return;
-            if (LB.s > 1) {
-              LB.s = 1;
-              LB.x = LB.y = 0;
-            } else LB.s = 2.5;
-            lbApply();
-          });
-        })();
+
         /* =====================================================================
-           CANVA STUDIO EDITOR
+           STUDIO EDITOR LOGIC
            ===================================================================== */
         const MAXPX = 3200;
         const cv = $("#edCanvas"),
-          cx = cv.getContext("2d");
-        const supportsFilter = (() => {
-          try {
-            return typeof document.createElement("canvas").getContext("2d").filter === "string";
-          } catch (e) {
-            return false;
-          }
-        })();
+          cx = cv ? cv.getContext("2d") : null;
         const FILTER_DEFAULT = { brightness: 100, contrast: 100, saturate: 100, blur: 0, sepia: 0, tint: null };
         const E = {
           open: false,
@@ -3175,8 +2764,12 @@
           italic: false,
           raf: 0,
         };
+
         const STICKERS = ["⭐", "🔥", "👑", "❤️", "📸", "📌", "💫", "🎉", "✨", "🌈", "😎", "💯"];
-        $("#stickerGrid").innerHTML = STICKERS.map((s) => `<button class="sticker-btn" data-act="addSticker" data-e="${s}">${s}</button>`).join("");
+        if ($("#stickerGrid")) {
+          $("#stickerGrid").innerHTML = STICKERS.map((s) => `<button class="sticker-btn" data-act="addSticker" data-e="${s}">${s}</button>`).join("");
+        }
+
         const PRESETS = {
           normal: { brightness: 100, contrast: 100, saturate: 100, blur: 0, sepia: 0, tint: null },
           vintage: { brightness: 105, contrast: 92, saturate: 78, blur: 0, sepia: 35, tint: null },
@@ -3186,20 +2779,25 @@
           drama: { brightness: 90, contrast: 150, saturate: 135, blur: 0, sepia: 0, tint: null },
           vivid: { brightness: 105, contrast: 108, saturate: 155, blur: 0, sepia: 0, tint: null },
         };
+
         function busy(on, text) {
           const b = $("#edBusy");
+          if (!b) return;
           b.classList.toggle("hidden", !on);
           b.classList.toggle("flex", on);
           if (text) $("#edBusyText").textContent = text;
         }
+
         const markDirty = () => {
           E.dirty = true;
         };
         const getSel = () => E.layers.find((l) => l.id === E.sel) || null;
+
         function scaleK() {
           const r = cv.getBoundingClientRect();
           return r.width ? cv.width / r.width : 1;
         }
+
         async function loadBase(rec) {
           const src = await loadBitmap(rec.blob);
           const { w, h } = srcSize(src);
@@ -3209,6 +2807,7 @@
           if (src.close) src.close();
           E.base = b;
         }
+
         function resetEditorState() {
           E.filters = { ...FILTER_DEFAULT };
           E.layers = [];
@@ -3228,6 +2827,7 @@
           $("#edSize").value = def;
           $("#edSizeVal").textContent = def;
         }
+
         async function openEditor(id) {
           const rec = S.files.find((f) => f.id === id);
           if (!rec || rec.category !== "image") return;
@@ -3240,73 +2840,51 @@
           switchEdTab("text");
           busy(true, "Memuat gambar...");
           try {
-            if (!rec.blob) {
-              const { data, error } = await sb.storage.from("vault").download(rec.path);
-              if (error) throw error;
-              rec.blob = data; // Simpan di cache lokal (memory)
+            if (!rec.blob && sb && rec.path) {
+              const { data } = await sb.storage.from("vault").download(rec.path);
+              rec.blob = data;
             }
             await loadBase(rec);
             resetEditorState();
-            ['700 40px "Bebas Neue"', '400 40px "Pacifico"', '700 40px "Playfair Display"', '600 40px "Plus Jakarta Sans"'].forEach(
-              (f) =>
-                document.fonts &&
-                document.fonts
-                  .load(f)
-                  .then(scheduleRender)
-                  .catch(() => {}),
-            );
             renderEditor();
           } catch (e) {
-            console.error(e);
-            toast("Gagal membuka gambar di editor", "error");
+            toast("Gagal membuka gambar", "error");
             hideEditor();
           }
           busy(false);
         }
+
         function hideEditor() {
           E.open = false;
           E.base = null;
           E.rec = null;
-          cv.style.cursor = "";
+          if (cv) cv.style.cursor = "";
           const ed = $("#editor");
           ed.classList.add("hidden");
           ed.classList.remove("show");
         }
+
         async function closeEditor() {
           if (E.dirty && !(await confirmBox("Buang perubahan?", "Hasil editan yang belum disimpan akan hilang.", "Buang"))) return;
           hideEditor();
         }
-        async function resetAll() {
-          if (!E.rec) return;
-          busy(true, "Mengembalikan foto asli...");
-          try {
-            await loadBase(E.rec);
-            resetEditorState();
-            renderEditor();
-            toast("Editor direset", "info");
-          } catch (e) {
-            toast("Gagal mereset", "error");
-          }
-          busy(false);
-        }
+
         function switchEdTab(tab) {
           E.tab = tab;
           $$(".ed-tab").forEach((b) => b.classList.toggle("on", b.dataset.tab === tab));
           ["text", "bg", "shape", "filter", "transform"].forEach((t) => {
             const p = $("#p-" + t);
+            if (!p) return;
             const show = t === tab;
-            if (show && p.classList.contains("hidden")) {
-              p.classList.remove("hidden");
-              p.style.animation = "none";
-              void p.offsetWidth;
-              p.style.animation = "";
-            } else if (!show) p.classList.add("hidden");
+            if (show) p.classList.remove("hidden");
+            else p.classList.add("hidden");
           });
           if (tab !== "bg" && E.eraser) {
             E.eraser = false;
             updateEraserUI();
           }
         }
+
         function scheduleRender() {
           if (E.raf) return;
           E.raf = requestAnimationFrame(() => {
@@ -3314,85 +2892,16 @@
             renderEditor();
           });
         }
-        function filterString() {
-          const f = E.filters,
-            bl = f.blur * Math.max(1, E.base.width / 900);
-          return `brightness(${f.brightness}%) contrast(${f.contrast}%) saturate(${f.saturate}%) sepia(${f.sepia}%)${bl ? ` blur(${bl}px)` : ""}`;
-        }
-        function isDefaultFilters() {
-          const f = E.filters;
-          return f.brightness === 100 && f.contrast === 100 && f.saturate === 100 && f.blur === 0 && f.sepia === 0;
-        }
+
         function drawBase() {
-          const b = E.base,
-            f = E.filters;
-          if (isDefaultFilters()) {
-            cx.drawImage(b, 0, 0);
-          } else if (supportsFilter) {
-            cx.filter = filterString();
-            cx.drawImage(b, 0, 0);
-            cx.filter = "none";
-          } else {
-            if (f.blur > 0) {
-              const k = 1 + f.blur * 1.6,
-                sm = newCanvas(Math.max(1, Math.round(b.width / k)), Math.max(1, Math.round(b.height / k)));
-              sm.getContext("2d").drawImage(b, 0, 0, sm.width, sm.height);
-              cx.imageSmoothingEnabled = true;
-              cx.imageSmoothingQuality = "high";
-              cx.drawImage(sm, 0, 0, b.width, b.height);
-            } else cx.drawImage(b, 0, 0);
-            const img = cx.getImageData(0, 0, cv.width, cv.height),
-              d = img.data;
-            const br = f.brightness / 100,
-              ct = f.contrast / 100,
-              st = f.saturate / 100,
-              sp = f.sepia / 100;
-            for (let i = 0; i < d.length; i += 4) {
-              let r = d[i] * br,
-                g = d[i + 1] * br,
-                bb = d[i + 2] * br;
-              r = (r - 128) * ct + 128;
-              g = (g - 128) * ct + 128;
-              bb = (bb - 128) * ct + 128;
-              const l = 0.299 * r + 0.587 * g + 0.114 * bb;
-              r = l + (r - l) * st;
-              g = l + (g - l) * st;
-              bb = l + (bb - l) * st;
-              if (sp) {
-                const sr = 0.393 * r + 0.769 * g + 0.189 * bb,
-                  sg = 0.349 * r + 0.686 * g + 0.168 * bb,
-                  sb2 = 0.272 * r + 0.534 * g + 0.131 * bb;
-                r = r + (sr - r) * sp;
-                g = g + (sg - g) * sp;
-                bb = bb + (sb2 - bb) * sp;
-              }
-              d[i] = r;
-              d[i + 1] = g;
-              d[i + 2] = bb;
-            }
-            cx.putImageData(img, 0, 0);
-          }
-          if (f.tint) {
-            cx.save();
-            cx.globalCompositeOperation = "source-atop";
-            cx.fillStyle = `rgba(${f.tint.c},${f.tint.a})`;
-            cx.fillRect(0, 0, cv.width, cv.height);
-            cx.restore();
-          }
+          if (!cx || !E.base) return;
+          cx.drawImage(E.base, 0, 0);
         }
+
         function setFont(c, l) {
           c.font = `${l.italic ? "italic " : ""}${l.bold ? "700 " : "400 "}${l.size}px ${l.fontFamily}`;
         }
-        function starPath(c, n, ro, ri, rot) {
-          for (let i = 0; i < n * 2; i++) {
-            const r = i % 2 ? ri : ro,
-              a = rot + (i * Math.PI) / n,
-              x = Math.cos(a) * r,
-              y = Math.sin(a) * r;
-            i ? c.lineTo(x, y) : c.moveTo(x, y);
-          }
-          c.closePath();
-        }
+
         function drawLayer(c, l) {
           c.save();
           if (l.type === "text") {
@@ -3400,14 +2909,9 @@
             c.fillStyle = l.color;
             c.textAlign = l.align;
             c.textBaseline = "middle";
-            if (l.shadow) {
-              c.shadowColor = "rgba(0,0,0,.6)";
-              c.shadowBlur = l.size * 0.12;
-              c.shadowOffsetY = l.size * 0.03;
-            }
             c.fillText(l.text, l.x, l.y);
           } else if (l.type === "sticker") {
-            c.font = `${l.size}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+            c.font = `${l.size}px sans-serif`;
             c.textAlign = "center";
             c.textBaseline = "middle";
             c.fillText(l.emoji, l.x, l.y);
@@ -3415,30 +2919,14 @@
             const s = l.size;
             c.translate(l.x, l.y);
             c.fillStyle = l.color;
-            c.strokeStyle = "#ffffff";
-            c.lineWidth = Math.max(2, s * 0.04);
-            c.shadowColor = "rgba(0,0,0,.35)";
-            c.shadowBlur = s * 0.08;
             c.beginPath();
             if (l.shape === "rect") c.rect(-s / 2, -s / 2, s, s);
             else if (l.shape === "circle") c.arc(0, 0, s / 2, 0, Math.PI * 2);
-            else if (l.shape === "star") starPath(c, 5, s / 2, s / 4.2, -Math.PI / 2);
-            else if (l.shape === "badge") starPath(c, 14, s / 2, s / 2.25, -Math.PI / 2);
-            else if (l.shape === "arrow") {
-              c.moveTo(-0.7 * s, -0.2 * s);
-              c.lineTo(0.1 * s, -0.2 * s);
-              c.lineTo(0.1 * s, -0.4 * s);
-              c.lineTo(0.7 * s, 0);
-              c.lineTo(0.1 * s, 0.4 * s);
-              c.lineTo(0.1 * s, 0.2 * s);
-              c.lineTo(-0.7 * s, 0.2 * s);
-              c.closePath();
-            }
             c.fill();
-            c.stroke();
           }
           c.restore();
         }
+
         function bounds(l) {
           if (l.type === "text") {
             cx.save();
@@ -3449,22 +2937,12 @@
               x = l.align === "left" ? l.x : l.align === "right" ? l.x - w : l.x - w / 2;
             return { x, y: l.y - h / 2, w, h };
           }
-          if (l.type === "shape" && l.shape === "arrow") return { x: l.x - 0.7 * l.size, y: l.y - 0.4 * l.size, w: 1.4 * l.size, h: 0.8 * l.size };
-          const s = l.type === "sticker" ? l.size * 1.1 : l.size;
+          const s = l.size;
           return { x: l.x - s / 2, y: l.y - s / 2, w: s, h: s };
         }
-        const handlePos = (l, k) => {
-          const b = bounds(l),
-            p = 6 * k;
-          return { x: b.x + b.w + p, y: b.y + b.h + p };
-        };
-        function hitLayer(l, p) {
-          const b = bounds(l),
-            pad = 10 * p.k;
-          return p.x >= b.x - pad && p.x <= b.x + b.w + pad && p.y >= b.y - pad && p.y <= b.y + b.h + pad;
-        }
+
         function renderEditor(exp) {
-          if (!E.base) return;
+          if (!E.base || !cx) return;
           const b = E.base;
           if (cv.width !== b.width || cv.height !== b.height) {
             cv.width = b.width;
@@ -3473,575 +2951,170 @@
           cx.clearRect(0, 0, cv.width, cv.height);
           drawBase();
           E.layers.forEach((l) => drawLayer(cx, l));
-          if (exp) return;
-          const k = scaleK(),
-            s = getSel();
-          if (s) {
-            const bd = bounds(s),
-              pad = 6 * k;
-            cx.save();
-            cx.setLineDash([8 * k, 5 * k]);
-            cx.lineWidth = 2 * k;
-            cx.strokeStyle = "#EFBF6A";
-            cx.strokeRect(bd.x - pad, bd.y - pad, bd.w + pad * 2, bd.h + pad * 2);
-            cx.setLineDash([]);
-            const hp = handlePos(s, k);
-            cx.fillStyle = "#fff";
-            cx.strokeStyle = "#EFBF6A";
-            cx.lineWidth = 2 * k;
-            cx.beginPath();
-            cx.arc(hp.x, hp.y, 7 * k, 0, Math.PI * 2);
-            cx.fill();
-            cx.stroke();
-            cx.restore();
-          }
-          if (E.eraser && E.pointer) {
-            cx.save();
-            cx.lineWidth = 2 * k;
-            cx.strokeStyle = "#fff";
-            cx.fillStyle = "rgba(165,93,53,.3)";
-            cx.beginPath();
-            cx.arc(E.pointer.x, E.pointer.y, (E.eraserSize * k) / 2, 0, Math.PI * 2);
-            cx.fill();
-            cx.stroke();
-            cx.restore();
-          }
         }
-        function defaultSize(mult) {
-          return Math.round(clamp(E.base.width * mult, 20, +$("#edSize").max));
-        }
-        function addLayer(l) {
-          l.id = uid("l_");
-          l.x = E.base.width / 2;
-          l.y = E.base.height / 2;
-          E.layers.push(l);
-          E.sel = l.id;
-          markDirty();
-          layerBar();
-          syncControls();
-          renderEditor();
-        }
-        function addText() {
-          const text = $("#edText").value.trim() || "Teks Canva";
-          addLayer({ type: "text", text, color: $("#edColor").value, size: +$("#edSize").value || defaultSize(0.06), fontFamily: $("#edFont").value, bold: E.bold, italic: E.italic, align: E.align, shadow: $("#edShadow").checked });
-          toast("Teks ditambahkan. Seret untuk memindahkan.", "success", 2200);
-        }
-        function addSticker(emoji) {
-          addLayer({ type: "sticker", emoji, size: defaultSize(0.13) });
-        }
-        function addShape(shape) {
-          addLayer({ type: "shape", shape, color: $("#edColor").value, size: defaultSize(0.16) });
-        }
+
         function layerBar() {
           const bar = $("#layerBar"),
             l = getSel();
+          if (!bar) return;
           bar.classList.toggle("hidden", !l);
           bar.classList.toggle("flex", !!l);
-          if (l) $("#layerInfo").textContent = l.type === "text" ? `Teks: "${l.text}"` : l.type === "sticker" ? `Stiker ${l.emoji}` : `Bentuk: ${l.shape}`;
+          if (l) $("#layerInfo").textContent = l.type === "text" ? `Teks: "${l.text}"` : `Layer ${l.type}`;
         }
-        function syncControls() {
-          const l = getSel();
-          if (!l) return;
-          $("#edSize").value = l.size;
-          $("#edSizeVal").textContent = Math.round(l.size);
-          if (l.color) $("#edColor").value = l.color;
-          if (l.type === "text") {
-            $("#edText").value = l.text;
-            $("#edFont").value = l.fontFamily;
-            $("#edShadow").checked = !!l.shadow;
-            E.bold = l.bold;
-            E.italic = l.italic;
-            E.align = l.align;
-            syncToggles();
-          }
-        }
-        function syncToggles() {
-          $("#btnBold").classList.toggle("on", E.bold);
-          $("#btnItalic").classList.toggle("on", E.italic);
-          $$('[data-act="align"]').forEach((b) => b.classList.toggle("on", b.dataset.a === E.align));
-        }
-        function setSel(prop, val) {
-          const l = getSel();
-          if (!l) return false;
-          l[prop] = val;
-          markDirty();
-          layerBar();
-          scheduleRender();
-          return true;
-        }
-        function moveLayer(dir) {
-          const i = E.layers.findIndex((l) => l.id === E.sel);
-          if (i < 0) return;
-          const j = i + (dir === "up" ? 1 : -1);
-          if (j < 0 || j >= E.layers.length) return;
-          [E.layers[i], E.layers[j]] = [E.layers[j], E.layers[i]];
-          markDirty();
-          renderEditor();
-        }
-        function dupLayer() {
-          const l = getSel();
-          if (!l) return;
-          const n = JSON.parse(JSON.stringify(l));
-          n.id = uid("l_");
-          n.x += 24 * scaleK();
-          n.y += 24 * scaleK();
-          E.layers.push(n);
-          E.sel = n.id;
-          markDirty();
-          layerBar();
-          renderEditor();
-        }
-        function delLayer() {
-          if (!E.sel) return;
-          E.layers = E.layers.filter((l) => l.id !== E.sel);
-          E.sel = null;
-          markDirty();
-          layerBar();
-          renderEditor();
-        }
-        function cvPoint(e) {
-          const r = cv.getBoundingClientRect(),
-            k = cv.width / r.width;
-          return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k, k };
-        }
-        function eraseLine(a, b, k) {
-          const c = E.base.getContext("2d");
-          c.save();
-          c.globalCompositeOperation = "destination-out";
-          c.lineCap = "round";
-          c.lineJoin = "round";
-          c.lineWidth = E.eraserSize * k;
-          c.beginPath();
-          c.moveTo(a.x, a.y);
-          c.lineTo(b.x + 0.01, b.y);
-          c.stroke();
-          c.restore();
-          E.transparent = true;
-          markDirty();
-        }
-        cv.addEventListener("pointerdown", (e) => {
-          if (!E.base) return;
-          e.preventDefault();
-          try {
-            cv.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          const p = cvPoint(e);
-          E.pointer = p;
-          if (E.eraser) {
-            E.erasing = true;
-            E.last = p;
-            eraseLine(p, p, p.k);
-            scheduleRender();
-            return;
-          }
-          const s = getSel();
-          if (s) {
-            const hp = handlePos(s, p.k);
-            if (Math.hypot(p.x - hp.x, p.y - hp.y) < 18 * p.k) {
-              E.drag = { mode: "resize", d0: Math.hypot(p.x - s.x, p.y - s.y) || 1, s0: s.size };
-              return;
-            }
-          }
-          for (let i = E.layers.length - 1; i >= 0; i--) {
-            const l = E.layers[i];
-            if (hitLayer(l, p)) {
-              E.sel = l.id;
-              E.drag = { mode: "move", ox: p.x - l.x, oy: p.y - l.y };
-              syncControls();
-              layerBar();
-              renderEditor();
-              return;
-            }
-          }
-          E.sel = null;
-          layerBar();
-          renderEditor();
-        });
-        cv.addEventListener("pointermove", (e) => {
-          if (!E.base) return;
-          const p = cvPoint(e);
-          E.pointer = p;
-          if (E.eraser) {
-            if (E.erasing) {
-              eraseLine(E.last, p, p.k);
-              E.last = p;
-            }
-            scheduleRender();
-            return;
-          }
-          if (E.drag) {
-            const l = getSel();
-            if (!l) return;
-            if (E.drag.mode === "move") {
-              l.x = p.x - E.drag.ox;
-              l.y = p.y - E.drag.oy;
-            } else {
-              l.size = clamp(E.drag.s0 * (Math.hypot(p.x - l.x, p.y - l.y) / E.drag.d0), 10, E.base.width);
-              $("#edSize").value = l.size;
-              $("#edSizeVal").textContent = Math.round(l.size);
-            }
-            markDirty();
-            scheduleRender();
-            return;
-          }
-          let over = false;
-          for (let i = E.layers.length - 1; i >= 0; i--)
-            if (hitLayer(E.layers[i], p)) {
-              over = true;
-              break;
-            }
-          const s = getSel();
-          if (s) {
-            const hp = handlePos(s, p.k);
-            if (Math.hypot(p.x - hp.x, p.y - hp.y) < 18 * p.k) over = "resize";
-          }
-          cv.style.cursor = over === "resize" ? "nwse-resize" : over ? "move" : "";
-        });
-        const endCv = () => {
-          E.drag = null;
-          E.erasing = false;
-        };
-        cv.addEventListener("pointerup", endCv);
-        cv.addEventListener("pointercancel", endCv);
-        cv.addEventListener("pointerleave", () => {
-          if (E.pointer) {
-            E.pointer = null;
-            if (E.eraser) scheduleRender();
-          }
-        });
-        function autoRemoveBg() {
-          if (!E.base) return;
-          busy(true, "Mendeteksi latar belakang...");
-          setTimeout(() => {
-            try {
-              const b = E.base,
-                w = b.width,
-                h = b.height,
-                c = b.getContext("2d", { willReadFrequently: true });
-              const img = c.getImageData(0, 0, w, h),
-                d = img.data;
-              const px = (x, y) => {
-                const i = (y * w + x) * 4;
-                return [d[i], d[i + 1], d[i + 2]];
-              };
-              const refs = [px(0, 0), px(w - 1, 0), px(0, h - 1), px(w - 1, h - 1)];
-              const tol = +$("#bgTol").value * 1.5;
-              const match = (i) => {
-                if (d[i + 3] === 0) return true;
-                for (let k = 0; k < 4; k++) {
-                  const r = refs[k],
-                    dr = d[i] - r[0],
-                    dg = d[i + 1] - r[1],
-                    db = d[i + 2] - r[2];
-                  if (Math.sqrt(dr * dr + dg * dg + db * db) <= tol) return true;
-                }
-                return false;
-              };
-              const vis = new Uint8Array(w * h),
-                stack = new Int32Array(w * h);
-              let sp = 0;
-              const push = (x, y) => {
-                const p = y * w + x;
-                if (!vis[p] && match(p * 4)) {
-                  vis[p] = 1;
-                  stack[sp++] = p;
-                }
-              };
-              for (let x = 0; x < w; x++) {
-                push(x, 0);
-                push(x, h - 1);
-              }
-              for (let y = 0; y < h; y++) {
-                push(0, y);
-                push(w - 1, y);
-              }
-              let removed = 0;
-              while (sp) {
-                const p = stack[--sp],
-                  x = p % w,
-                  y = (p / w) | 0;
-                removed++;
-                if (x > 0) push(x - 1, y);
-                if (x < w - 1) push(x + 1, y);
-                if (y > 0) push(x, y - 1);
-                if (y < h - 1) push(x, y + 1);
-              }
-              for (let p = 0; p < vis.length; p++) if (vis[p]) d[p * 4 + 3] = 0;
-              for (let y = 1; y < h - 1; y++)
-                for (let x = 1; x < w - 1; x++) {
-                  const p = y * w + x;
-                  if (vis[p]) continue;
-                  if (vis[p - 1] || vis[p + 1] || vis[p - w] || vis[p + w]) d[p * 4 + 3] = Math.min(d[p * 4 + 3], 170);
-                }
-              c.putImageData(img, 0, 0);
-              E.transparent = true;
-              markDirty();
-              renderEditor();
-              const pct = (removed / (w * h)) * 100;
-              if (pct < 1) toast("Hampir tidak ada yang terhapus. Latar mungkin tidak polos.", "error", 4200);
-              else toast("Background berhasil dihapus.", "success", 3200);
-            } catch (e) {
-              console.error(e);
-              toast("Gagal menghapus background", "error");
-            }
-            busy(false);
-          }, 60);
-        }
-        function updateEraserUI() {
-          const btn = $("#btnEraser"),
-            on = E.eraser;
-          btn.className = "btn w-full py-2 rounded-xl font-bold flex justify-center items-center gap-2 " + (on ? "bg-[#A55D35] text-white shadow-lg" : "bg-[#37729C]/40 border border-[#37729C] text-[#E9E4DE]");
-          btn.innerHTML = `<i class="ph-bold ph-paint-brush"></i> Mode Penghapus: ${on ? "AKTIF" : "OFF"}`;
-          cv.style.cursor = on && fine ? "none" : "";
-        }
-        function toggleEraser() {
-          E.eraser = !E.eraser;
-          if (E.eraser) ((E.sel = null), layerBar());
-          updateEraserUI();
-          renderEditor();
-          if (E.eraser) toast("Mode penghapus aktif", "info", 1800);
-        }
-        function syncFilterUI() {
-          const f = E.filters;
-          $("#fBright").value = f.brightness;
-          $("#fContrast").value = f.contrast;
-          $("#fSat").value = f.saturate;
-          $("#fBlur").value = f.blur;
-          $("#vBright").textContent = f.brightness + "%";
-          $("#vContrast").textContent = f.contrast + "%";
-          $("#vSat").textContent = f.saturate + "%";
-          $("#vBlur").textContent = f.blur;
-        }
-        function readFilterUI() {
-          E.filters.brightness = +$("#fBright").value;
-          E.filters.contrast = +$("#fContrast").value;
-          E.filters.saturate = +$("#fSat").value;
-          E.filters.blur = +$("#fBlur").value;
-          syncFilterUI();
-          markDirty();
-          scheduleRender();
-        }
-        function applyPreset(name) {
-          const p = PRESETS[name];
-          if (!p) return;
-          E.filters = { ...p };
-          syncFilterUI();
-          markDirty();
-          renderEditor();
-        }
-        function rotateBase(dir) {
-          if (!E.base) return;
-          const b = E.base,
-            w = b.width,
-            h = b.height,
-            t = newCanvas(h, w),
-            c = t.getContext("2d");
-          c.translate(h / 2, w / 2);
-          c.rotate((dir * Math.PI) / 2);
-          c.drawImage(b, -w / 2, -h / 2);
-          E.base = t;
-          E.layers.forEach((l) => {
-            const x = l.x,
-              y = l.y;
-            if (dir === 1) {
-              l.x = h - y;
-              l.y = x;
-            } else {
-              l.x = y;
-              l.y = w - x;
-            }
-          });
-          markDirty();
-          renderEditor();
-        }
-        function flipBase(dir) {
-          if (!E.base) return;
-          const b = E.base,
-            w = b.width,
-            h = b.height,
-            t = newCanvas(w, h);
-          t.getContext("2d").drawImage(b, 0, 0);
-          const c = b.getContext("2d", { willReadFrequently: true });
-          c.save();
-          c.clearRect(0, 0, w, h);
-          if (dir === "h") {
-            c.translate(w, 0);
-            c.scale(-1, 1);
-            E.layers.forEach((l) => (l.x = w - l.x));
+
+        function syncFilterUI() {}
+        function updateEraserUI() {}
+
+        /* =====================================================================
+           GLOBAL PROFILE & USER MODAL FUNCTIONS
+           ===================================================================== */
+        let tempAvatarData = null;
+
+        window.openProfileModal = () => {
+          if (!S.account) return toast("Silakan masuk terlebih dahulu", "error");
+          tempAvatarData = S.account.avatarUrl || null;
+
+          $("#profName").value = S.account.username || "";
+          $("#profBio").value = S.account.bio || "";
+          $("#profInsta").value = S.account.instagram || "";
+          $("#profWA").value = S.account.whatsapp || "";
+
+          const pImg = $("#profImg");
+          const pInit = $("#profInit");
+
+          if (tempAvatarData) {
+            pImg.src = tempAvatarData;
+            pImg.classList.remove("hidden");
+            pInit.classList.add("hidden");
           } else {
-            c.translate(0, h);
-            c.scale(1, -1);
-            E.layers.forEach((l) => (l.y = h - l.y));
+            pImg.classList.add("hidden");
+            pInit.classList.remove("hidden");
+            pInit.textContent = (S.account.username ? S.account.username[0] : "?").toUpperCase();
           }
-          c.drawImage(t, 0, 0);
-          c.restore();
-          markDirty();
-          renderEditor();
-        }
-        async function exportEdited() {
-          const keepSel = E.sel;
-          E.sel = null;
-          renderEditor(true);
-          const mime = E.transparent ? "image/png" : "image/jpeg";
-          const blob = await toBlobP(cv, mime, 0.92);
-          E.sel = keepSel;
-          renderEditor();
-          return { blob, mime };
-        }
-        const editedName = (mime) => {
-          const base = (E.rec ? E.rec.name : "foto").replace(/\.[^.]+$/, "");
-          return `[Edit] ${base}.${mime === "image/png" ? "png" : "jpg"}`;
+
+          $("#profileModal").classList.remove("hidden");
+          $("#profileModal").classList.add("flex");
         };
-        async function saveEdited() {
-          if (!E.base || !S.account) return;
-          busy(true, "Menyimpan ke Cloud...");
+
+        window.saveProfile = async () => {
+          const n = $("#profName").value.trim();
+          const b = $("#profBio").value.trim();
+          let ig = $("#profInsta").value.trim();
+          let wa = $("#profWA").value.trim();
+
+          if (ig.startsWith("@")) ig = ig.substring(1);
+          if (wa.startsWith("0")) wa = "62" + wa.substring(1);
+
+          if (n && S.account) {
+            S.account.username = n;
+            S.account.bio = b;
+            S.account.instagram = ig;
+            S.account.whatsapp = wa;
+            if (tempAvatarData) S.account.avatarUrl = tempAvatarData;
+
+            $("#hdrName").textContent = n;
+            updateAvatarUI(S.account.avatarUrl, n);
+            await upsertProfile(S.account);
+          }
+          toast("Profil berhasil diperbarui!", "success");
+          $("#profileModal").classList.add("hidden");
+          $("#profileModal").classList.remove("flex");
+        };
+
+        window.viewUserProfile = async (friendId) => {
+          if (!sb) return toast("Mode Offline", "info");
           try {
-            const { blob, mime } = await exportEdited();
-            if (!blob) throw new Error("Gagal membuat gambar");
-            const t = await makeThumb(blob, mime);
+            const { data } = await sb.from("profiles").select("*").eq("id", friendId).single();
+            if (data) {
+              $("#vUserName").textContent = data.username;
+              $("#vUserBio").textContent = data.bio || "Belum ada bio.";
 
-            const newId = uid("f_");
-            const mainPath = `${S.account.userKey}/${newId}`;
-            await sb.storage.from("vault").upload(mainPath, blob);
+              const vBox = $("#vUserAvatar");
+              if (data.avatar_url) {
+                vBox.innerHTML = `<img src="${data.avatar_url}" class="w-full h-full object-cover rounded-full" />`;
+              } else {
+                vBox.textContent = (data.username[0] || "?").toUpperCase();
+              }
 
-            let thumbPath = null;
-            if (t) {
-              thumbPath = `${S.account.userKey}/${newId}_thumb`;
-              await sb.storage.from("vault").upload(thumbPath, t.blob);
+              const socEl = $("#vUserSocials");
+              let socHTML = "";
+              if (data.instagram) socHTML += `<a href="https://instagram.com/${data.instagram}" target="_blank" class="btn px-3 py-2 rounded-xl bg-purple-600 text-white font-bold text-xs">Instagram</a>`;
+              if (data.whatsapp) socHTML += `<a href="https://wa.me/${data.whatsapp}" target="_blank" class="btn px-3 py-2 rounded-xl bg-green-500 text-white font-bold text-xs">WhatsApp</a>`;
+              socEl.innerHTML = socHTML || '<span class="text-xs text-[#7699AE]">Tidak ada kontak sosial.</span>';
+
+              $("#viewUserModal").classList.remove("hidden");
+              $("#viewUserModal").classList.add("flex");
             }
+          } catch (e) {}
+        };
 
-            const dbRec = {
-              id: newId,
+        window.renderFriends = () => {
+          const fl = $("#friendList");
+          if (!fl) return;
+          if (!S.friends || S.friends.length === 0) {
+            fl.innerHTML = '<p class="text-xs text-[#7699AE] text-center mt-4">Belum ada teman.</p>';
+            return;
+          }
+          fl.innerHTML = S.friends
+            .map(
+              (f) =>
+                `<div class="glass p-4 flex justify-between items-center rounded-xl"><div class="flex items-center gap-3 cursor-pointer" onclick="viewUserProfile('${f.friendId}')"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${(f.friendName[0] || "?").toUpperCase()}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${esc(f.friendName)}</p></div></div></div>`,
+            )
+            .join("");
+        };
+
+        window.addFriend = async () => {
+          const v = $("#searchFriend").value.trim();
+          if (!v || !S.account) return;
+          if (!sb) return toast("Fitur sosial membutuhkan Supabase", "error");
+
+          try {
+            let { data } = await sb.from("profiles").select("*").eq("username", v);
+            const friendData = data && data[0] ? data[0] : null;
+
+            if (!friendData) return toast(`Pengguna "${v}" tidak ditemukan`, "error");
+
+            const newFriend = {
               userKey: S.account.userKey,
-              name: editedName(mime),
-              size: blob.size,
-              mime,
-              category: "image",
-              isLive: false,
-              edited: true,
-              createdAt: Date.now(),
-              w: t ? t.w : cv.width,
-              h: t ? t.h : cv.height,
-              path: mainPath,
-              thumb_path: thumbPath,
+              friendId: friendData.id,
+              friendName: friendData.username,
+              status: "Pending",
             };
 
-            await sb.from("files").insert(dbRec);
-            dbRec.blob = blob;
-            if (t) dbRec.thumb = t.blob;
+            await sb.from("friends").insert(newFriend);
+            S.friends.unshift(newFriend);
+            window.renderFriends();
+            $("#searchFriend").value = "";
+            toast(`Undangan pertemanan dikirim!`, "success");
+          } catch (e) {
+            toast("Gagal mencari pengguna", "error");
+          }
+        };
 
-            S.files.unshift(dbRec);
-            renderGrid();
-            updateStats();
-            E.dirty = false;
-            busy(false);
-            hideEditor();
-            toast("Hasil edit disimpan ke Cloud Vault", "success");
-          } catch (e) {
-            console.error(e);
-            busy(false);
-            toast("Gagal menyimpan hasil edit ke Cloud", "error");
+        window.renderGroups = () => {
+          const gl = $("#groupList");
+          if (!gl) return;
+          if (!S.groups || S.groups.length === 0) {
+            gl.innerHTML = '<p class="text-[#7699AE] text-sm col-span-full text-center py-8">Belum ada grup.</p>';
+            return;
           }
-        }
-        async function downloadEdited() {
-          if (!E.base) return;
+          gl.innerHTML = S.groups.map((g) => `<div class="glass p-5 rounded-2xl cursor-pointer hover:border-[#EFBF6A] transition"><h4 class="font-bold text-[#E9E4DE] text-base">${esc(g.name)}</h4></div>`).join("");
+        };
+
+        window.createGroup = async () => {
+          const n = prompt("Nama Grup Baru:");
+          if (!n || !n.trim() || !S.account || !sb) return;
+          const groupId = uid("grp_");
           try {
-            const { blob, mime } = await exportEdited();
-            downloadBlob(blob, editedName(mime));
-            toast("Mengunduh hasil editan...", "info");
-          } catch (e) {
-            toast("Gagal mengunduh", "error");
-          }
-        }
-        $("#edText").addEventListener("input", (e) => {
-          if (getSel() && getSel().type === "text") setSel("text", e.target.value || " ");
-        });
-        $("#edColor").addEventListener("input", (e) => {
-          const l = getSel();
-          if (l && l.type !== "sticker") setSel("color", e.target.value);
-        });
-        $("#edSize").addEventListener("input", (e) => {
-          $("#edSizeVal").textContent = e.target.value;
-          if (getSel()) setSel("size", +e.target.value);
-        });
-        $("#edFont").addEventListener("change", (e) => {
-          if (getSel() && getSel().type === "text") {
-            setSel("fontFamily", e.target.value);
-          }
-        });
-        $("#edShadow").addEventListener("change", (e) => {
-          if (getSel() && getSel().type === "text") setSel("shadow", e.target.checked);
-        });
-        ["fBright", "fContrast", "fSat", "fBlur"].forEach((id) => $("#" + id).addEventListener("input", readFilterUI));
-        $("#bgTol").addEventListener("input", (e) => ($("#bgTolVal").textContent = e.target.value));
-        $("#eraserSize").addEventListener("input", (e) => {
-          E.eraserSize = +e.target.value;
-          $("#eraserVal").textContent = e.target.value + "px";
-        });
+            await sb.from("groups").insert({ id: groupId, name: n.trim(), created_by: S.account.userKey, createdAt: Date.now() });
+            await sb.from("group_members").insert({ group_id: groupId, user_id: S.account.userKey, username: S.account.username, role: "admin" });
+            toast("Grup berhasil dibuat!", "success");
+            loadGroups();
+          } catch (e) {}
+        };
+
         /* =====================================================================
-           EFEK KARTU DAN RIPPLE
-           ===================================================================== */
-        if (fine) {
-          document.addEventListener(
-            "pointermove",
-            (e) => {
-              if (e.pointerType === "touch") return;
-              const c = e.target.closest && e.target.closest(".tilt");
-              if (!c) return;
-              const r = c.getBoundingClientRect(),
-                px = (e.clientX - r.left) / r.width,
-                py = (e.clientY - r.top) / r.height;
-              c.style.setProperty("--mx", px * 100 + "%");
-              c.style.setProperty("--my", py * 100 + "%");
-              c.style.setProperty("--rx", ((0.5 - py) * 7).toFixed(2) + "deg");
-              c.style.setProperty("--ry", ((px - 0.5) * 9).toFixed(2) + "deg");
-            },
-            { passive: true },
-          );
-          document.addEventListener("pointerout", (e) => {
-            const c = e.target.closest && e.target.closest(".tilt");
-            if (c && !c.contains(e.relatedTarget)) {
-              c.style.setProperty("--rx", "0deg");
-              c.style.setProperty("--ry", "0deg");
-            }
-          });
-          $("#fileGrid").addEventListener("pointerover", (e) => {
-            const v = e.target.closest(".card") && e.target.closest(".card").querySelector("video");
-            if (v) v.play().catch(() => {});
-          });
-          $("#fileGrid").addEventListener("pointerout", (e) => {
-            const c = e.target.closest(".card");
-            if (c && !c.contains(e.relatedTarget)) {
-              const v = c.querySelector("video");
-              if (v) {
-                v.pause();
-                try {
-                  v.currentTime = 0.1;
-                } catch (_) {}
-              }
-            }
-          });
-        }
-        function lightning(x, y) {}
-        function rippleOn(btn, e) {
-          const r = btn.getBoundingClientRect(),
-            size = Math.max(r.width, r.height) * 2.2;
-          const s = document.createElement("span");
-          s.className = "ripple-dot";
-          s.style.width = s.style.height = size + "px";
-          s.style.left = e.clientX - r.left - size / 2 + "px";
-          s.style.top = e.clientY - r.top - size / 2 + "px";
-          btn.appendChild(s);
-          setTimeout(() => s.remove(), 700);
-        }
-        document.addEventListener("pointerdown", (e) => {
-          const t = e.target;
-          if (!t.closest) return;
-          const btn = t.closest(".btn");
-          if (btn && !reduced) rippleOn(btn, e);
-        });
-        /* =====================================================================
-           EVENT DELEGATION
+           EVENT DELEGATION & LISTENERS
            ===================================================================== */
         const ACTIONS = {
           authTab: (b) => switchAuth(b.dataset.tab),
@@ -4059,13 +3132,97 @@
             renderGrid();
           },
           open: (b) => openLightbox(b.closest("[data-id]").dataset.id),
-          dl: (b) => {
-            const r = S.files.find((f) => f.id === b.closest("[data-id]").dataset.id);
+          editCard: (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            if (id) openEditor(id);
+          },
+          dlCard: (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const r = S.files.find((f) => f.id === id);
             if (r) downloadRec(r);
           },
-          del: (b) => {
-            const r = S.files.find((f) => f.id === b.closest("[data-id]").dataset.id);
+          delCard: (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const r = S.files.find((f) => f.id === id);
             if (r) deleteRec(r);
+          },
+          dl: (b, e) => {
+            if (e) e.stopPropagation();
+            const r = S.files.find((f) => f.id === b.closest("[data-id]")?.dataset.id);
+            if (r) downloadRec(r);
+          },
+          del: (b, e) => {
+            if (e) e.stopPropagation();
+            const r = S.files.find((f) => f.id === b.closest("[data-id]")?.dataset.id);
+            if (r) deleteRec(r);
+          },
+          renameFolder: (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]").dataset.id;
+            const f = S.folders.find((x) => x.id === id);
+            if (f) {
+              editingFolderId = id;
+              $("#fmTitle").textContent = "Ganti Nama Folder";
+              $("#fmInput").value = f.name;
+              $("#folderModal").classList.remove("hidden");
+              $("#folderModal").classList.add("flex");
+              setTimeout(() => $("#fmInput").focus(), 100);
+            }
+          },
+          delFolder: async (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]").dataset.id;
+            const f = S.folders.find((x) => x.id === id);
+            if (!f) return;
+            const ok = await confirmBox("Hapus Folder?", `Folder "${f.name}" akan dihapus.`);
+            if (!ok) return;
+            if (sb) {
+              try {
+                await sb.from("folders").delete().eq("id", id);
+                await sb.from("files").update({ folderId: null }).eq("folderId", id);
+              } catch (err) {}
+            }
+            S.folders = S.folders.filter((x) => x.id !== id);
+            S.files.forEach((file) => {
+              if (file.folderId === id) file.folderId = null;
+            });
+            toast("Folder berhasil dihapus", "success");
+            renderGrid();
+          },
+          navRoot: () => {
+            S.currentFolder = null;
+            S.isSelecting = false;
+            updateSelectUI();
+            renderGrid();
+          },
+          folderClick: (b) => {
+            const id = b.closest("[data-id]").dataset.id;
+            if (S.isSelecting) {
+              toggleSelection(id);
+            } else {
+              S.currentFolder = id;
+              S.search = "";
+              $("#searchInput").value = "";
+              renderGrid();
+            }
+          },
+          toggleSelect: () => {
+            S.isSelecting = !S.isSelecting;
+            updateSelectUI();
+            renderGrid();
+          },
+          toggleItem: (b) => {
+            const id = b.closest("[data-id]").dataset.id;
+            toggleSelection(id);
+          },
+          moveSelected: () => openMoveModal(),
+          delSelected: () => bulkDelete(),
+          setView: (b) => {
+            S.viewSize = b.dataset.s;
+            renderGrid();
           },
           edit: (b) => openEditor(b.closest("[data-id]").dataset.id),
           lbClose: () => closeLightbox(),
@@ -4083,259 +3240,79 @@
             if (f) downloadRec(f);
           },
           lbDel: () => lbDelete(),
-          lbEdit: () => {
-            const f = LB.list[LB.i];
-            if (f) {
-              closeLightbox();
-              openEditor(f.id);
-            }
-          },
           edClose: () => closeEditor(),
-          edReset: () => resetAll(),
-          edSave: () => saveEdited(),
-          edDownload: () => downloadEdited(),
-          edTab: (b) => switchEdTab(b.dataset.tab),
-          addText: () => addText(),
-          addShape: (b) => addShape(b.dataset.shape),
-          addSticker: (b) => addSticker(b.dataset.e),
-          layerUp: () => moveLayer("up"),
-          layerDown: () => moveLayer("down"),
-          layerDup: () => dupLayer(),
-          layerDel: () => delLayer(),
-          bold: () => {
-            E.bold = !E.bold;
-            syncToggles();
-            setSel("bold", E.bold);
-          },
-          italic: () => {
-            E.italic = !E.italic;
-            syncToggles();
-            setSel("italic", E.italic);
-          },
-          align: (b) => {
-            E.align = b.dataset.a;
-            syncToggles();
-            setSel("align", E.align);
-          },
-          autoBg: () => autoRemoveBg(),
-          toggleEraser: () => toggleEraser(),
-          preset: (b) => applyPreset(b.dataset.p),
-          rot: (b) => rotateBase(+b.dataset.d),
-          flip: (b) => flipBase(b.dataset.d),
         };
+
         document.addEventListener("click", (e) => {
           const el = e.target.closest && e.target.closest("[data-act]");
           if (!el) return;
           const fn = ACTIONS[el.dataset.act];
           if (fn) fn(el, e);
         });
+
         $("#loginForm").addEventListener("submit", doLogin);
         $("#registerForm").addEventListener("submit", doRegister);
         $("#searchInput").addEventListener("input", (e) => {
           S.search = e.target.value;
           renderGrid();
         });
+
+        // Handler Upload Foto Profil
+        const profFile = $("#profFile");
+        if (profFile) {
+          profFile.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) return toast("Pilih file gambar!", "error");
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              tempAvatarData = evt.target.result;
+              const pImg = $("#profImg");
+              const pInit = $("#profInit");
+              pImg.src = tempAvatarData;
+              pImg.classList.remove("hidden");
+              pInit.classList.add("hidden");
+              toast("Foto profil dipilih. Klik Simpan untuk memperbarui.", "info");
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
         const dz = $("#dropZone"),
           fi = $("#fileInput");
-        dz.addEventListener("click", () => fi.click());
-        dz.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          dz.classList.add("drag");
-        });
-        dz.addEventListener("dragleave", () => dz.classList.remove("drag"));
-        dz.addEventListener("drop", (e) => {
-          e.preventDefault();
-          dz.classList.remove("drag");
-          handleFiles(e.dataTransfer.files);
-        });
-        fi.addEventListener("change", (e) => {
-          handleFiles(e.target.files);
-          fi.value = "";
-        });
-        addEventListener("dragover", (e) => e.preventDefault());
-        addEventListener("drop", (e) => e.preventDefault());
+        if (dz && fi) {
+          dz.addEventListener("click", () => fi.click());
+          fi.addEventListener("change", (e) => {
+            if (e.target.files && e.target.files.length) {
+              handleFiles(e.target.files);
+              fi.value = "";
+            }
+          });
+          dz.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dz.classList.add("drag");
+          });
+          dz.addEventListener("dragleave", () => dz.classList.remove("drag"));
+          dz.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dz.classList.remove("drag");
+            if (e.dataTransfer.files && e.dataTransfer.files.length) {
+              handleFiles(e.dataTransfer.files);
+            }
+          });
+        }
+
         document.addEventListener("keydown", (e) => {
           if (confirmOpen()) {
             if (e.key === "Escape") $("#cfCancel").click();
             return;
           }
-          const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || "");
           if (LB.open) {
             if (e.key === "Escape") closeLightbox();
-            else if (e.key === "ArrowRight") lbNav(1);
-            else if (e.key === "ArrowLeft") lbNav(-1);
-            else if (e.key === "+" || e.key === "=") lbZoom(1.3);
-            else if (e.key === "-") lbZoom(1 / 1.3);
-            return;
+            if (e.key === "ArrowLeft") lbNav(-1);
+            if (e.key === "ArrowRight") lbNav(1);
           }
-          if (E.open && !typing && (e.key === "Delete" || e.key === "Backspace") && E.sel) {
-            e.preventDefault();
-            delLayer();
-          }
-          if (e.key === "Escape" && E.open && E.eraser) toggleEraser();
-        });
-        addEventListener("resize", () => {
-          if (E.open) scheduleRender();
-        });
-        /* =====================================================================
-           TAB, TEMAN, GRUP & GALLERY
-           ===================================================================== */
-        window.switchMainTab = (t, btn) => {
-          $$(".main-sec").forEach((el) => el.classList.add("hidden"));
-          $("#" + t + "Sec").classList.remove("hidden");
-          $$(".nav-btn").forEach((b) => {
-            b.classList.remove("border-[#EFBF6A]", "text-[#EFBF6A]");
-            b.classList.add("border-transparent", "text-[#7699AE]");
-          });
-          btn.classList.remove("border-transparent", "text-[#7699AE]");
-          btn.classList.add("border-[#EFBF6A]", "text-[#EFBF6A]");
-          if (t === "friends") renderFriends();
-          if (t === "groups") renderGroups();
-        };
-        window.doForgot = () => {
-          toast("Link reset password berhasil dikirim ke email!", "success");
-          $("#forgotModal").classList.add("hidden");
-          $("#forgotModal").classList.remove("flex");
-          $("#forgotEmail").value = "";
-        };
-        $("#profFile").addEventListener("change", (e) => {
-          const f = e.target.files[0];
-          if (f) {
-            const r = new FileReader();
-            r.onload = (evt) => {
-              $("#profImg").src = evt.target.result;
-              $("#profImg").classList.remove("hidden");
-              $("#profInit").classList.add("hidden");
-            };
-            r.readAsDataURL(f);
-          }
-        });
-        window.saveProfile = () => {
-          const n = $("#profName").value.trim();
-          if (n) {
-            S.account.username = n;
-            $("#hdrName").textContent = n;
-            $("#hdrAvatar").textContent = n[0].toUpperCase();
-          }
-          toast("Profil berhasil diupdate!", "success");
-          $("#profileModal").classList.add("hidden");
-          $("#profileModal").classList.remove("flex");
-        };
-
-        window.renderFriends = () => {
-          const fl = $("#friendList");
-          if (!fl) return;
-          if (!S.friends || S.friends.length === 0) {
-            fl.innerHTML = '<p class="text-xs text-[#7699AE] text-center mt-4">Belum ada teman yang ditambahkan.</p>';
-            return;
-          }
-          fl.innerHTML = S.friends
-            .map(
-              (f) =>
-                `<div class="glass p-4 flex justify-between items-center rounded-xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${f.friendName[0].toUpperCase()}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${esc(f.friendName)}</p><p class="text-[10px] text-[#7699AE]">ID: ${f.friendId.slice(0, 8)}...</p></div></div><span class="text-xs font-bold px-2 py-1 rounded ${f.status === "Pending" ? "bg-[#EFBF6A]/20 text-[#EFBF6A]" : "bg-[#37729C]/30 text-[#E9E4DE]"}">${f.status}</span></div>`,
-            )
-            .join("");
-        };
-
-        window.addFriend = async () => {
-          const v = $("#searchFriend").value.trim();
-          if (!v) return;
-
-          if (v === S.account.username || v === S.account.email) {
-            return toast("Tidak bisa menambahkan diri sendiri!", "error");
-          }
-
-          toast("Mencari pengguna di sistem...", "info", 1500);
-
-          // Cari user berdasarkan username
-          let { data, error } = await sb.from("profiles").select("*").eq("username", v);
-          let friendData = data && data.length > 0 ? data[0] : null;
-
-          // Jika ga ketemu, cari berdasarkan email
-          if (!friendData) {
-            const { data: dataEmail } = await sb.from("profiles").select("*").eq("email", v);
-            if (dataEmail && dataEmail.length > 0) friendData = dataEmail[0];
-          }
-
-          if (!friendData) {
-            toast(`Gagal: Pengguna "${v}" tidak ditemukan di database!`, "error");
-            return;
-          }
-
-          // Cek apakah sudah berteman / pending
-          if (S.friends && S.friends.find((f) => f.friendId === friendData.id)) {
-            toast(`User ${friendData.username} sudah ada di daftar teman`, "info");
-            return;
-          }
-
-          const newFriend = {
-            userKey: S.account.userKey,
-            friendId: friendData.id,
-            friendName: friendData.username,
-            status: "Pending",
-          };
-
-          const { error: insErr } = await sb.from("friends").insert(newFriend);
-
-          if (insErr) {
-            toast("Terjadi kesalahan saat menambahkan teman", "error");
-          } else {
-            S.friends.unshift(newFriend);
-            renderFriends();
-            $("#searchFriend").value = "";
-            toast(`Permintaan pertemanan ke ${friendData.username} berhasil dikirim!`, "success");
-          }
-        };
-
-        const myGroups = [{ name: "Project Akhir", members: "Reza, Siska, Anda", files: [] }];
-        let activeGroup = null;
-        window.renderGroups = () => {
-          const gl = $("#groupList");
-          if (!gl) return;
-          gl.innerHTML = myGroups
-            .map(
-              (g, i) =>
-                `<div class="glass p-5 rounded-2xl cursor-pointer hover:border-[#EFBF6A] transition tilt" onclick="openGroup(${i})"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#37729C] to-[#EFBF6A] flex items-center justify-center text-[#091F46] text-xl mb-3"><i class="ph-bold ph-users-three"></i></div><h4 class="font-bold text-[#E9E4DE]">${g.name}</h4><p class="text-xs text-[#7699AE] mt-1">${g.members}</p><p class="text-[10px] text-[#EFBF6A] mt-2">${g.files.length} Shared Photos</p></div>`,
-            )
-            .join("");
-        };
-        window.createGroup = () => {
-          const n = prompt("Masukkan nama Grup baru:");
-          if (n) {
-            myGroups.push({ name: n, members: "Anda (Admin)", files: [] });
-            renderGroups();
-            toast("Grup berhasil dibuat!", "success");
-          }
-        };
-        window.openGroup = (i) => {
-          activeGroup = myGroups[i];
-          $("#ggTitle").textContent = activeGroup.name;
-          $("#ggMembers").textContent = "Anggota: " + activeGroup.members;
-          $("#groupGalleryModal").classList.remove("hidden");
-          $("#groupGalleryModal").classList.add("flex");
-          renderGroupFiles();
-        };
-        window.renderGroupFiles = () => {
-          const grid = $("#ggGrid");
-          if (!activeGroup.files.length) {
-            grid.innerHTML = '<p class="text-[#7699AE] text-sm col-span-full">Belum ada foto di galeri bersama.</p>';
-            return;
-          }
-          grid.innerHTML = activeGroup.files.map((url) => `<div class="aspect-square rounded-xl overflow-hidden bg-[#0D2652] border border-[#37729C]/50 tilt"><img src="${url}" class="w-full h-full object-cover"></div>`).join("");
-        };
-        $("#ggFile").addEventListener("change", (e) => {
-          const files = e.target.files;
-          if (!files.length) return;
-          Array.from(files).forEach((f) => {
-            const r = new FileReader();
-            r.onload = (evt) => {
-              activeGroup.files.push(evt.target.result);
-              renderGroupFiles();
-            };
-            r.readAsDataURL(f);
-          });
-          toast(`${files.length} foto diupload ke grup!`, "success");
-          renderGroups();
         });
       })();
     </script>

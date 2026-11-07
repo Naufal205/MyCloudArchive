@@ -1069,6 +1069,7 @@
       input:where([type="reset"]),
       input:where([type="submit"]) {
         -webkit-appearance: button;
+        appearance: button;
         background-color: transparent;
         background-image: none;
       }
@@ -1077,6 +1078,7 @@
       }
       [type="search"] {
         -webkit-appearance: textfield;
+        appearance: textfield;
         outline-offset: -2px;
       }
       summary {
@@ -1416,8 +1418,7 @@
         user-select: none;
       }
       .columns-2 {
-        -moz-columns: 2;
-        column-count: 2;
+        columns: 2;
       }
       .grid-cols-1 {
         grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1807,7 +1808,7 @@
           width: 22rem;
         }
         .md\:columns-3 {
-          column-count: 3;
+          columns: 3;
         }
         .md\:grid-cols-2 {
           grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1830,7 +1831,7 @@
       }
       @media (min-width: 1024px) {
         .lg\:columns-4 {
-          column-count: 4;
+          columns: 4;
         }
         .lg\:grid-cols-5 {
           grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1965,7 +1966,7 @@
         <div class="glass p-6 rounded-2xl">
           <h2 class="text-xl font-bold mb-4 text-[#E9E4DE]">Sistem Pertemanan</h2>
           <div class="flex gap-2 mb-6">
-            <input id="searchFriend" class="field flex-1" placeholder="Cari username teman..." />
+            <input id="searchFriend" class="field flex-1" placeholder="Cari username atau email teman..." />
             <button onclick="addFriend()" class="btn btn-primary px-6 rounded-xl">Add Friend</button>
           </div>
           <h3 class="text-sm font-semibold mb-3 text-[#E9E4DE]">Daftar Teman</h3>
@@ -1985,7 +1986,7 @@
       </div>
 
       <!-- Footer -->
-      <footer class="text-center text-[11px] text-[#7699AE] pb-6 px-4">MyCloud Archive menyimpan file langsung di browser perangkat ini (IndexedDB). Hapus data situs akan ikut menghapus file.</footer>
+      <footer class="text-center text-[11px] text-[#7699AE] pb-6 px-4">File Anda kini disimpan secara aman di cloud Supabase dan dapat diakses dari perangkat mana pun.</footer>
     </div>
 
     <!-- ================= LAYAR LOGIN / DAFTAR ================= -->
@@ -2057,7 +2058,7 @@
           <div class="spinner mb-3"></div>
           <span id="authLoadingText" class="text-xs text-[#EFBF6A] font-semibold">Memproses...</span>
         </div>
-        <p class="text-[10.5px] text-[#7699AE] mt-6 leading-relaxed">Autentikasi dikelola Supabase. File tetap tersimpan di browser perangkat ini dan tidak diunggah ke server.</p>
+        <p class="text-[10.5px] text-[#7699AE] mt-6 leading-relaxed">Autentikasi dikelola Supabase. File kini disimpan di cloud dan dapat diakses dari mana saja.</p>
       </div>
     </div>
 
@@ -2470,67 +2471,27 @@
           }
         }
         /* =====================================================================
-           INDEXEDDB (kapasitas besar, menyimpan Blob asli)
+           STATE & CLOUD URLS
            ===================================================================== */
-        const DB_NAME = "MyCloudArchiveDB",
-          STORE = "files";
-        let dbPromise = null;
-        function idb() {
-          if (dbPromise) return dbPromise;
-          dbPromise = new Promise((res, rej) => {
-            const r = indexedDB.open(DB_NAME, 1);
-            r.onupgradeneeded = () => {
-              const d = r.result;
-              if (!d.objectStoreNames.contains(STORE)) {
-                const s = d.createObjectStore(STORE, { keyPath: "id" });
-                s.createIndex("userKey", "userKey", { unique: false });
-              }
-            };
-            r.onsuccess = () => res(r.result);
-            r.onerror = () => rej(r.error);
-          });
-          return dbPromise;
-        }
-        const reqP = (r) =>
-          new Promise((res, rej) => {
-            r.onsuccess = () => res(r.result);
-            r.onerror = () => rej(r.error);
-          });
-        async function dbPut(rec) {
-          const d = await idb();
-          return new Promise((res, rej) => {
-            const t = d.transaction(STORE, "readwrite");
-            t.objectStore(STORE).put(rec);
-            t.oncomplete = () => res(rec);
-            t.onerror = () => rej(t.error);
-            t.onabort = () => rej(t.error);
-          });
-        }
-        async function dbByUser(k) {
-          const d = await idb();
-          return reqP(d.transaction(STORE).objectStore(STORE).index("userKey").getAll(k));
-        }
-        async function dbDelete(id) {
-          const d = await idb();
-          return new Promise((res, rej) => {
-            const t = d.transaction(STORE, "readwrite");
-            t.objectStore(STORE).delete(id);
-            t.oncomplete = () => res(true);
-            t.onerror = () => rej(t.error);
-          });
-        }
-        /* =====================================================================
-           STATE
-           ===================================================================== */
-        const S = { account: null, files: [], filter: "all", search: "", urls: new Map() };
+        const S = { account: null, files: [], friends: [], filter: "all", search: "", urls: new Map() };
+
         function urlFor(rec, kind) {
+          const isThumb = kind === "thumb";
+          const path = isThumb ? rec.thumb_path || rec.path : rec.path;
+
+          if (path && sb) {
+            return sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
+          }
+
+          // Fallback untuk file yang baru saja diupload di sesi ini (sebelum di-reload)
           const k = rec.id + ":" + kind;
           if (!S.urls.has(k)) {
-            const b = kind === "thumb" ? rec.thumb || rec.blob : rec.blob;
-            S.urls.set(k, URL.createObjectURL(b));
+            const b = isThumb ? rec.thumb || rec.blob : rec.blob;
+            if (b) S.urls.set(k, URL.createObjectURL(b));
           }
-          return S.urls.get(k);
+          return S.urls.get(k) || "";
         }
+
         function revokeFor(id) {
           for (const k of [...S.urls.keys()])
             if (k.startsWith(id + ":")) {
@@ -2542,8 +2503,9 @@
           S.urls.forEach((u) => URL.revokeObjectURL(u));
           S.urls.clear();
         }
+
         /* =====================================================================
-           AKUN (Supabase Auth)
+           AKUN (Supabase Auth & Config)
            ===================================================================== */
         const SUPABASE_URL = "https://yfvddvhdixjhuwoqaebz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_Y2FnuTV0HpR2GliMxw1nEQ_TToYiHuy";
@@ -2589,6 +2551,30 @@
           void c.offsetWidth;
           c.classList.add("shake");
         }
+
+        // Simpan data user ke tabel profiles biar bisa dicari
+        async function upsertProfile(acc) {
+          if (!sb) return;
+          const { error } = await sb.from("profiles").upsert({
+            id: acc.userKey,
+            username: acc.username,
+            email: acc.email,
+          });
+          if (error) console.error("Gagal sinkron profil:", error);
+        }
+
+        // Memuat daftar teman dari database
+        async function loadFriends() {
+          if (!sb) return;
+          const { data, error } = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
+          if (!error && data) {
+            S.friends = data;
+            if ($("#friendsSec") && !$("#friendsSec").classList.contains("hidden")) {
+              renderFriends();
+            }
+          }
+        }
+
         async function doRegister(e) {
           e.preventDefault();
           if (needSupabase()) return;
@@ -2673,14 +2659,17 @@
           S.search = "";
           $("#searchInput").value = "";
           setFilterUI();
+
+          upsertProfile(acc);
+          loadFriends();
           loadFiles();
-          if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
         }
         function leaveVault() {
           closeLightbox(true);
           revokeAll();
           S.account = null;
           S.files = [];
+          S.friends = [];
           $("#app").classList.add("hidden");
           $("#app").classList.remove("flex");
           const a = $("#authScreen");
@@ -2718,11 +2707,13 @@
            ===================================================================== */
         async function loadFiles() {
           try {
-            S.files = (await dbByUser(S.account.userKey)).sort((a, b) => b.createdAt - a.createdAt);
+            const { data, error } = await sb.from("files").select("*").eq("userKey", S.account.userKey).order("createdAt", { ascending: false });
+            if (error) throw error;
+            S.files = data || [];
           } catch (e) {
             console.error(e);
             S.files = [];
-            toast("Gagal membaca penyimpanan browser", "error");
+            toast("Gagal memuat file dari cloud. Pastikan tabel Supabase sudah dibuat.", "error", 4000);
           }
           renderGrid();
           updateStats();
@@ -2781,8 +2772,9 @@
             const t = await makeThumb(blob, mime);
             if (t) {
               rec.thumb = t.blob;
+              rec.w = t.h;
+              rec.h = t.h; // FIX aspect
               rec.w = t.w;
-              rec.h = t.h;
             }
           }
           return rec;
@@ -2796,23 +2788,56 @@
             txt = $("#uploadText");
           box.classList.remove("hidden");
           let ok = 0;
+
           for (let i = 0; i < files.length; i++) {
             const f = files[i];
             bar.style.width = (i / files.length) * 100 + "%";
             const setText = (t) => (txt.textContent = `(${i + 1}/${files.length}) ${t}`);
-            setText("Menyimpan " + f.name);
+
             try {
               const rec = await buildRecord(f, setText);
-              await dbPut(rec);
-              S.files.unshift(rec);
+
+              setText("Mengunggah " + f.name + " ke Cloud...");
+              const mainPath = `${S.account.userKey}/${rec.id}`;
+              const { error: upErr } = await sb.storage.from("vault").upload(mainPath, rec.blob);
+              if (upErr) throw upErr;
+
+              let thumbPath = null;
+              if (rec.thumb) {
+                thumbPath = `${S.account.userKey}/${rec.id}_thumb`;
+                await sb.storage.from("vault").upload(thumbPath, rec.thumb);
+              }
+
+              const dbRec = {
+                id: rec.id,
+                userKey: S.account.userKey,
+                name: rec.name,
+                size: rec.size,
+                mime: rec.mime,
+                category: rec.category,
+                isLive: rec.isLive,
+                edited: rec.edited,
+                createdAt: rec.createdAt,
+                w: rec.w,
+                h: rec.h,
+                path: mainPath,
+                thumb_path: thumbPath,
+              };
+
+              const { error: dbErr } = await sb.from("files").insert(dbRec);
+              if (dbErr) throw dbErr;
+
+              // Simpan blob sementara ke state agar bisa langsung diakses tanpa request ulang
+              dbRec.blob = rec.blob;
+              dbRec.thumb = rec.thumb;
+
+              S.files.unshift(dbRec);
               ok++;
               renderGrid();
               updateStats();
             } catch (err) {
               console.error(err);
-              const full = err && (err.name === "QuotaExceededError" || /quota/i.test(err.message || ""));
-              toast(full ? "Penyimpanan browser penuh, kosongkan ruang lalu coba lagi" : `Gagal menyimpan ${f.name}`, "error", 4500);
-              if (full) break;
+              toast(`Gagal menyimpan ${f.name}. Pastikan bucket Storage sudah dibuat.`, "error", 4500);
             }
           }
           bar.style.width = "100%";
@@ -2820,7 +2845,7 @@
             box.classList.add("hidden");
             bar.style.width = "0%";
           }, 500);
-          if (ok) toast(`${ok} file berhasil diarsipkan`, "success");
+          if (ok) toast(`${ok} file berhasil diunggah ke Cloud`, "success");
         }
         function downloadBlob(blob, name) {
           const u = URL.createObjectURL(blob),
@@ -2832,15 +2857,29 @@
           a.remove();
           setTimeout(() => URL.revokeObjectURL(u), 5e3);
         }
-        function downloadRec(rec) {
-          downloadBlob(rec.original || rec.blob, rec.name);
-          toast("Mengunduh " + rec.name, "info");
+        async function downloadRec(rec) {
+          if (rec.blob) {
+            downloadBlob(rec.original || rec.blob, rec.name);
+            toast("Mengunduh " + rec.name, "info");
+          } else {
+            toast("Mengunduh " + rec.name + " dari Cloud...", "info");
+            try {
+              const { data, error } = await sb.storage.from("vault").download(rec.path);
+              if (error) throw error;
+              downloadBlob(data, rec.name);
+            } catch (e) {
+              toast("Gagal mengunduh file", "error");
+            }
+          }
         }
         async function deleteRec(rec) {
-          const ok = await confirmBox("Hapus file ini?", `"${rec.name}" akan dihapus permanen dari Vault.`);
+          const ok = await confirmBox("Hapus file ini?", `"${rec.name}" akan dihapus permanen dari Cloud.`);
           if (!ok) return false;
           try {
-            await dbDelete(rec.id);
+            await sb.from("files").delete().eq("id", rec.id);
+            const paths = [rec.path];
+            if (rec.thumb_path) paths.push(rec.thumb_path);
+            await sb.storage.from("vault").remove(paths);
           } catch (e) {
             toast("Gagal menghapus file", "error");
             return false;
@@ -2856,12 +2895,7 @@
           countTo($("#statCount"), S.files.length, (v) => String(Math.round(v)));
           let usg = S.files.reduce((a, f) => a + (f.size || 0), 0);
           countTo($("#statSize"), usg, (v) => fmtBytes(v));
-          if (navigator.storage && navigator.storage.estimate) {
-            try {
-              const { usage } = await navigator.storage.estimate();
-              if (usage) usg = usage;
-            } catch (e) {}
-          }
+
           $("#statDevice").textContent = `${fmtBytes(usg)} / 2 TB`;
           $("#deviceBar").style.width = Math.max(0.1, Math.min(100, (usg / (2 * 1024 * 1024 * 1024 * 1024)) * 100)) + "%";
         }
@@ -3206,6 +3240,11 @@
           switchEdTab("text");
           busy(true, "Memuat gambar...");
           try {
+            if (!rec.blob) {
+              const { data, error } = await sb.storage.from("vault").download(rec.path);
+              if (error) throw error;
+              rec.blob = data; // Simpan di cache lokal (memory)
+            }
             await loadBase(rec);
             resetEditorState();
             ['700 40px "Bebas Neue"', '400 40px "Pacifico"', '700 40px "Playfair Display"', '600 40px "Plus Jakarta Sans"'].forEach(
@@ -3855,13 +3894,24 @@
         };
         async function saveEdited() {
           if (!E.base || !S.account) return;
-          busy(true, "Menyimpan ke Vault...");
+          busy(true, "Menyimpan ke Cloud...");
           try {
             const { blob, mime } = await exportEdited();
             if (!blob) throw new Error("Gagal membuat gambar");
             const t = await makeThumb(blob, mime);
-            const rec = {
-              id: uid("f_"),
+
+            const newId = uid("f_");
+            const mainPath = `${S.account.userKey}/${newId}`;
+            await sb.storage.from("vault").upload(mainPath, blob);
+
+            let thumbPath = null;
+            if (t) {
+              thumbPath = `${S.account.userKey}/${newId}_thumb`;
+              await sb.storage.from("vault").upload(thumbPath, t.blob);
+            }
+
+            const dbRec = {
+              id: newId,
               userKey: S.account.userKey,
               name: editedName(mime),
               size: blob.size,
@@ -3870,24 +3920,27 @@
               isLive: false,
               edited: true,
               createdAt: Date.now(),
-              blob,
-              original: null,
-              thumb: t ? t.blob : null,
               w: t ? t.w : cv.width,
               h: t ? t.h : cv.height,
+              path: mainPath,
+              thumb_path: thumbPath,
             };
-            await dbPut(rec);
-            S.files.unshift(rec);
+
+            await sb.from("files").insert(dbRec);
+            dbRec.blob = blob;
+            if (t) dbRec.thumb = t.blob;
+
+            S.files.unshift(dbRec);
             renderGrid();
             updateStats();
             E.dirty = false;
             busy(false);
             hideEditor();
-            toast("Hasil edit disimpan ke Vault", "success");
+            toast("Hasil edit disimpan ke Cloud Vault", "success");
           } catch (e) {
             console.error(e);
             busy(false);
-            toast("Gagal menyimpan hasil edit", "error");
+            toast("Gagal menyimpan hasil edit ke Cloud", "error");
           }
         }
         async function downloadEdited() {
@@ -4168,28 +4221,72 @@
           $("#profileModal").classList.add("hidden");
           $("#profileModal").classList.remove("flex");
         };
-        const myFriends = [
-          { name: "Reza Aditya", status: "Accepted", bio: "Tukang foto keliling" },
-          { name: "Siska", status: "Pending", bio: "Design enthusiast" },
-        ];
+
         window.renderFriends = () => {
           const fl = $("#friendList");
           if (!fl) return;
-          fl.innerHTML = myFriends
+          if (!S.friends || S.friends.length === 0) {
+            fl.innerHTML = '<p class="text-xs text-[#7699AE] text-center mt-4">Belum ada teman yang ditambahkan.</p>';
+            return;
+          }
+          fl.innerHTML = S.friends
             .map(
               (f) =>
-                `<div class="glass p-4 flex justify-between items-center rounded-xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${f.name[0]}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${f.name}</p><p class="text-[10px] text-[#7699AE]">${f.bio || "-"}</p></div></div><span class="text-xs font-bold px-2 py-1 rounded ${f.status === "Pending" ? "bg-[#EFBF6A]/20 text-[#EFBF6A]" : "bg-[#37729C]/30 text-[#E9E4DE]"}">${f.status}</span></div>`,
+                `<div class="glass p-4 flex justify-between items-center rounded-xl"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${f.friendName[0].toUpperCase()}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${esc(f.friendName)}</p><p class="text-[10px] text-[#7699AE]">ID: ${f.friendId.slice(0, 8)}...</p></div></div><span class="text-xs font-bold px-2 py-1 rounded ${f.status === "Pending" ? "bg-[#EFBF6A]/20 text-[#EFBF6A]" : "bg-[#37729C]/30 text-[#E9E4DE]"}">${f.status}</span></div>`,
             )
             .join("");
         };
-        window.addFriend = () => {
+
+        window.addFriend = async () => {
           const v = $("#searchFriend").value.trim();
           if (!v) return;
-          myFriends.unshift({ name: v, status: "Pending", bio: "Menunggu konfirmasi..." });
-          renderFriends();
-          $("#searchFriend").value = "";
-          toast("Permintaan pertemanan terkirim!", "success");
+
+          if (v === S.account.username || v === S.account.email) {
+            return toast("Tidak bisa menambahkan diri sendiri!", "error");
+          }
+
+          toast("Mencari pengguna di sistem...", "info", 1500);
+
+          // Cari user berdasarkan username
+          let { data, error } = await sb.from("profiles").select("*").eq("username", v);
+          let friendData = data && data.length > 0 ? data[0] : null;
+
+          // Jika ga ketemu, cari berdasarkan email
+          if (!friendData) {
+            const { data: dataEmail } = await sb.from("profiles").select("*").eq("email", v);
+            if (dataEmail && dataEmail.length > 0) friendData = dataEmail[0];
+          }
+
+          if (!friendData) {
+            toast(`Gagal: Pengguna "${v}" tidak ditemukan di database!`, "error");
+            return;
+          }
+
+          // Cek apakah sudah berteman / pending
+          if (S.friends && S.friends.find((f) => f.friendId === friendData.id)) {
+            toast(`User ${friendData.username} sudah ada di daftar teman`, "info");
+            return;
+          }
+
+          const newFriend = {
+            userKey: S.account.userKey,
+            friendId: friendData.id,
+            friendName: friendData.username,
+            status: "Pending",
+          };
+
+          const { error: insErr } = await sb.from("friends").insert(newFriend);
+
+          if (insErr) {
+            toast("Terjadi kesalahan saat menambahkan teman", "error");
+          } else {
+            S.friends.unshift(newFriend);
+            renderFriends();
+            $("#searchFriend").value = "";
+            toast(`Permintaan pertemanan ke ${friendData.username} berhasil dikirim!`, "success");
+          }
         };
+
         const myGroups = [{ name: "Project Akhir", members: "Reza, Siska, Anda", files: [] }];
         let activeGroup = null;
         window.renderGroups = () => {
@@ -4244,4 +4341,3 @@
     </script>
   </body>
 </html>
-```eof Semua fiturnya sekarang sudah 100% sama dengan file asli yang kamu kirim, saya hanya menghapus syntax error di CSS agar kode editor kamu tidak mendeteksinya sebagai warning/error.

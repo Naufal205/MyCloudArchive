@@ -981,12 +981,9 @@
     <div id="app" class="hidden min-h-screen flex-col relative z-10">
       <header class="glass sticky top-0 z-40 px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#EFBF6A]/25 to-[#37729C]/20 border border-[#EFBF6A]/40">
-            <i class="ph-fill ph-cloud-arrow-up text-[#EFBF6A] text-2xl"></i>
-          </div>
+          <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-10 sm:h-12 w-auto object-contain drop-shadow-lg" />
           <div class="leading-tight">
-            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-[#E9E4DE]">My<span class="text-[#EFBF6A]">Cloud</span> Archive</h1>
-            <p class="text-[10px] text-[#7699AE] hidden sm:block">Arsip pribadi &amp; studio edit foto</p>
+            <p class="text-[10px] text-[#7699AE] hidden sm:block mt-1">Arsip pribadi &amp; studio edit foto</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
@@ -1151,9 +1148,9 @@
         <div class="glass p-6 rounded-2xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold text-[#E9E4DE]">Group Shared Gallery Cloud</h2>
-            <button onclick="createGroup()" class="btn btn-primary px-4 py-2 rounded-xl"><i class="ph-bold ph-users-three mr-1"></i> Buat Grup Baru</button>
+            <button onclick="openCreateGroupModal()" class="btn btn-primary px-4 py-2 rounded-xl"><i class="ph-bold ph-users-three mr-1"></i> Buat Grup Baru</button>
           </div>
-          <div id="groupList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+          <div id="groupList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
       </div>
 
@@ -1164,8 +1161,7 @@
     <!-- ================= LAYAR LOGIN / DAFTAR ================= -->
     <div id="authScreen" class="fixed inset-0 z-[70] flex items-start sm:items-center justify-center p-4 overflow-y-auto" style="background: var(--bg)">
       <div id="authCard" class="glass auth-card w-full max-w-md rounded-3xl p-6 sm:p-8 text-center my-auto">
-        <div class="logo-badge"><i class="ph-duotone ph-shield-check text-5xl text-[#EFBF6A]"></i></div>
-        <h2 class="text-2xl font-extrabold tracking-tight text-[#E9E4DE]">My<span class="text-[#EFBF6A]">Cloud</span> Archive</h2>
+        <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-16 sm:h-20 mx-auto mb-3 object-contain drop-shadow-xl" />
         <p class="text-[#7699AE] text-xs sm:text-sm mt-1 mb-6">Akses atau buat brankas penyimpanan pribadi Anda.</p>
         <button type="button" data-act="google" class="btn btn-ghost w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5">
           <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1434,8 +1430,8 @@
       </div>
     </div>
 
-    <!-- Dialog konfirmasi -->
-    <div id="confirm" class="fixed inset-0 z-[80] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <!-- Dialog konfirmasi (Z-index 100 anti ketutup layar) -->
+    <div id="confirm" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
       <div class="glass pop-in rounded-3xl p-6 w-full max-w-sm text-center">
         <div class="w-14 h-14 rounded-2xl bg-[#A55D35]/20 text-[#A55D35] flex items-center justify-center text-3xl mx-auto mb-3">
           <i class="ph-duotone ph-warning-circle"></i>
@@ -1559,15 +1555,65 @@
       </div>
     </div>
 
+    <!-- Modal: Buat Grup Baru -->
+    <div id="createGroupModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
+        <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Buat Grup Baru</h3>
+        <div class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer" onclick="document.getElementById('cgFile').click()">
+          <span id="cgInit" class="text-[#EFBF6A]"><i class="ph-bold ph-camera"></i></span>
+          <img id="cgImg" class="w-full h-full object-cover hidden" />
+        </div>
+        <input type="file" id="cgFile" class="hidden" accept="image/*" />
+        <button onclick="document.getElementById('cgFile').click()" class="text-xs text-[#EFBF6A] hover:underline mb-4 block mx-auto">Pilih Foto Grup</button>
+        <div class="space-y-3 text-left">
+          <div><label class="text-xs text-[#7699AE]">Nama Grup</label><input id="cgName" type="text" class="field mt-1" placeholder="Masukkan nama grup..." /></div>
+          <div><label class="text-xs text-[#7699AE]">Deskripsi / Bio</label><textarea id="cgBio" class="field mt-1" rows="2" placeholder="Jelaskan tentang grup ini..."></textarea></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-5">
+          <button onclick="closeCreateGroupModal()" class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold">Batal</button>
+          <button onclick="submitCreateGroup()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Buat Grup</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Edit Grup (Z-Index dinaikkan ke 90 agar tidak tertutup Galeri Grup) -->
+    <div id="editGroupModal" class="hidden fixed inset-0 z-[90] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
+        <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Edit Info Grup</h3>
+        <div class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer" onclick="document.getElementById('egFile').click()">
+          <span id="egInit" class="text-[#EFBF6A]"><i class="ph-bold ph-camera"></i></span>
+          <img id="egImg" class="w-full h-full object-cover hidden" />
+        </div>
+        <input type="file" id="egFile" class="hidden" accept="image/*" />
+        <button onclick="document.getElementById('egFile').click()" class="text-xs text-[#EFBF6A] hover:underline mb-4 block mx-auto">Ganti Foto Grup</button>
+        <div class="space-y-3 text-left">
+          <div><label class="text-xs text-[#7699AE]">Nama Grup</label><input id="egName" type="text" class="field mt-1" /></div>
+          <div><label class="text-xs text-[#7699AE]">Deskripsi / Bio</label><textarea id="egBio" class="field mt-1" rows="2"></textarea></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-5">
+          <button onclick="closeEditGroupModal()" class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold">Batal</button>
+          <button onclick="submitEditGroup()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Simpan</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal: Galeri Grup Cloud -->
     <div id="groupGalleryModal" class="hidden fixed inset-0 z-[80] flex-col bg-[#091F46]">
-      <header class="glass p-4 flex justify-between items-center z-10">
-        <div>
-          <h3 id="ggTitle" class="font-bold text-lg text-[#E9E4DE]">Grup Shared Gallery</h3>
-          <p class="text-xs text-[#7699AE]" id="ggMembers">Anggota: -</p>
+      <header class="glass p-4 flex justify-between items-center z-10 gap-3 border-b border-[#37729C]/40">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-12 h-12 rounded-full border-2 border-[#EFBF6A] overflow-hidden shrink-0 bg-[#0D2652] flex items-center justify-center font-bold text-[#EFBF6A] text-lg" id="ggHeaderAvatar">?</div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h3 id="ggTitle" class="font-bold text-lg text-[#E9E4DE] truncate">Nama Grup</h3>
+              <button id="btnEditGroup" class="hidden text-[#091F46] bg-[#EFBF6A] hover:bg-white transition px-2 py-1 rounded-md ml-1" data-act="editGroup" title="Edit Info Grup"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+            </div>
+            <p class="text-xs text-[#7699AE] truncate" id="ggBio">Bio grup...</p>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="addMemberToGroup()" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] border border-[#37729C]"><i class="ph-bold ph-user-plus mr-1"></i> Undang Teman</button>
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="toast('Fitur undang teman akan segera hadir!', 'info')" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] border border-[#37729C] hidden md:flex">
+            <i class="ph-bold ph-user-plus mr-1"></i> Undang
+          </button>
           <button
             onclick="
               document.getElementById('groupGalleryModal').classList.add('hidden');
@@ -1579,13 +1625,24 @@
           </button>
         </div>
       </header>
-      <div class="p-6 flex-1 overflow-auto">
-        <div class="flex justify-between items-center mb-6">
-          <p class="text-xs text-[#7699AE]">Foto yang diunggah ke sini langsung muncul secara otomatis di semua anggota grup.</p>
-          <button onclick="document.getElementById('ggFile').click()" class="btn btn-primary px-4 py-2 rounded-xl text-sm shrink-0"><i class="ph-bold ph-upload-simple mr-2"></i>Upload Foto Grup</button>
-          <input type="file" id="ggFile" class="hidden" multiple accept="image/*" />
+      <div class="flex-1 flex overflow-hidden flex-col md:flex-row">
+        <!-- Sidebar Anggota -->
+        <div class="w-full md:w-64 glass md:border-r border-[#37729C]/40 p-4 flex flex-col gap-3 overflow-y-auto border-b md:border-b-0 max-h-[160px] md:max-h-none shrink-0">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-bold text-[#E9E4DE] text-sm">Anggota Grup</h4>
+            <button onclick="toast('Fitur undang teman akan segera hadir!', 'info')" class="md:hidden text-[#EFBF6A] text-xs font-bold"><i class="ph-bold ph-user-plus"></i></button>
+          </div>
+          <div id="ggMembersList" class="space-y-2 flex-1 scrollbar-hide overflow-y-auto"></div>
         </div>
-        <div id="ggGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+        <!-- Grid Galeri -->
+        <div class="flex-1 p-4 md:p-6 overflow-auto">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
+            <p class="text-xs text-[#7699AE]">Foto yang diunggah akan muncul secara realtime untuk semua anggota.</p>
+            <button onclick="document.getElementById('ggFile').click()" class="btn btn-primary px-4 py-2 rounded-xl text-sm shrink-0 flex items-center justify-center gap-2"><i class="ph-bold ph-upload-simple"></i>Upload Foto</button>
+            <input type="file" id="ggFile" class="hidden" multiple accept="image/*" />
+          </div>
+          <div id="ggGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4"></div>
+        </div>
       </div>
     </div>
 
@@ -2091,11 +2148,15 @@
           if (!sb || !S.account) return;
           try {
             let res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
-            if (res.error) {
-              res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
-            }
+            if (res.error) res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
+            if (res.error) res = await sb.from("folders").select("*").eq("userkey", S.account.userKey);
             if (!res.error && res.data) {
-              S.folders = res.data;
+              S.folders = res.data.map((f) => ({
+                ...f,
+                userKey: f.userKey || f.user_id || f.userkey,
+                createdAt: f.createdAt || f.created_at || f.createdat,
+              }));
+              S.folders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             }
           } catch (e) {
             S.folders = [];
@@ -2106,11 +2167,17 @@
           if (!sb || !S.account) return;
           try {
             let res = await sb.from("files").select("*").eq("userKey", S.account.userKey);
-            if (res.error) {
-              res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
-            }
+            if (res.error) res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
+            if (res.error) res = await sb.from("files").select("*").eq("userkey", S.account.userKey);
             if (!res.error && res.data) {
-              S.files = res.data;
+              S.files = res.data.map((f) => ({
+                ...f,
+                userKey: f.userKey || f.user_id || f.userkey,
+                isLive: f.isLive || f.is_live || f.islive || false,
+                createdAt: f.createdAt || f.created_at || f.createdat,
+                folderId: f.folderId || f.folder_id || f.folderid,
+              }));
+              S.files.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             }
           } catch (e) {
             S.files = [];
@@ -2131,20 +2198,6 @@
           a.classList.remove("hidden");
           a.style.opacity = "1";
           toast("Berhasil keluar", "info");
-        }
-
-        function updateAvatarUI(avatarUrl, username) {
-          const initEl = $("#hdrAvatarInit");
-          const imgEl = $("#hdrAvatarImg");
-          if (avatarUrl) {
-            imgEl.src = avatarUrl;
-            imgEl.classList.remove("hidden");
-            initEl.classList.add("hidden");
-          } else {
-            imgEl.classList.add("hidden");
-            initEl.classList.remove("hidden");
-            initEl.textContent = (username ? username[0] : "?").toUpperCase();
-          }
         }
 
         // Cek sesi otomatis saat reload
@@ -2237,7 +2290,7 @@
               };
 
               if (sb) {
-                await sb.from("files").insert({
+                let { error: dbErr } = await sb.from("files").insert({
                   id: rec.id,
                   userKey: rec.userKey,
                   name: rec.name,
@@ -2253,6 +2306,44 @@
                   thumb_path: rec.thumb_path,
                   folderId: rec.folderId,
                 });
+
+                if (dbErr) {
+                  console.warn("Insert 1 (dengan folderId) gagal:", dbErr.message);
+                  let { error: dbErr2 } = await sb.from("files").insert({
+                    id: rec.id,
+                    userKey: rec.userKey,
+                    name: rec.name,
+                    size: rec.size,
+                    mime: rec.mime,
+                    category: rec.category,
+                    isLive: rec.isLive,
+                    edited: rec.edited,
+                    createdAt: rec.createdAt,
+                    w: rec.w,
+                    h: rec.h,
+                    path: rec.path,
+                    thumb_path: rec.thumb_path,
+                  });
+                  if (dbErr2) {
+                    console.warn("Insert 2 (tanpa folderId) gagal:", dbErr2.message);
+                    let { error: dbErr3 } = await sb.from("files").insert({
+                      id: rec.id,
+                      user_id: rec.userKey,
+                      name: rec.name,
+                      size: rec.size,
+                      mime: rec.mime,
+                      category: rec.category,
+                      is_live: rec.isLive,
+                      edited: rec.edited,
+                      created_at: rec.createdAt,
+                      w: rec.w,
+                      h: rec.h,
+                      path: rec.path,
+                      thumb_path: rec.thumb_path,
+                    });
+                    if (dbErr3) console.error("Semua percobaan simpan ke database gagal:", dbErr3.message);
+                  }
+                }
               }
 
               S.files.unshift(rec);
@@ -2319,8 +2410,8 @@
             <i class="ph-duotone ph-folder text-5xl text-[#EFBF6A] mb-2"></i>
             <h4 class="font-bold text-[#E9E4DE] text-sm break-all truncate w-full px-2">${esc(f.name)}</h4>
             <div class="flex gap-1.5 mt-3 absolute bottom-3 opacity-0 transition-opacity duration-200" style="backdrop-filter:blur(4px)">
-               <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="renameFolder" title="Ganti Nama" onclick="event.stopPropagation()"><i class="ph-bold ph-pencil-simple"></i></button>
-               <button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="delFolder" title="Hapus" onclick="event.stopPropagation()"><i class="ph-bold ph-trash"></i></button>
+               <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="renameFolder" title="Ganti Nama"><i class="ph-bold ph-pencil-simple"></i></button>
+               <button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="delFolder" title="Hapus"><i class="ph-bold ph-trash"></i></button>
             </div>
             <style>.folder-card:hover > div { opacity: 1; }</style>
           </div>`;
@@ -2473,12 +2564,20 @@
                   createdAt: newFolder.createdAt,
                 });
                 if (res.error) {
-                  await sb.from("folders").insert({
+                  res = await sb.from("folders").insert({
                     id: newFolder.id,
                     user_id: newFolder.userKey,
                     name: newFolder.name,
-                    createdAt: newFolder.createdAt,
+                    created_at: newFolder.createdAt,
                   });
+                  if (res.error) {
+                    await sb.from("folders").insert({
+                      id: newFolder.id,
+                      userkey: newFolder.userKey,
+                      name: newFolder.name,
+                      createdat: newFolder.createdAt,
+                    });
+                  }
                 }
               } catch (err) {}
             }
@@ -2560,7 +2659,8 @@
 
           try {
             if (sb) {
-              await sb.from("files").update({ folderId: target }).in("id", fileIds);
+              let { error: mErr } = await sb.from("files").update({ folderId: target }).in("id", fileIds);
+              if (mErr) await sb.from("files").update({ folder_id: target }).in("id", fileIds);
             }
             fileIds.forEach((id) => {
               const f = S.files.find((x) => x.id === id);
@@ -2605,7 +2705,8 @@
             if (folderIds.length > 0) {
               if (sb) {
                 await sb.from("folders").delete().in("id", folderIds);
-                await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
+                let { error: bErr } = await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
+                if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
               }
               S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
               S.files.forEach((f) => {
@@ -3095,22 +3196,383 @@
           const gl = $("#groupList");
           if (!gl) return;
           if (!S.groups || S.groups.length === 0) {
-            gl.innerHTML = '<p class="text-[#7699AE] text-sm col-span-full text-center py-8">Belum ada grup.</p>';
+            gl.innerHTML = '<div class="col-span-full text-center py-10"><i class="ph-duotone ph-users-three text-6xl text-[#7699AE] mb-3"></i><p class="text-[#7699AE] text-sm">Belum ada grup yang Anda ikuti.</p></div>';
             return;
           }
-          gl.innerHTML = S.groups.map((g) => `<div class="glass p-5 rounded-2xl cursor-pointer hover:border-[#EFBF6A] transition"><h4 class="font-bold text-[#E9E4DE] text-base">${esc(g.name)}</h4></div>`).join("");
+          gl.innerHTML = S.groups
+            .map((g) => {
+              const init = g.name ? g.name[0].toUpperCase() : "?";
+              const av = g.avatar_url ? `<img src="${g.avatar_url}" class="w-full h-full object-cover">` : `<span>${init}</span>`;
+              return `<div class="glass p-4 rounded-2xl cursor-pointer hover:border-[#EFBF6A] hover:bg-[#37729C]/10 transition flex items-center gap-4" onclick="openGroupGallery('${g.id}')">
+                    <div class="w-14 h-14 rounded-full bg-[#37729C]/40 border-2 border-[#EFBF6A] flex items-center justify-center overflow-hidden shrink-0 text-xl font-bold text-[#EFBF6A]">
+                       ${av}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h4 class="font-bold text-[#E9E4DE] text-base truncate">${esc(g.name)}</h4>
+                      <p class="text-xs text-[#7699AE] truncate mt-0.5">${esc(g.bio || "Tidak ada deskripsi")}</p>
+                    </div>
+                    <div class="text-[#7699AE]"><i class="ph-bold ph-caret-right"></i></div>
+                 </div>`;
+            })
+            .join("");
         };
 
-        window.createGroup = async () => {
-          const n = prompt("Nama Grup Baru:");
-          if (!n || !n.trim() || !S.account || !sb) return;
+        window.openGroupGallery = (id) => {
+          const g = S.groups.find((x) => x.id === id);
+          if (!g) return;
+
+          $("#ggTitle").textContent = g.name;
+          $("#ggBio").textContent = g.bio || "Tidak ada deskripsi.";
+
+          const avBox = $("#ggHeaderAvatar");
+          if (g.avatar_url) {
+            avBox.innerHTML = `<img src="${g.avatar_url}" class="w-full h-full object-cover" />`;
+          } else {
+            avBox.textContent = g.name[0].toUpperCase();
+          }
+
+          $("#groupGalleryModal").classList.remove("hidden");
+          $("#groupGalleryModal").classList.add("flex");
+        };
+
+        window.openCreateGroupModal = () => {
+          $("#cgName").value = "";
+          $("#cgBio").value = "";
+          $("#cgImg").classList.add("hidden");
+          $("#cgImg").src = "";
+          $("#cgInit").classList.remove("hidden");
+          $("#cgFile").value = "";
+          $("#createGroupModal").classList.remove("hidden");
+          $("#createGroupModal").classList.add("flex");
+        };
+
+        window.closeCreateGroupModal = () => {
+          $("#createGroupModal").classList.add("hidden");
+          $("#createGroupModal").classList.remove("flex");
+        };
+
+        let currentGroupId = null;
+        let currentGroupFiles = [];
+        let currentGroupMembers = [];
+
+        window.openGroupGallery = async (id) => {
+          const g = S.groups.find((x) => x.id === id);
+          if (!g) return;
+          currentGroupId = id;
+          currentGroupFiles = [];
+          currentGroupMembers = [];
+
+          $("#ggTitle").textContent = g.name;
+          $("#ggBio").textContent = g.bio || "Tidak ada deskripsi.";
+
+          const avBox = $("#ggHeaderAvatar");
+          if (g.avatar_url) {
+            avBox.innerHTML = `<img src="${g.avatar_url}" class="w-full h-full object-cover" />`;
+          } else {
+            avBox.textContent = g.name[0].toUpperCase();
+          }
+
+          $("#groupGalleryModal").classList.remove("hidden");
+          $("#groupGalleryModal").classList.add("flex");
+
+          $("#ggGrid").innerHTML = '<div class="col-span-full text-center py-10"><div class="spinner mx-auto mb-3"></div><p class="text-[#7699AE] text-sm">Memuat galeri...</p></div>';
+          $("#ggMembersList").innerHTML = '<div class="text-center py-5"><div class="spinner mx-auto scale-75"></div></div>';
+          $("#btnEditGroup").classList.add("hidden");
+
+          if (sb) {
+            const { data: files } = await sb.from("group_files").select("*").eq("group_id", id).order("createdAt", { ascending: false });
+            if (files) currentGroupFiles = files;
+
+            const { data: members } = await sb.from("group_members").select("*").eq("group_id", id);
+            if (members) {
+              const userIds = members.map((m) => m.user_id);
+              const { data: profiles } = await sb.from("profiles").select("id, avatar_url").in("id", userIds);
+
+              currentGroupMembers = members.map((m) => {
+                const p = profiles?.find((x) => x.id === m.user_id);
+                return { ...m, avatar_url: p?.avatar_url };
+              });
+
+              const myMember = currentGroupMembers.find((m) => m.user_id === (S.account ? S.account.userKey : ""));
+              if (myMember && myMember.role === "admin") {
+                $("#btnEditGroup").classList.remove("hidden");
+              }
+            }
+          }
+
+          renderGroupGallery();
+          renderGroupMembers();
+        };
+
+        function renderGroupMembers() {
+          const list = $("#ggMembersList");
+          if (!list) return;
+          if (currentGroupMembers.length === 0) {
+            list.innerHTML = '<p class="text-xs text-[#7699AE]">Belum ada anggota.</p>';
+            return;
+          }
+          list.innerHTML = currentGroupMembers
+            .map((m) => {
+              const init = m.username ? m.username[0].toUpperCase() : "?";
+              const av = m.avatar_url ? `<img src="${m.avatar_url}" class="w-full h-full object-cover">` : `<span>${init}</span>`;
+              const roleBadge = m.role === "admin" ? '<span class="ml-auto text-[9px] bg-[#EFBF6A] text-[#091F46] px-1.5 py-0.5 rounded font-bold">Admin</span>' : "";
+              return `<div class="flex items-center gap-2 p-2 rounded-xl bg-[#05122B]/30 hover:bg-[#37729C]/20 border border-[#37729C]/20 transition cursor-pointer" onclick="viewUserProfile('${m.user_id}')">
+                    <div class="w-8 h-8 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A] text-xs overflow-hidden shrink-0">${av}</div>
+                    <p class="text-sm text-[#E9E4DE] font-semibold truncate flex-1">${esc(m.username)}</p>
+                    ${roleBadge}
+                </div>`;
+            })
+            .join("");
+        }
+
+        function renderGroupGallery() {
+          const grid = $("#ggGrid");
+          if (!grid) return;
+          if (currentGroupFiles.length === 0) {
+            grid.innerHTML = '<div class="col-span-full text-center py-10"><i class="ph-duotone ph-image text-6xl text-[#7699AE] mb-3"></i><p class="text-[#7699AE] text-sm">Belum ada foto di grup ini. Mulai unggah!</p></div>';
+            return;
+          }
+          grid.innerHTML = currentGroupFiles
+            .map((f) => {
+              let imgUrl = f.path;
+              if (sb && !imgUrl.startsWith("http")) {
+                imgUrl = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
+              } else if (!sb && S.urls.has("gf_" + f.id)) {
+                imgUrl = S.urls.get("gf_" + f.id);
+              }
+
+              const isMine = f.uploaded_by === (S.account ? S.account.userKey : "");
+              const isAdmin = currentGroupMembers.some((m) => m.user_id === (S.account ? S.account.userKey : "") && m.role === "admin");
+              const canDelete = isMine || isAdmin;
+
+              return `<div class="card relative aspect-[4/5] sm:aspect-square group border-[#37729C]/40" data-id="${f.id}">
+                    <img src="${imgUrl}" class="w-full h-full object-cover cursor-pointer" data-act="openGroupMedia" title="Buka Gambar">
+                    <div class="card-overlay opacity-100 sm:opacity-0 sm:group-hover:opacity-100 flex-col justify-end gap-2 pointer-events-none" style="z-index: 10;">
+                        <div class="w-full flex justify-between items-end gap-1">
+                            <div class="min-w-0 pointer-events-auto bg-black/40 px-2 py-1 rounded-lg backdrop-blur-md">
+                                <p class="text-[10px] text-[#E9E4DE] font-bold truncate"><i class="ph-fill ph-user text-[#EFBF6A] mr-1"></i> ${esc(f.uploader_name)}</p>
+                            </div>
+                            <div class="flex gap-1 shrink-0 pointer-events-auto" data-act="ignore">
+                                <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-8 !h-8 text-xs" data-act="shareGroupCard" title="Kirim/Bagikan"><i class="ph-bold ph-share-network pointer-events-none"></i></button>
+                                <button class="btn icon-btn bg-[#EFBF6A] hover:opacity-90 text-[#091F46] !w-8 !h-8 text-xs" data-act="dlGroupCard" title="Unduh"><i class="ph-bold ph-download-simple pointer-events-none"></i></button>
+                                ${canDelete ? `<button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-8 !h-8 text-xs" data-act="delGroupCard" title="Hapus"><i class="ph-bold ph-trash pointer-events-none"></i></button>` : ""}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            })
+            .join("");
+        }
+
+        const ggFile = $("#ggFile");
+        if (ggFile) {
+          ggFile.addEventListener("change", async (e) => {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            if (!currentGroupId) return;
+
+            toast(`Mengunggah ${files.length} foto ke grup...`, "info");
+
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+              if (!file.type.startsWith("image/")) continue;
+
+              const fileId = uid("gf_");
+              const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+              const path = `group_galleries/${currentGroupId}/${fileId}_${safeName}`;
+              let publicUrl = "";
+
+              if (sb) {
+                const { data: upData, error } = await sb.storage.from("vault").upload(path, file, { upsert: true });
+                if (!error && upData) {
+                  publicUrl = path;
+                }
+              } else {
+                S.urls.set("gf_" + fileId, URL.createObjectURL(file));
+                publicUrl = path;
+              }
+
+              const rec = {
+                id: fileId,
+                group_id: currentGroupId,
+                uploaded_by: S.account ? S.account.userKey : "local",
+                uploader_name: S.account ? S.account.username : "Guest",
+                path: publicUrl,
+                name: file.name,
+                createdAt: Date.now(),
+              };
+
+              if (sb) {
+                await sb.from("group_files").insert(rec);
+              }
+              currentGroupFiles.unshift(rec);
+            }
+
+            ggFile.value = "";
+            renderGroupGallery();
+            toast("Berhasil mengunggah foto grup!", "success");
+          });
+        }
+
+        const cgFile = $("#cgFile");
+        if (cgFile) {
+          cgFile.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              $("#cgImg").src = evt.target.result;
+              $("#cgImg").classList.remove("hidden");
+              $("#cgInit").classList.add("hidden");
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        window.submitCreateGroup = async () => {
+          const n = $("#cgName").value.trim();
+          const b = $("#cgBio").value.trim();
+          if (!n) return toast("Nama grup wajib diisi!", "error");
+          if (!S.account || !sb) return toast("Gagal: Database tidak terhubung", "error");
+
           const groupId = uid("grp_");
+          const file = $("#cgFile").files[0];
+          let avatarUrl = "";
+
+          toast("Sedang membuat grup...", "info");
+
           try {
-            await sb.from("groups").insert({ id: groupId, name: n.trim(), created_by: S.account.userKey, createdAt: Date.now() });
-            await sb.from("group_members").insert({ group_id: groupId, user_id: S.account.userKey, username: S.account.username, role: "admin" });
+            if (file) {
+              const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+              const path = `groups/${groupId}_${safeName}`;
+              const { data: upData, error: upErr } = await sb.storage.from("vault").upload(path, file, { upsert: true });
+              if (upData) {
+                avatarUrl = sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
+              }
+            }
+
+            await sb.from("groups").insert({
+              id: groupId,
+              name: n,
+              bio: b,
+              avatar_url: avatarUrl,
+              created_by: S.account.userKey,
+              createdAt: Date.now(),
+            });
+
+            await sb.from("group_members").insert({
+              group_id: groupId,
+              user_id: S.account.userKey,
+              username: S.account.username,
+              role: "admin",
+            });
+
             toast("Grup berhasil dibuat!", "success");
+            closeCreateGroupModal();
             loadGroups();
-          } catch (e) {}
+          } catch (e) {
+            toast("Terjadi kesalahan saat membuat grup", "error");
+          }
+        };
+
+        // --- FUNGSI EDIT GRUP ---
+        let tempEditGroupAvatar = null;
+
+        window.openEditGroupModal = () => {
+          const g = S.groups.find((x) => x.id === currentGroupId);
+          if (!g) return;
+
+          $("#egName").value = g.name || "";
+          $("#egBio").value = g.bio || "";
+          tempEditGroupAvatar = g.avatar_url || null;
+
+          const egImg = $("#egImg");
+          const egInit = $("#egInit");
+
+          if (tempEditGroupAvatar) {
+            egImg.src = tempEditGroupAvatar;
+            egImg.classList.remove("hidden");
+            egInit.classList.add("hidden");
+          } else {
+            egImg.src = "";
+            egImg.classList.add("hidden");
+            egInit.classList.remove("hidden");
+            egInit.innerHTML = `<span class="text-3xl font-bold">${g.name[0].toUpperCase()}</span>`;
+          }
+
+          $("#egFile").value = "";
+          $("#editGroupModal").classList.remove("hidden");
+          $("#editGroupModal").classList.add("flex");
+        };
+
+        window.closeEditGroupModal = () => {
+          $("#editGroupModal").classList.add("hidden");
+          $("#editGroupModal").classList.remove("flex");
+        };
+
+        const egFile = $("#egFile");
+        if (egFile) {
+          egFile.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              tempEditGroupAvatar = evt.target.result;
+              $("#egImg").src = tempEditGroupAvatar;
+              $("#egImg").classList.remove("hidden");
+              $("#egInit").classList.add("hidden");
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        window.submitEditGroup = async () => {
+          const n = $("#egName").value.trim();
+          const b = $("#egBio").value.trim();
+          if (!n) return toast("Nama grup tidak boleh kosong", "error");
+          if (!sb) return toast("Mode offline, tidak dapat edit grup", "info");
+
+          toast("Menyimpan perubahan...", "info");
+
+          let newAvatarUrl = tempEditGroupAvatar;
+          const file = $("#egFile").files[0];
+
+          try {
+            if (file) {
+              const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+              const path = `groups/${currentGroupId}_${safeName}`;
+              const { data, error } = await sb.storage.from("vault").upload(path, file, { upsert: true });
+              if (data) {
+                newAvatarUrl = sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
+              }
+            }
+
+            const { error: dbErr } = await sb.from("groups").update({ name: n, bio: b, avatar_url: newAvatarUrl }).eq("id", currentGroupId);
+            if (dbErr) throw dbErr;
+
+            const g = S.groups.find((x) => x.id === currentGroupId);
+            if (g) {
+              g.name = n;
+              g.bio = b;
+              g.avatar_url = newAvatarUrl;
+            }
+
+            // Perbarui Header UI di Galeri
+            $("#ggTitle").textContent = n;
+            $("#ggBio").textContent = b || "Tidak ada deskripsi.";
+            const avBox = $("#ggHeaderAvatar");
+            if (newAvatarUrl && newAvatarUrl.startsWith("http")) {
+              avBox.innerHTML = `<img src="${newAvatarUrl}" class="w-full h-full object-cover" />`;
+            } else {
+              avBox.textContent = n[0].toUpperCase();
+            }
+
+            window.renderGroups();
+            closeEditGroupModal();
+            toast("Info grup diperbarui!", "success");
+          } catch (e) {
+            toast("Terjadi kesalahan saat menyimpan", "error");
+          }
         };
 
         /* =====================================================================
@@ -3182,7 +3644,8 @@
             if (sb) {
               try {
                 await sb.from("folders").delete().eq("id", id);
-                await sb.from("files").update({ folderId: null }).eq("folderId", id);
+                let { error: fErr } = await sb.from("files").update({ folderId: null }).eq("folderId", id);
+                if (fErr) await sb.from("files").update({ folder_id: null }).eq("folder_id", id);
               } catch (err) {}
             }
             S.folders = S.folders.filter((x) => x.id !== id);
@@ -3222,6 +3685,17 @@
           delSelected: () => bulkDelete(),
           setView: (b) => {
             S.viewSize = b.dataset.s;
+
+            // Reset semua tombol ke tampilan pasif (abu-abu/biru pudar)
+            $$(".view-btn").forEach((btn) => {
+              btn.classList.remove("text-[#EFBF6A]", "bg-[#37729C]/30", "on");
+              btn.classList.add("text-[#7699AE]");
+            });
+
+            // Berikan sorotan (highlight) pada tombol yang diklik
+            b.classList.remove("text-[#7699AE]");
+            b.classList.add("text-[#EFBF6A]", "bg-[#37729C]/30", "on");
+
             renderGrid();
           },
           edit: (b) => openEditor(b.closest("[data-id]").dataset.id),
@@ -3241,6 +3715,100 @@
           },
           lbDel: () => lbDelete(),
           edClose: () => closeEditor(),
+          editGroup: () => window.openEditGroupModal(),
+          ignore: (b, e) => {
+            if (e) e.stopPropagation();
+          },
+
+          openGroupMedia: (b, e) => {
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const f = currentGroupFiles.find((x) => x.id === id);
+            if (!f) return;
+            let url = f.path;
+            if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
+            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
+            window.open(url, "_blank");
+          },
+
+          shareGroupCard: async (b, e) => {
+            if (e) e.preventDefault();
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const f = currentGroupFiles.find((x) => x.id === id);
+            if (!f) return;
+            let url = f.path;
+            if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
+            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
+
+            if (navigator.share) {
+              try {
+                await navigator.share({ title: f.name, url: url });
+              } catch (err) {
+                console.log("Batal share");
+              }
+            } else {
+              try {
+                await navigator.clipboard.writeText(url);
+                toast("Link foto berhasil disalin ke clipboard!", "success");
+              } catch (err) {
+                toast("Gagal membagikan link", "error");
+              }
+            }
+          },
+          dlGroupCard: async (b, e) => {
+            if (e) e.preventDefault();
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const f = currentGroupFiles.find((x) => x.id === id);
+            if (!f) return;
+            let url = f.path;
+            if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
+            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
+
+            toast("Mengunduh foto...", "info");
+            try {
+              const res = await fetch(url);
+              const blob = await res.blob();
+              const blobUrl = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = blobUrl;
+              a.download = f.name || "download.jpg";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+            } catch (err) {
+              toast("Gagal mengunduh foto", "error");
+            }
+          },
+          delGroupCard: async (b, e) => {
+            if (e) e.preventDefault();
+            if (e) e.stopPropagation();
+            const id = b.closest("[data-id]")?.dataset.id;
+            const f = currentGroupFiles.find((x) => x.id === id);
+            if (!f) return;
+            const ok = await confirmBox("Hapus Foto?", "Foto ini akan dihapus permanen dari galeri grup.");
+            if (!ok) return;
+
+            toast("Menghapus foto...", "info");
+            if (sb) {
+              try {
+                const { error: dbErr } = await sb.from("group_files").delete().eq("id", id);
+                if (dbErr) throw dbErr;
+
+                if (f.path && !f.path.startsWith("http")) {
+                  await sb.storage.from("vault").remove([f.path]);
+                }
+              } catch (err) {
+                console.error("Del Err:", err);
+                return toast("Gagal menghapus", "error");
+              }
+            }
+            currentGroupFiles = currentGroupFiles.filter((x) => x.id !== id);
+            renderGroupGallery();
+            toast("Foto berhasil dihapus", "success");
+          },
         };
 
         document.addEventListener("click", (e) => {

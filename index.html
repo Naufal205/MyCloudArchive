@@ -1111,6 +1111,7 @@
             <button id="btnToggleSelect" data-act="toggleSelect" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#E9E4DE]"><i class="ph-bold ph-check-square-offset mr-1"></i> Pilih File</button>
 
             <div id="selectActions" class="hidden items-center gap-2">
+              <button data-act="selectAll" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C]/40 text-[#E9E4DE] hover:bg-[#37729C]/70 mr-1">Pilih Semua</button>
               <span id="selectCount" class="text-xs font-bold text-[#EFBF6A] mr-2">0 dipilih</span>
               <button data-act="moveSelected" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C] text-white hover:bg-[#37729C]/80"><i class="ph-bold ph-folder-open mr-1"></i> Pindahkan</button>
               <button data-act="delSelected" class="btn btn-danger px-3 py-1.5 rounded-xl text-xs font-bold">
@@ -1928,7 +1929,7 @@
         async function upsertProfile(acc) {
           if (!sb) return;
           try {
-            await sb.from("profiles").upsert({
+            const payload = {
               id: acc.userKey,
               username: acc.username,
               email: acc.email,
@@ -1936,7 +1937,13 @@
               instagram: acc.instagram || "",
               whatsapp: acc.whatsapp || "",
               avatar_url: acc.avatarUrl || "",
-            });
+            };
+            let { error } = await sb.from("profiles").upsert(payload);
+            if (error) {
+              // Jika gagal karena kolom avatar_url tidak ada, coba simpan tanpa foto profil
+              delete payload.avatar_url;
+              await sb.from("profiles").upsert(payload);
+            }
           } catch (e) {
             console.warn(e);
           }
@@ -2125,7 +2132,7 @@
               acc.bio = data.bio || "";
               acc.instagram = data.instagram || "";
               acc.whatsapp = data.whatsapp || "";
-              acc.avatarUrl = data.avatar_url || null;
+              acc.avatarUrl = data.avatar_url || data.avatarUrl || null;
             }
           } catch (e) {
             console.warn("Profil error", e);
@@ -2373,6 +2380,7 @@
                       h: rec.h,
                       path: rec.path,
                       thumb_path: rec.thumb_path,
+                      folder_id: rec.folderId,
                     });
                     if (dbErr3) console.error("Semua percobaan simpan ke database gagal:", dbErr3.message);
                   }
@@ -2380,6 +2388,8 @@
               }
 
               S.files.unshift(rec);
+              renderGrid(); // Render foto secara instan satu per satu saat berhasil diupload!
+              updateStats();
             } catch (err) {
               console.error("Upload error:", err);
               toast(`Gagal mengunggah ${file.name}`, "error");
@@ -2413,22 +2423,28 @@
           const ok = await confirmBox("Hapus File?", `Yakin menghapus "${rec.name}"?`);
           if (!ok) return false;
 
+          // FAST RESPON (Optimistic UI): Hapus dari layar secara instan!
+          S.files = S.files.filter((f) => f.id !== rec.id);
+          revokeFor(rec.id);
+          toast("File dihapus", "success");
+          renderGrid();
+          updateStats();
+
+          // Eksekusi ke database diam-diam di background (tanpa memblokir layar)
           try {
             if (sb) {
-              await sb.from("files").delete().eq("id", rec.id);
-              const paths = [];
-              if (rec.path) paths.push(rec.path);
-              if (rec.thumb_path) paths.push(rec.thumb_path);
-              if (paths.length) await sb.storage.from("vault").remove(paths);
+              sb.from("files")
+                .delete()
+                .eq("id", rec.id)
+                .then(() => {
+                  const paths = [];
+                  if (rec.path) paths.push(rec.path);
+                  if (rec.thumb_path) paths.push(rec.thumb_path);
+                  if (paths.length) sb.storage.from("vault").remove(paths);
+                });
             }
-            S.files = S.files.filter((f) => f.id !== rec.id);
-            revokeFor(rec.id);
-            toast("File dihapus", "success");
-            renderGrid();
-            updateStats();
             return true;
           } catch (e) {
-            toast("Gagal menghapus file", "error");
             return false;
           }
         }
@@ -2690,23 +2706,30 @@
             return closeMoveModal();
           }
 
+          // FAST RESPON (Optimistic UI): Pindahkan secara lokal di layar
+          fileIds.forEach((id) => {
+            const f = S.files.find((x) => x.id === id);
+            if (f) f.folderId = target;
+          });
+
+          toast(`${fileIds.length} file berhasil dipindahkan`, "success");
+          S.isSelecting = false;
+          updateSelectUI();
+          closeMoveModal();
+          renderGrid();
+
+          // Eksekusi ke Supabase diam-diam di background
           try {
             if (sb) {
-              let { error: mErr } = await sb.from("files").update({ folderId: target }).in("id", fileIds);
-              if (mErr) await sb.from("files").update({ folder_id: target }).in("id", fileIds);
+              sb.from("files")
+                .update({ folderId: target })
+                .in("id", fileIds)
+                .then(({ error: mErr }) => {
+                  if (mErr) sb.from("files").update({ folder_id: target }).in("id", fileIds);
+                });
             }
-            fileIds.forEach((id) => {
-              const f = S.files.find((x) => x.id === id);
-              if (f) f.folderId = target;
-            });
-
-            toast(`${fileIds.length} file berhasil dipindahkan`, "success");
-            S.isSelecting = false;
-            updateSelectUI();
-            closeMoveModal();
-            renderGrid();
           } catch (e) {
-            toast("Gagal memindah file", "error");
+            console.error("Gagal memindah file di background");
           }
         };
 
@@ -2716,44 +2739,52 @@
           const ok = await confirmBox(`Hapus ${count} item?`, "Item yang dipilih akan dihapus permanen.");
           if (!ok) return;
 
+          const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
+          const folderIds = Array.from(S.selectedItems).filter((id) => id.startsWith("dir_"));
+
+          const filesToDel = S.files.filter((f) => fileIds.includes(f.id));
+          const storagePaths = [];
+          filesToDel.forEach((f) => {
+            if (f.path) storagePaths.push(f.path);
+            if (f.thumb_path) storagePaths.push(f.thumb_path);
+          });
+
+          // FAST RESPON (Optimistic UI): Hapus seketika dari memori & layar
+          if (fileIds.length > 0) S.files = S.files.filter((f) => !fileIds.includes(f.id));
+          if (folderIds.length > 0) {
+            S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
+            S.files.forEach((f) => {
+              if (folderIds.includes(f.folderId)) f.folderId = null;
+            });
+          }
+
+          toast(`${count} item dihapus`, "success");
+          S.isSelecting = false;
+          updateSelectUI();
+          renderGrid();
+          updateStats();
+
+          // Hapus di Supabase secara asinkronus (diam-diam di belakang layar)
           try {
-            const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
-            const folderIds = Array.from(S.selectedItems).filter((id) => id.startsWith("dir_"));
-
-            if (fileIds.length > 0) {
-              const filesToDel = S.files.filter((f) => fileIds.includes(f.id));
-              const storagePaths = [];
-              filesToDel.forEach((f) => {
-                if (f.path) storagePaths.push(f.path);
-                if (f.thumb_path) storagePaths.push(f.thumb_path);
-              });
-
-              if (sb) {
-                await sb.from("files").delete().in("id", fileIds);
-                if (storagePaths.length > 0) await sb.storage.from("vault").remove(storagePaths);
-              }
-              S.files = S.files.filter((f) => !fileIds.includes(f.id));
+            if (fileIds.length > 0 && sb) {
+              sb.from("files")
+                .delete()
+                .in("id", fileIds)
+                .then(() => {
+                  if (storagePaths.length > 0) sb.storage.from("vault").remove(storagePaths);
+                });
             }
-
-            if (folderIds.length > 0) {
-              if (sb) {
-                await sb.from("folders").delete().in("id", folderIds);
-                let { error: bErr } = await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
-                if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
-              }
-              S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
-              S.files.forEach((f) => {
-                if (folderIds.includes(f.folderId)) f.folderId = null;
-              });
+            if (folderIds.length > 0 && sb) {
+              sb.from("folders")
+                .delete()
+                .in("id", folderIds)
+                .then(async () => {
+                  let { error: bErr } = await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
+                  if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
+                });
             }
-
-            toast(`${count} item dihapus`, "success");
-            S.isSelecting = false;
-            updateSelectUI();
-            renderGrid();
-            updateStats();
           } catch (e) {
-            toast("Gagal menghapus beberapa item", "error");
+            console.error("Gagal menghapus beberapa item di background");
           }
         }
 
@@ -3674,19 +3705,27 @@
             if (!f) return;
             const ok = await confirmBox("Hapus Folder?", `Folder "${f.name}" akan dihapus.`);
             if (!ok) return;
-            if (sb) {
-              try {
-                await sb.from("folders").delete().eq("id", id);
-                let { error: fErr } = await sb.from("files").update({ folderId: null }).eq("folderId", id);
-                if (fErr) await sb.from("files").update({ folder_id: null }).eq("folder_id", id);
-              } catch (err) {}
-            }
+
+            // FAST RESPON (Optimistic UI)
             S.folders = S.folders.filter((x) => x.id !== id);
             S.files.forEach((file) => {
               if (file.folderId === id) file.folderId = null;
             });
             toast("Folder berhasil dihapus", "success");
             renderGrid();
+
+            // Hapus Database di Background
+            if (sb) {
+              try {
+                sb.from("folders")
+                  .delete()
+                  .eq("id", id)
+                  .then(async () => {
+                    let { error: fErr } = await sb.from("files").update({ folderId: null }).eq("folderId", id);
+                    if (fErr) await sb.from("files").update({ folder_id: null }).eq("folder_id", id);
+                  });
+              } catch (err) {}
+            }
           },
           navRoot: () => {
             S.currentFolder = null;
@@ -3707,6 +3746,23 @@
           },
           toggleSelect: () => {
             S.isSelecting = !S.isSelecting;
+            updateSelectUI();
+            renderGrid();
+          },
+          selectAll: () => {
+            const visFolders = visibleFolders().map((f) => f.id);
+            const visFiles = visibleFiles().map((f) => f.id);
+            const allVis = [...visFolders, ...visFiles];
+            if (allVis.length === 0) return;
+
+            // Cek apakah semua item di layar sudah terpilih
+            const allSelected = allVis.every((id) => S.selectedItems.has(id));
+
+            if (allSelected) {
+              allVis.forEach((id) => S.selectedItems.delete(id)); // Batal pilih semua
+            } else {
+              allVis.forEach((id) => S.selectedItems.add(id)); // Pilih semua
+            }
             updateSelectUI();
             renderGrid();
           },

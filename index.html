@@ -2030,13 +2030,46 @@
           }
           $("#registerForm").classList.add("hidden");
           authBusy(true, "Membuat akun...");
-          const { data, error } = await sb.auth.signUp({ email, password: pw, options: { emailRedirectTo: redirectUrl() } });
+
+          // Ekstrak nama default dari email agar database tidak menolak data kosong
+          const defaultUsername = email.split("@")[0];
+
+          // Sisipkan data username ke dalam metadata Supabase Auth
+          const { data, error } = await sb.auth.signUp({
+            email,
+            password: pw,
+            options: {
+              data: {
+                username: defaultUsername,
+                full_name: defaultUsername,
+                name: defaultUsername,
+              },
+              emailRedirectTo: redirectUrl(),
+            },
+          });
+
           authBusy(false);
           $("#registerForm").classList.remove("hidden");
+
           if (error) {
             authShake();
+            if (error.message.includes("Database error saving new user")) {
+              return toast("Error Database Supabase: Cek SQL Editor (Trigger RLS)", "error", 6000);
+            }
             return toast(authMsg(error.message), "error", 4500);
           }
+
+          // Paksa simpan profil ke tabel profiles agar aman
+          if (data.user) {
+            try {
+              await sb.from("profiles").upsert({
+                id: data.user.id,
+                username: defaultUsername,
+                email: email,
+              });
+            } catch (err) {}
+          }
+
           if (data.user && data.user.identities && !data.user.identities.length) {
             authShake();
             switchAuth("login");

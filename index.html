@@ -2,30 +2,22 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#091F46" />
-    <title>MyCloud Vault - Arsip & Folder Pribadi</title>
-
-    <script src="https://unpkg.com/@phosphor-icons/web" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>MyCloud Archive - Arsip Pribadi &amp; Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Bebas+Neue&family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* ===== Variabel warna ===== */
       :root {
         --bg: #091f46;
-        --panel: rgba(55, 114, 156, 0.22);
-        --line: rgba(118, 153, 174, 0.3);
+        --panel: rgba(18, 43, 88, 0.52);
+        --line: rgba(255, 255, 255, 0.14);
         --primary: #efbf6a;
-        --accent: #37729c;
         --text: #e9e4de;
-        --terracotta: #a55d35;
       }
       * {
         -webkit-tap-highlight-color: transparent;
@@ -58,45 +50,6 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #7699ae;
-      }
-      /* ===== Kursor ala macOS ===== */
-      :root {
-        --cur-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='26' viewBox='0 0 20 26'%3E%3Cpath d='M3 2v18l4.6-4.3 3.1 7.1 3-1.3-3.1-6.9H17z' fill='black' stroke='white' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E");
-        --cur-hand: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='26' viewBox='0 0 24 26'%3E%3Cpath d='M8 2.5c-1 0-1.7.8-1.7 1.8v9.2L4.9 12c-.7-.6-1.8-.5-2.4.2-.6.7-.5 1.7.1 2.3l4.4 5.2c1.4 1.7 3.1 2.8 5.5 2.8h2.3c3 0 5-2 5-5.2v-5.1c0-.9-.7-1.6-1.6-1.6-.5 0-.9.2-1.2.5-.2-.7-.8-1.1-1.5-1.1-.6 0-1.1.3-1.4.8-.3-.5-.8-.8-1.4-.8-.4 0-.7.1-1 .3V4.3c0-1-.7-1.8-1.7-1.8z' fill='white' stroke='black' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E");
-        --cur-text: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='22' viewBox='0 0 12 22'%3E%3Cpath d='M3 2h6M6 2v18M3 20h6' stroke='white' stroke-width='3.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M3 2h6M6 2v18M3 20h6' stroke='black' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
-      }
-      html,
-      body {
-        cursor:
-          var(--cur-arrow) 3 2,
-          default;
-      }
-      html a,
-      html button,
-      html [role="button"],
-      html label,
-      html select,
-      html summary,
-      html .btn,
-      html .card,
-      html .pill,
-      html #dropZone,
-      html .hoverable,
-      html input[type="range"],
-      html input[type="color"],
-      html input[type="checkbox"] {
-        cursor:
-          var(--cur-hand) 8 2,
-          pointer;
-      }
-      html input[type="text"],
-      html input[type="email"],
-      html input[type="search"],
-      html input[type="password"],
-      html textarea {
-        cursor:
-          var(--cur-text) 6 11,
-          text;
       }
       /* ===== Latar animasi ===== */
       #bgFx {
@@ -158,49 +111,35 @@
           transform: translate(-30px, 40px) scale(0.94);
         }
       }
-      /* ===== Glass ===== */
+      /* ===== Glass & Apple iOS Frosted Glassmorphism ===== */
       .glass {
-        background: var(--panel);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid var(--line);
+        background: rgba(18, 43, 88, 0.48);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow:
+          0 12px 32px -8px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
       }
-      /* ===== Tombol, ripple, micro-interaksi ===== */
+      /* ===== Tombol, ripple, micro-interaksi ala iOS Spring ===== */
       .btn {
         position: relative;
         overflow: hidden;
+        border-radius: 14px;
         transition:
-          transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+          transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
           box-shadow 0.25s,
           background 0.2s,
           border-color 0.2s,
           color 0.2s;
         user-select: none;
+        cursor: pointer;
       }
       .btn:hover {
-        transform: translateY(-1.5px);
+        transform: translateY(-1.5px) scale(1.01);
       }
       .btn:active {
-        transform: translateY(0) scale(0.95);
-      }
-      .btn:focus-visible,
-      .field:focus-visible {
-        outline: 2px solid var(--primary);
-        outline-offset: 2px;
-      }
-      .ripple-dot {
-        position: absolute;
-        border-radius: 50%;
-        transform: scale(0);
-        background: rgba(239, 191, 106, 0.38);
-        animation: ripple 0.65s ease-out forwards;
-        pointer-events: none;
-      }
-      @keyframes ripple {
-        to {
-          transform: scale(1);
-          opacity: 0;
-        }
+        transform: scale(0.94);
       }
       .btn-primary {
         background: linear-gradient(135deg, #efbf6a, #a55d35);
@@ -240,10 +179,12 @@
       }
       .field {
         width: 100%;
-        background: rgba(9, 31, 70, 0.8);
-        border: 1px solid rgba(118, 153, 174, 0.3);
-        border-radius: 12px;
-        padding: 0.65rem 0.9rem;
+        background: rgba(9, 25, 58, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 14px;
+        padding: 0.7rem 0.95rem;
         font-size: 0.85rem;
         color: #e9e4de;
         transition:
@@ -254,8 +195,8 @@
       .field:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 4px rgba(239, 191, 106, 0.18);
-        background: rgba(9, 31, 70, 0.95);
+        box-shadow: 0 0 0 4px rgba(239, 191, 106, 0.22);
+        background: rgba(9, 31, 70, 0.88);
       }
       .field::placeholder {
         color: #7699ae;
@@ -272,13 +213,17 @@
         background: rgba(9, 31, 70, 0.8);
         padding: 3px;
       }
-
-      /* ===== Folder & Select Effects ===== */
+      /* ===== Folder & Select Effects (iOS Squircle Style) ===== */
       .folder-card {
-        background: linear-gradient(135deg, rgba(55, 114, 156, 0.3), rgba(9, 31, 70, 0.8));
-        border: 1px solid rgba(118, 153, 174, 0.4);
-        border-radius: 16px;
-        transition: all 0.25s;
+        background: linear-gradient(145deg, rgba(55, 114, 156, 0.35), rgba(12, 32, 72, 0.72));
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow:
+          0 10px 25px -8px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        border-radius: 22px;
+        transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
         cursor: pointer;
         display: flex;
         flex-direction: column;
@@ -290,10 +235,13 @@
         margin-bottom: 1rem;
       }
       .folder-card:hover {
-        border-color: var(--primary);
-        background: linear-gradient(135deg, rgba(55, 114, 156, 0.5), rgba(9, 31, 70, 0.9));
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px -10px rgba(239, 191, 106, 0.3);
+        border-color: rgba(239, 191, 106, 0.75);
+        background: linear-gradient(145deg, rgba(55, 114, 156, 0.52), rgba(16, 40, 88, 0.85));
+        transform: translateY(-4px) scale(1.015);
+        box-shadow: 0 16px 32px -12px rgba(239, 191, 106, 0.35);
+      }
+      .folder-card:hover > div.folder-actions {
+        opacity: 1;
       }
       .card.selectable::after,
       .folder-card.selectable::after {
@@ -313,8 +261,8 @@
       }
       .check-badge {
         position: absolute;
-        top: 0.5rem;
-        left: 0.5rem;
+        top: 0.55rem;
+        left: 0.55rem;
         width: 24px;
         height: 24px;
         border-radius: 50%;
@@ -337,7 +285,6 @@
         border-color: var(--primary);
         color: var(--bg);
       }
-
       /* View Mode Columns for Masonry Grid */
       .view-sm {
         columns: 3;
@@ -381,51 +328,35 @@
           columns: 3;
         }
       }
-
-      /* ===== Kartu: tilt + spotlight ===== */
-      .tilt {
-        position: relative;
-        transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-        transition:
-          transform 0.25s ease-out,
-          box-shadow 0.3s,
-          border-color 0.3s;
-        transform-style: preserve-3d;
-      }
-      .tilt::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s;
-        background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(239, 191, 106, 0.2), transparent 60%);
-      }
-      .tilt:hover::after {
-        opacity: 1;
-      }
-      .tilt:hover {
-        border-color: rgba(239, 191, 106, 0.6);
-        box-shadow: 0 22px 44px -16px rgba(55, 114, 156, 0.5);
-      }
-      .tilt:active {
-        transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(0.975);
-      }
+      /* ===== Kartu ===== */
       .card {
-        background: #0d2652;
-        border: 1px solid var(--line);
-        border-radius: 16px;
+        background: rgba(13, 38, 82, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        box-shadow:
+          0 8px 24px -6px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        border-radius: 22px;
         overflow: hidden;
         margin-bottom: 1rem;
         break-inside: avoid;
         cursor: pointer;
-        animation: cardIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+        transition:
+          transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+          border-color 0.25s,
+          box-shadow 0.25s;
+        animation: cardIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      }
+      .card:hover {
+        border-color: rgba(239, 191, 106, 0.6);
+        transform: translateY(-2px);
+        box-shadow: 0 18px 36px -14px rgba(55, 114, 156, 0.55);
       }
       @keyframes cardIn {
         from {
           opacity: 0;
-          transform: translateY(18px) scale(0.96);
+          transform: translateY(16px) scale(0.96);
         }
         to {
           opacity: 1;
@@ -462,19 +393,17 @@
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
-        padding: 0.2rem 0.5rem;
+        padding: 0.2rem 0.55rem;
         border-radius: 999px;
         font-size: 10px;
         font-weight: 800;
         letter-spacing: 0.05em;
-        backdrop-filter: blur(6px);
+        backdrop-filter: blur(8px);
       }
       .chip-live {
-        background: rgba(9, 31, 70, 0.8);
+        background: rgba(9, 31, 70, 0.82);
         color: #efbf6a;
-      }
-      .chip-live i {
-        color: #efbf6a;
+        border: 1px solid rgba(239, 191, 106, 0.3);
       }
       .chip-edit {
         background: rgba(165, 93, 53, 0.85);
@@ -485,10 +414,11 @@
         right: 0.55rem;
         top: 0.55rem;
         z-index: 3;
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
-        background: rgba(9, 31, 70, 0.7);
+        background: rgba(9, 31, 70, 0.75);
+        backdrop-filter: blur(6px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -529,55 +459,51 @@
       #dropZone.drag {
         transform: scale(1.012);
       }
-      #dropZone:active {
-        transform: scale(0.99);
-      }
       .up-icon {
-        animation: bob 3.2s ease-in-out infinite;
-        transition: transform 0.3s;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       #dropZone:hover .up-icon {
-        transform: scale(1.15) rotate(-6deg);
+        transform: scale(1.12) rotate(-5deg);
       }
-      @keyframes bob {
-        0%,
-        100% {
-          translate: 0 0;
-        }
-        50% {
-          translate: 0 -6px;
-        }
-      }
-      /* ===== Filter pill ===== */
+      /* ===== Filter pill (iOS Dynamic Pill) ===== */
       .pill {
-        padding: 0.5rem 1rem;
+        padding: 0.52rem 1.05rem;
         border-radius: 999px;
         font-size: 0.78rem;
         font-weight: 600;
         white-space: nowrap;
-        background: rgba(55, 114, 156, 0.3);
-        border: 1px solid var(--line);
-        color: #7699ae;
-        transition: all 0.22s;
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #9bb8cc;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       .pill:hover {
-        color: #e9e4de;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
         border-color: rgba(239, 191, 106, 0.5);
       }
       .pill.on {
-        background: linear-gradient(135deg, #efbf6a, #a55d35);
+        background: linear-gradient(135deg, #efbf6a, #d89046);
         color: #091f46;
+        font-weight: 700;
         border-color: transparent;
-        box-shadow: 0 6px 18px -8px rgba(239, 191, 106, 0.8);
+        box-shadow: 0 6px 20px -6px rgba(239, 191, 106, 0.85);
       }
-      /* ===== Auth ===== */
+      /* ===== Auth (iOS Control Center Card) ===== */
       .auth-card {
-        animation: authIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        border-radius: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow:
+          0 28px 70px -15px rgba(0, 0, 0, 0.65),
+          inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        animation: authIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
       }
       @keyframes authIn {
         from {
           opacity: 0;
-          transform: translateY(30px) scale(0.96);
+          transform: translateY(24px) scale(0.96);
         }
         to {
           opacity: 1;
@@ -609,10 +535,10 @@
         position: relative;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        background: rgba(9, 31, 70, 0.8);
-        border: 1px solid var(--line);
+        background: rgba(5, 18, 43, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         padding: 4px;
-        border-radius: 14px;
+        border-radius: 16px;
       }
       .seg button {
         position: relative;
@@ -620,8 +546,8 @@
         padding: 0.55rem;
         font-size: 0.78rem;
         font-weight: 700;
-        color: #7699ae;
-        border-radius: 10px;
+        color: #8ba8bc;
+        border-radius: 12px;
         transition: color 0.25s;
       }
       .seg button.on {
@@ -634,12 +560,13 @@
         bottom: 4px;
         left: 4px;
         width: calc(50% - 4px);
-        border-radius: 10px;
-        background: linear-gradient(135deg, #efbf6a, #a55d35);
-        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #efbf6a, #d89046);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       .fade-up {
-        animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        animation: fadeUp 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
       }
       @keyframes fadeUp {
         from {
@@ -649,27 +576,6 @@
         to {
           opacity: 1;
           transform: none;
-        }
-      }
-      .logo-badge {
-        width: 76px;
-        height: 76px;
-        margin: 0 auto 1rem;
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, rgba(239, 191, 106, 0.25), rgba(165, 93, 53, 0.15));
-        border: 1px solid rgba(239, 191, 106, 0.4);
-        animation: pulseGlow 3s ease-in-out infinite;
-      }
-      @keyframes pulseGlow {
-        0%,
-        100% {
-          box-shadow: 0 0 0 0 rgba(239, 191, 106, 0.32);
-        }
-        50% {
-          box-shadow: 0 0 0 14px rgba(239, 191, 106, 0);
         }
       }
       /* ===== Toast ===== */
@@ -692,13 +598,14 @@
         gap: 0.65rem;
         max-width: min(92vw, 380px);
         padding: 0.8rem 1.1rem;
-        border-radius: 14px;
-        background: rgba(9, 31, 70, 0.96);
+        border-radius: 16px;
+        background: rgba(9, 31, 70, 0.94);
+        backdrop-filter: blur(16px);
         border: 1px solid var(--line);
         font-size: 0.82rem;
         font-weight: 600;
         box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.7);
-        animation: toastIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        animation: toastIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
       }
       .toast.out {
         animation: toastOut 0.35s ease-in forwards;
@@ -746,19 +653,16 @@
           transform: scaleX(0);
         }
       }
-      @media (max-width: 640px) {
-        #toasts {
-          left: 1rem;
-          right: 1rem;
-          align-items: center;
-        }
-      }
-      /* ===== Lightbox ===== */
+      /* ===== Lightbox & Editor ===== */
       #lightbox.show {
         display: block;
-        animation: lbIn 0.3s ease-out both;
+        animation: fadeIn 0.25s ease-out both;
       }
-      @keyframes lbIn {
+      #editor.show {
+        display: flex;
+        animation: fadeIn 0.25s ease-out both;
+      }
+      @keyframes fadeIn {
         from {
           opacity: 0;
         }
@@ -771,57 +675,8 @@
         max-height: 78vh;
         object-fit: contain;
         transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
-        will-change: transform;
-        border-radius: 10px;
+        border-radius: 14px;
         box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
-        touch-action: none;
-        user-select: none;
-        -webkit-user-drag: none;
-      }
-      .lb-img.dragging {
-        transition: none;
-      }
-      #lbStage.zoomed .lb-img {
-        cursor: grab;
-      }
-      .slide-next {
-        animation: slideNext 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-      }
-      .slide-prev {
-        animation: slidePrev 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-      }
-      .pop-in {
-        animation: popIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-      }
-      @keyframes slideNext {
-        from {
-          opacity: 0;
-          transform: translateX(60px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      @keyframes slidePrev {
-        from {
-          opacity: 0;
-          transform: translateX(-60px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      @keyframes popIn {
-        from {
-          opacity: 0;
-          transform: scale(0.92);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
       }
       .nav-arrow {
         position: absolute;
@@ -836,28 +691,21 @@
         font-size: 22px;
         z-index: 5;
       }
-      /* ===== Editor ===== */
-      #editor.show {
-        display: flex;
-        animation: lbIn 0.3s ease-out both;
-      }
       #edCanvas {
         max-width: 100%;
-        max-height: calc(100vh - 17rem);
         max-height: calc(100dvh - 17rem);
         touch-action: none;
-        border-radius: 6px;
+        border-radius: 8px;
         display: block;
       }
       @media (min-width: 768px) {
         #edCanvas {
-          max-height: calc(100vh - 9.5rem);
           max-height: calc(100dvh - 9.5rem);
         }
       }
       .ed-tab {
         padding: 0.5rem 0.15rem;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 11px;
         font-weight: 700;
         color: #7699ae;
@@ -867,19 +715,9 @@
         align-items: center;
         gap: 2px;
       }
-      .ed-tab i {
-        font-size: 16px;
-      }
-      .ed-tab:hover {
-        color: #e9e4de;
-      }
       .ed-tab.on {
         background: linear-gradient(135deg, #37729c, #efbf6a);
         color: #091f46;
-        box-shadow: 0 8px 20px -8px rgba(239, 191, 106, 0.8);
-      }
-      .ed-panel {
-        animation: fadeUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
       }
       .shape-btn {
         padding: 0.65rem 0.3rem;
@@ -893,33 +731,11 @@
         font-size: 10.5px;
         font-weight: 600;
         color: #efbf6a;
-        transition: all 0.2s;
-      }
-      .shape-btn:hover {
-        background: rgba(55, 114, 156, 0.6);
-        border-color: rgba(239, 191, 106, 0.6);
-        transform: translateY(-2px);
-      }
-      .shape-btn:active {
-        transform: scale(0.93);
-      }
-      .shape-btn i {
-        font-size: 22px;
       }
       .sticker-btn {
         font-size: 1.65rem;
         padding: 0.4rem;
         border-radius: 12px;
-        transition:
-          transform 0.2s,
-          background 0.2s;
-      }
-      .sticker-btn:hover {
-        background: rgba(55, 114, 156, 0.5);
-        transform: scale(1.25) rotate(-6deg);
-      }
-      .sticker-btn:active {
-        transform: scale(0.9);
       }
       .tog {
         padding: 0.45rem;
@@ -927,11 +743,7 @@
         background: rgba(55, 114, 156, 0.3);
         border: 1px solid var(--line);
         font-size: 0.8rem;
-        transition: all 0.2s;
         color: #e9e4de;
-      }
-      .tog:hover {
-        border-color: rgba(239, 191, 106, 0.6);
       }
       .tog.on {
         background: rgba(239, 191, 106, 0.3);
@@ -951,23 +763,7 @@
           transform: rotate(360deg);
         }
       }
-      .dot-pop {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <!-- Latar -->
@@ -981,9 +777,10 @@
     <div id="app" class="hidden min-h-screen flex-col relative z-10">
       <header class="glass sticky top-0 z-40 px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
-          <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-10 sm:h-12 w-auto object-contain drop-shadow-lg" />
+          <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-10 sm:h-12 w-auto object-contain drop-shadow-lg" onerror="this.style.display = 'none'" />
           <div class="leading-tight">
-            <p class="text-[10px] text-[#7699AE] hidden sm:block mt-1">Arsip pribadi &amp; studio edit foto</p>
+            <span class="font-extrabold text-base sm:text-lg text-[#EFBF6A] tracking-tight">MyCloud Archive</span>
+            <p class="text-[10px] text-[#7699AE] hidden sm:block">Arsip pribadi &amp; studio edit foto</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
@@ -997,7 +794,10 @@
               <span id="hdrAvatarInit">?</span>
               <img id="hdrAvatarImg" class="w-full h-full object-cover hidden" />
             </div>
-            <div class="hidden sm:flex flex-col leading-tight"><span id="hdrName" class="text-sm font-bold text-[#E9E4DE]">Guest</span><span id="hdrKey" class="text-[10px] text-[#EFBF6A]">Vault: -</span></div>
+            <div class="hidden sm:flex flex-col leading-tight">
+              <span id="hdrName" class="text-sm font-bold text-[#E9E4DE]">Guest</span>
+              <span id="hdrKey" class="text-[10px] text-[#EFBF6A]">Archive: -</span>
+            </div>
           </div>
           <button data-act="logout" class="btn btn-danger px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5" title="Keluar">
             <i class="ph-bold ph-sign-out text-base"></i>
@@ -1005,6 +805,7 @@
           </button>
         </div>
       </header>
+
       <div class="flex gap-4 px-6 pt-4 text-sm font-bold border-b border-[#37729C]/40">
         <button class="pb-2 border-b-2 border-[#EFBF6A] text-[#EFBF6A] nav-btn" onclick="switchMainTab('vault', this)">Archive</button>
         <button class="pb-2 border-b-2 border-transparent text-[#7699AE] nav-btn" onclick="switchMainTab('friends', this)">Teman</button>
@@ -1015,7 +816,7 @@
       <div id="vaultSec" class="main-sec flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
         <!-- Statistik -->
         <section class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="glass tilt rounded-2xl p-4 flex items-center gap-3 fade-up" style="animation-delay: 0.05s">
+          <div class="glass rounded-2xl p-4 flex items-center gap-3 fade-up">
             <div class="w-11 h-11 rounded-xl bg-[#37729C]/20 text-[#EFBF6A] flex items-center justify-center text-2xl">
               <i class="ph-duotone ph-files"></i>
             </div>
@@ -1024,7 +825,7 @@
               <p id="statCount" class="text-xl font-extrabold text-[#E9E4DE]">0</p>
             </div>
           </div>
-          <div class="glass tilt rounded-2xl p-4 flex items-center gap-3 fade-up" style="animation-delay: 0.12s">
+          <div class="glass rounded-2xl p-4 flex items-center gap-3 fade-up">
             <div class="w-11 h-11 rounded-xl bg-[#EFBF6A]/20 text-[#EFBF6A] flex items-center justify-center text-2xl">
               <i class="ph-duotone ph-hard-drives"></i>
             </div>
@@ -1033,7 +834,7 @@
               <p id="statSize" class="text-xl font-extrabold text-[#EFBF6A]">0 MB</p>
             </div>
           </div>
-          <div class="glass tilt rounded-2xl p-4 fade-up" style="animation-delay: 0.19s">
+          <div class="glass rounded-2xl p-4 fade-up">
             <div class="flex items-center justify-between text-[11px] text-[#7699AE] mb-1.5">
               <span>Kapasitas Archive terpakai</span>
               <span id="statDevice" class="text-[#E9E4DE]">-</span>
@@ -1041,19 +842,22 @@
             <div class="h-2 rounded-full bg-[#0D2652] overflow-hidden">
               <div id="deviceBar" class="h-full rounded-full bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] transition-all duration-700" style="width: 0%"></div>
             </div>
-            <p class="text-[10px] text-[#7699AE] mt-1.5">Max : 2 TB</p>
+            <div class="flex items-center justify-between mt-2">
+              <p id="statPlanLabel" class="text-[10px] text-[#7699AE]">Paket Dasar · Max : 5 TB</p>
+              <button id="btnUpgradePlan" onclick="openUpgradeModal()" class="btn btn-primary px-2.5 py-1 rounded-full text-[10px] font-extrabold flex items-center gap-1 shadow-md"><i class="ph-bold ph-crown"></i> Upgrade 10 TB</button>
+            </div>
           </div>
         </section>
 
         <!-- Area unggah -->
-        <section class="fade-up" style="animation-delay: 0.25s">
-          <div id="dropZone" class="rounded-3xl p-8 sm:p-10 text-center cursor-pointer flex flex-col items-center gap-3 relative">
+        <section class="fade-up">
+          <div id="dropZone" class="rounded-3xl p-8 sm:p-10 text-center cursor-pointer flex flex-col items-center gap-3 relative glass">
             <div class="up-icon w-16 h-16 rounded-2xl bg-[#37729C]/25 flex items-center justify-center">
               <i class="ph ph-upload-simple text-4xl text-[#EFBF6A]"></i>
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#E9E4DE]">Klik untuk Unggah atau Tarik File ke sini</h3>
-              <p class="text-[#7699AE] text-sm mt-1">Foto, HEIC, video, audio, dan semua dokumen (PDF, DOCX, ZIP, dll)</p>
+              <p class="text-[#7699AE] text-sm mt-1">Foto, HEIC, video MP4 / .MOV iPhone, audio, dan semua dokumen</p>
             </div>
             <input type="file" id="fileInput" class="hidden" multiple accept="*/*" />
           </div>
@@ -1073,46 +877,38 @@
           <div id="filters" class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             <button class="pill on btn" data-act="filter" data-f="all">Semua File</button>
             <button class="pill btn" data-act="filter" data-f="image">Foto</button>
-            <button class="pill btn" data-act="filter" data-f="live">Video &amp; Live</button>
+            <button class="pill btn" data-act="filter" data-f="live">Video &amp; MOV</button>
             <button class="pill btn" data-act="filter" data-f="document">Dokumen</button>
             <button class="pill btn" data-act="filter" data-f="edited">Hasil Editan</button>
           </div>
           <div class="flex items-center gap-2 w-full md:w-auto">
-            <div class="relative w-full md:w-64"><i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#7699AE]"></i><input id="searchInput" type="search" placeholder="Cari..." class="field !pl-9" /></div>
-
-            <!-- Pengaturan View Size -->
-            <div class="glass flex items-center p-1 rounded-xl shrink-0">
-              <button data-act="setView" data-s="sm" class="btn px-2 py-1.5 rounded-lg text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Small View"><i class="ph-bold ph-squares-four"></i></button>
-              <button data-act="setView" data-s="md" class="btn px-2 py-1.5 rounded-lg text-[#EFBF6A] bg-[#37729C]/30 view-btn on" title="Medium View"><i class="ph-bold ph-grid-four"></i></button>
-              <button data-act="setView" data-s="xl" class="btn px-2 py-1.5 rounded-lg text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Extra Large View"><i class="ph-bold ph-rectangle"></i></button>
+            <div class="relative w-full md:w-64">
+              <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[#7699AE]"></i>
+              <input id="searchInput" type="search" placeholder="Cari..." class="field !pl-9" />
+            </div>
+            <div class="glass flex items-center p-1 rounded-2xl shrink-0">
+              <button data-act="setView" data-s="sm" class="btn px-2 py-1.5 rounded-xl text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Small View"><i class="ph-bold ph-squares-four"></i></button>
+              <button data-act="setView" data-s="md" class="btn px-2 py-1.5 rounded-xl text-[#EFBF6A] bg-[#37729C]/30 view-btn on" title="Medium View"><i class="ph-bold ph-grid-four"></i></button>
+              <button data-act="setView" data-s="xl" class="btn px-2 py-1.5 rounded-xl text-[#7699AE] hover:text-[#EFBF6A] view-btn" title="Large View"><i class="ph-bold ph-rectangle"></i></button>
             </div>
           </div>
         </section>
 
         <!-- Navigation Breadcrumb & Toolbar Multi-Select -->
-        <section class="flex flex-col sm:flex-row justify-between items-center gap-3 bg-[#05122B]/40 p-3 rounded-2xl border border-[#37729C]/30">
+        <section class="flex flex-col sm:flex-row justify-between items-center gap-3 glass p-3 rounded-2xl">
           <div id="breadcrumb" class="flex items-center gap-2 text-sm font-bold truncate w-full sm:w-auto">
-            <!-- Tombol Kembali yang tampil saat di dalam folder -->
-            <button id="btnBackFolder" data-act="navRoot" class="btn btn-ghost hidden px-2.5 py-1 rounded-xl text-xs font-bold text-[#EFBF6A] items-center gap-1 border border-[#37729C]/50 bg-[#37729C]/20 hover:bg-[#37729C]/40">
-              <i class="ph-bold ph-arrow-left"></i> Kembali
-            </button>
+            <button id="btnBackFolder" data-act="navRoot" class="btn btn-ghost hidden px-2.5 py-1 rounded-xl text-xs font-bold text-[#EFBF6A] items-center gap-1"><i class="ph-bold ph-arrow-left"></i> Kembali</button>
             <button data-act="navRoot" class="text-[#EFBF6A] hover:underline flex items-center gap-1"><i class="ph-fill ph-house"></i> Root</button>
             <span id="bcSeparator" class="text-[#7699AE] hidden"><i class="ph-bold ph-caret-right"></i></span>
             <span id="bcCurrentFolder" class="text-[#E9E4DE] hidden">Nama Folder</span>
           </div>
 
-          <!-- Toolbar Selection & Tombol Folder Baru -->
-          <div id="selectToolbar" class="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <!-- Tombol Tambah Folder -->
-            <button onclick="openNewFolderModal()" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] flex items-center gap-1 border border-[#37729C]/60 bg-[#05122B]/50 hover:bg-[#37729C]/40">
-              <i class="ph-bold ph-folder-plus text-base"></i> Folder Baru
-            </button>
-
+          <div id="selectToolbar" class="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
+            <button onclick="openNewFolderModal()" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] flex items-center gap-1"><i class="ph-bold ph-folder-plus text-base"></i> Folder Baru</button>
             <button id="btnToggleSelect" data-act="toggleSelect" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#E9E4DE]"><i class="ph-bold ph-check-square-offset mr-1"></i> Pilih File</button>
-
             <div id="selectActions" class="hidden items-center gap-2">
-              <button data-act="selectAll" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C]/40 text-[#E9E4DE] hover:bg-[#37729C]/70 mr-1">Pilih Semua</button>
-              <span id="selectCount" class="text-xs font-bold text-[#EFBF6A] mr-2">0 dipilih</span>
+              <button data-act="selectAll" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C]/40 text-[#E9E4DE] hover:bg-[#37729C]/70">Pilih Semua</button>
+              <span id="selectCount" class="text-xs font-bold text-[#EFBF6A]">0 dipilih</span>
               <button data-act="moveSelected" class="btn px-3 py-1.5 rounded-xl text-xs font-bold bg-[#37729C] text-white hover:bg-[#37729C]/80"><i class="ph-bold ph-folder-open mr-1"></i> Pindahkan</button>
               <button data-act="delSelected" class="btn btn-danger px-3 py-1.5 rounded-xl text-xs font-bold">
                 <i class="ph-bold ph-trash"></i>
@@ -1133,11 +929,11 @@
 
       <!-- Tab: Teman -->
       <div id="friendsSec" class="main-sec hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
-        <div class="glass p-6 rounded-2xl">
+        <div class="glass p-6 rounded-3xl">
           <h2 class="text-xl font-bold mb-4 text-[#E9E4DE]">Sistem Pertemanan Realtime</h2>
           <div class="flex gap-2 mb-6">
-            <input id="searchFriend" class="field flex-1" placeholder="Cari username atau email teman..." />
-            <button onclick="addFriend()" class="btn btn-primary px-6 rounded-xl">Add Friend</button>
+            <input id="searchFriend" class="field flex-1" placeholder="Cari username teman..." />
+            <button onclick="addFriend()" class="btn btn-primary px-6 rounded-2xl">Add Friend</button>
           </div>
           <h3 class="text-sm font-semibold mb-3 text-[#E9E4DE]">Daftar Teman</h3>
           <div id="friendList" class="space-y-3"></div>
@@ -1146,31 +942,32 @@
 
       <!-- Tab: Grup & Gallery -->
       <div id="groupsSec" class="main-sec hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
-        <div class="glass p-6 rounded-2xl">
+        <div class="glass p-6 rounded-3xl">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold text-[#E9E4DE]">Group Shared Gallery Cloud</h2>
-            <button onclick="openCreateGroupModal()" class="btn btn-primary px-4 py-2 rounded-xl"><i class="ph-bold ph-users-three mr-1"></i> Buat Grup Baru</button>
+            <button onclick="openCreateGroupModal()" class="btn btn-primary px-4 py-2 rounded-2xl"><i class="ph-bold ph-users-three mr-1"></i> Buat Grup Baru</button>
           </div>
           <div id="groupList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
       </div>
 
-      <!-- Footer -->
-      <footer class="text-center text-[11px] text-[#7699AE] pb-6 px-4">File Anda kini disimpan secara aman di cloud Supabase dan dapat diakses dari perangkat mana pun.</footer>
+      <footer class="text-center text-[11px] text-[#7699AE] pb-6 px-4">File Anda disimpan secara aman dan terenkripsi di cloud Supabase.</footer>
     </div>
 
     <!-- ================= LAYAR LOGIN / DAFTAR ================= -->
     <div id="authScreen" class="fixed inset-0 z-[70] flex items-start sm:items-center justify-center p-4 overflow-y-auto" style="background: var(--bg)">
-      <div id="authCard" class="glass auth-card w-full max-w-md rounded-3xl p-6 sm:p-8 text-center my-auto">
-        <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-16 sm:h-20 mx-auto mb-3 object-contain drop-shadow-xl" />
+      <div id="authCard" class="glass auth-card w-full max-w-md p-6 sm:p-8 text-center my-auto">
+        <img src="IMG/LOGO.png" alt="MyCloud Archive Logo" class="h-16 sm:h-20 mx-auto mb-3 object-contain drop-shadow-xl" onerror="this.style.display = 'none'" />
+        <h1 class="text-xl font-extrabold text-[#EFBF6A]">MyCloud Archive</h1>
         <p class="text-[#7699AE] text-xs sm:text-sm mt-1 mb-6">Akses atau buat brankas penyimpanan pribadi Anda.</p>
-        <button type="button" data-act="google" class="btn btn-ghost w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5">
+        <button type="button" data-act="google" class="btn btn-ghost w-full py-3 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2.5">
           <svg width="18" height="18" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
             <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
             <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" /></svg
-          >Lanjutkan dengan Google
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+          </svg>
+          Lanjutkan dengan Google
         </button>
         <div class="flex items-center gap-3 text-[10px] text-[#7699AE] my-5"><span class="flex-1 h-px bg-[#37729C]/40"></span>ATAU<span class="flex-1 h-px bg-[#37729C]/40"></span></div>
         <div class="seg mb-6">
@@ -1183,17 +980,13 @@
           <div>
             <label class="block text-xs font-medium text-[#7699AE] mb-1">Password</label>
             <div class="relative">
-              <input id="loginPin" type="password" class="field !pr-11" placeholder="Masukkan password" autocomplete="current-password" required /><button
-                type="button"
-                data-act="togglePin"
-                data-target="loginPin"
-                class="absolute right-2 top-1/2 -translate-y-1/2 text-[#7699AE] hover:text-white p-1.5"
-              >
+              <input id="loginPin" type="password" class="field !pr-11" placeholder="Masukkan password" autocomplete="current-password" required />
+              <button type="button" data-act="togglePin" data-target="loginPin" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#7699AE] hover:text-white p-1.5">
                 <i class="ph ph-eye"></i>
               </button>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary w-full py-3 rounded-xl text-sm">Buka Brankas Saya</button>
+          <button type="submit" class="btn btn-primary w-full py-3 rounded-2xl text-sm">Buka Brankas Saya</button>
           <div class="text-center mt-3">
             <span
               class="link text-xs text-[#EFBF6A] cursor-pointer hover:underline"
@@ -1204,36 +997,34 @@
               >Lupa Password?</span
             >
           </div>
+          <div class="pt-3 border-t border-white/10 text-center">
+            <button type="button" onclick="openApiConfigModal()" class="text-[11px] text-[#7699AE] hover:text-[#EFBF6A] inline-flex items-center gap-1 transition"><i class="ph-bold ph-key"></i> Konfigurasi Supabase API Key</button>
+          </div>
         </form>
         <form id="registerForm" class="space-y-4 text-left hidden">
           <div><label class="block text-xs font-medium text-[#7699AE] mb-1">Email</label><input id="regUser" type="email" class="field" placeholder="nama@email.com" autocomplete="email" required /></div>
           <div>
             <label class="block text-xs font-medium text-[#7699AE] mb-1">Password (min 6 karakter)</label>
             <div class="relative">
-              <input id="regPin" type="password" class="field !pr-11" placeholder="Buat password" autocomplete="new-password" required /><button
-                type="button"
-                data-act="togglePin"
-                data-target="regPin"
-                class="absolute right-2 top-1/2 -translate-y-1/2 text-[#7699AE] hover:text-white p-1.5"
-              >
+              <input id="regPin" type="password" class="field !pr-11" placeholder="Buat password" autocomplete="new-password" required />
+              <button type="button" data-act="togglePin" data-target="regPin" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#7699AE] hover:text-white p-1.5">
                 <i class="ph ph-eye"></i>
               </button>
             </div>
           </div>
           <div><label class="block text-xs font-medium text-[#7699AE] mb-1">Konfirmasi Password</label><input id="regPin2" type="password" class="field" placeholder="Ulangi password" autocomplete="new-password" required /></div>
-          <button type="submit" class="btn btn-primary w-full py-3 rounded-xl text-sm">Daftar &amp; Buat Brankas</button>
+          <button type="submit" class="btn btn-primary w-full py-3 rounded-2xl text-sm">Daftar &amp; Buat Brankas</button>
         </form>
         <div id="authLoading" class="hidden flex-col items-center py-6">
           <div class="spinner mb-3"></div>
           <span id="authLoadingText" class="text-xs text-[#EFBF6A] font-semibold">Memproses...</span>
         </div>
-        <p class="text-[10.5px] text-[#7699AE] mt-6 leading-relaxed">Autentikasi dikelola Supabase. File kini disimpan di cloud dan dapat diakses dari mana saja.</p>
       </div>
     </div>
 
     <!-- ================= LIGHTBOX ================= -->
     <div id="lightbox" class="fixed inset-0 z-[60] hidden">
-      <div class="absolute inset-0 bg-[#05122B]/95 backdrop-blur-md"></div>
+      <div class="absolute inset-0 bg-[#05122B]/95 backdrop-blur-xl"></div>
       <div class="relative h-full flex flex-col">
         <div class="flex items-center justify-between gap-3 px-4 py-3">
           <div class="min-w-0">
@@ -1242,13 +1033,11 @@
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <div id="lbZoomBox" class="hidden sm:flex items-center gap-1.5">
-              <button data-act="lbZoomOut" class="btn btn-ghost icon-btn" title="Perkecil"><i class="ph-bold ph-magnifying-glass-minus"></i></button
-              ><button data-act="lbReset" id="lbZoomVal" class="btn btn-ghost h-[34px] px-2.5 rounded-[10px] text-[11px] font-bold min-w-[52px]">100%</button
-              ><button data-act="lbZoomIn" class="btn btn-ghost icon-btn" title="Perbesar"><i class="ph-bold ph-magnifying-glass-plus"></i></button>
+              <button data-act="lbZoomOut" class="btn btn-ghost icon-btn" title="Perkecil"><i class="ph-bold ph-magnifying-glass-minus"></i></button>
+              <button data-act="lbReset" id="lbZoomVal" class="btn btn-ghost h-[34px] px-2.5 rounded-[10px] text-[11px] font-bold min-w-[52px]">100%</button>
+              <button data-act="lbZoomIn" class="btn btn-ghost icon-btn" title="Perbesar"><i class="ph-bold ph-magnifying-glass-plus"></i></button>
             </div>
-            <button id="lbEditBtn" data-act="lbEdit" class="btn btn-ghost icon-btn !text-[#EFBF6A]" title="Edit di Studio">
-              <i class="ph-bold ph-paint-brush"></i>
-            </button>
+            <button id="lbEditBtn" data-act="lbEdit" class="btn btn-ghost icon-btn !text-[#EFBF6A]" title="Edit di Studio"><i class="ph-bold ph-paint-brush"></i></button>
             <button data-act="lbDl" class="btn btn-ghost icon-btn !text-[#EFBF6A]" title="Unduh"><i class="ph-bold ph-download-simple"></i></button>
             <button data-act="lbDel" class="btn btn-danger icon-btn" title="Hapus"><i class="ph-bold ph-trash"></i></button>
             <button data-act="lbClose" class="btn btn-ghost icon-btn" title="Tutup (Esc)"><i class="ph-bold ph-x"></i></button>
@@ -1256,9 +1045,7 @@
         </div>
         <div id="lbStage" class="flex-1 relative overflow-hidden flex items-center justify-center px-2 touch-none select-none"></div>
         <button id="lbPrev" data-act="lbPrev" class="nav-arrow btn btn-ghost left-3" title="Sebelumnya"><i class="ph-bold ph-caret-left"></i></button>
-        <button id="lbNext" data-act="lbNext" class="nav-arrow btn btn-ghost right-3" title="Selanjutnya">
-          <i class="ph-bold ph-caret-right"></i>
-        </button>
+        <button id="lbNext" data-act="lbNext" class="nav-arrow btn btn-ghost right-3" title="Selanjutnya"><i class="ph-bold ph-caret-right"></i></button>
       </div>
     </div>
 
@@ -1276,8 +1063,7 @@
           <button data-act="edReset" class="btn btn-ghost px-3 h-[34px] rounded-[10px] text-xs font-semibold">Reset</button>
           <button data-act="edSave" class="btn h-[34px] px-3 sm:px-4 rounded-[10px] text-xs font-bold text-[#091F46] bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] flex items-center gap-1.5 shadow-lg">
             <i class="ph-bold ph-cloud-arrow-up"></i>
-            <span class="hidden sm:inline">Simpan ke Archive</span>
-            <span class="sm:hidden">Simpan</span>
+            <span>Simpan</span>
           </button>
           <button data-act="edDownload" class="btn h-[34px] px-3 sm:px-4 rounded-[10px] text-xs font-bold text-[#091F46] bg-gradient-to-r from-[#EFBF6A] to-[#37729C] flex items-center gap-1.5">
             <i class="ph-bold ph-download-simple"></i>
@@ -1286,26 +1072,18 @@
         </div>
       </div>
 
-      <!-- Bar layer terpilih -->
       <div id="layerBar" class="hidden items-center justify-between gap-2 px-4 py-1.5 bg-[#05122B]/90 border-b border-[#37729C]/40 text-xs">
         <span class="flex items-center gap-1.5 text-[#EFBF6A] font-bold min-w-0">
           <i class="ph-bold ph-cursor"></i>
           <span id="layerInfo" class="truncate text-[#E9E4DE] font-medium">Layer</span>
         </span>
         <div class="flex items-center gap-1.5">
-          <button data-act="layerUp" class="btn btn-ghost icon-btn !w-8 !h-8" title="Bawa ke depan"><i class="ph-bold ph-arrow-up"></i></button>
-          <button data-act="layerDown" class="btn btn-ghost icon-btn !w-8 !h-8" title="Bawa ke belakang">
-            <i class="ph-bold ph-arrow-down"></i>
-          </button>
-          <button data-act="layerDup" class="btn btn-ghost icon-btn !w-8 !h-8 !text-[#EFBF6A]" title="Duplikat">
-            <i class="ph-bold ph-copy"></i>
-          </button>
           <button data-act="layerDel" class="btn btn-danger icon-btn !w-8 !h-8" title="Hapus layer"><i class="ph-bold ph-trash"></i></button>
         </div>
       </div>
+
       <div class="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
         <div class="flex-1 min-h-0 min-w-0 relative flex flex-col items-center justify-center p-3 sm:p-5 overflow-auto" style="background: radial-gradient(circle at 50% 30%, #13336b, #091f46)">
-          <p class="text-[11px] text-[#7699AE] mb-2 flex items-center gap-1 text-center"><i class="ph-bold ph-hand-swipe-left"></i> Seret teks, stiker, atau bentuk untuk memindahkan. Tarik titik di sudut untuk mengubah ukuran.</p>
           <div class="relative checker rounded-md shadow-2xl border border-[#37729C]/60">
             <canvas id="edCanvas"></canvas>
             <div id="edBusy" class="hidden absolute inset-0 bg-black/60 flex-col items-center justify-center gap-2 rounded-md z-10">
@@ -1315,75 +1093,34 @@
           </div>
         </div>
         <div class="w-full md:w-[22rem] glass border-t md:border-t-0 md:border-l border-[#37729C]/40 p-3.5 flex flex-col gap-3.5 overflow-y-auto max-h-[42vh] md:max-h-none">
-          <div class="grid grid-cols-5 gap-1 bg-[#05122B]/70 p-1 rounded-2xl border border-[#37729C]/40">
+          <div class="grid grid-cols-3 gap-1 bg-[#05122B]/70 p-1 rounded-2xl border border-[#37729C]/40">
             <button class="ed-tab btn on" data-act="edTab" data-tab="text"><i class="ph-bold ph-text-aa"></i>Teks</button>
-            <button class="ed-tab btn" data-act="edTab" data-tab="bg"><i class="ph-bold ph-scissors"></i>Hapus BG</button>
             <button class="ed-tab btn" data-act="edTab" data-tab="shape"><i class="ph-bold ph-shapes"></i>Elemen</button>
             <button class="ed-tab btn" data-act="edTab" data-tab="filter"><i class="ph-bold ph-sliders-horizontal"></i>Filter</button>
-            <button class="ed-tab btn" data-act="edTab" data-tab="transform"><i class="ph-bold ph-arrows-clockwise"></i>Putar</button>
           </div>
           <div id="p-text" class="ed-panel space-y-3 text-xs">
             <div><label class="block text-[#7699AE] mb-1 font-semibold">Teks</label><input id="edText" type="text" class="field" placeholder="Ketik teks di sini..." /></div>
             <div class="grid grid-cols-2 gap-2.5">
               <div><label class="block text-[#7699AE] mb-1">Warna</label><input id="edColor" type="color" value="#ffffff" /></div>
               <div>
-                <label class="block text-[#7699AE] mb-1">Ukuran (<span id="edSizeVal">48</span>px)</label><input id="edSize" type="range" min="12" max="400" value="48" class="mt-2.5" />
+                <label class="block text-[#7699AE] mb-1">Ukuran (<span id="edSizeVal">48</span>px)</label>
+                <input id="edSize" type="range" min="12" max="400" value="48" class="mt-2.5" />
               </div>
             </div>
             <div>
-              <label class="block text-[#7699AE] mb-1">Gaya Font</label
-              ><select id="edFont" class="field">
+              <label class="block text-[#7699AE] mb-1">Gaya Font</label>
+              <select id="edFont" class="field">
                 <option value="'Plus Jakarta Sans', sans-serif">Sans-Serif Modern</option>
                 <option value="'Playfair Display', serif">Serif Elegan</option>
                 <option value="'Bebas Neue', sans-serif">Bold Display</option>
                 <option value="'Pacifico', cursive">Script</option>
-                <option value="'Courier New', monospace">Monospace Retro</option>
               </select>
             </div>
-            <div class="grid grid-cols-5 gap-1.5">
-              <button class="tog btn font-extrabold" id="btnBold" data-act="bold">B</button><button class="tog btn italic font-semibold" id="btnItalic" data-act="italic">I</button
-              ><button class="tog btn" data-act="align" data-a="left"><i class="ph-bold ph-text-align-left"></i></button><button class="tog btn on" data-act="align" data-a="center"><i class="ph-bold ph-text-align-center"></i></button
-              ><button class="tog btn" data-act="align" data-a="right"><i class="ph-bold ph-text-align-right"></i></button>
-            </div>
-            <label class="flex items-center gap-2 text-[#E9E4DE]"><input id="edShadow" type="checkbox" checked class="accent-[#EFBF6A]" /> Bayangan teks</label
-            ><button data-act="addText" class="btn w-full py-2.5 rounded-xl font-bold text-[#091F46] bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] flex items-center justify-center gap-2">
+            <button data-act="addText" class="btn w-full py-2.5 rounded-xl font-bold text-[#091F46] bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] flex items-center justify-center gap-2">
               <i class="ph-bold ph-plus-circle text-base"></i> Tambahkan Teks
             </button>
           </div>
-          <div id="p-bg" class="ed-panel space-y-3.5 text-xs hidden">
-            <div class="bg-[#05122B]/40 border border-[#37729C]/40 p-3 rounded-2xl space-y-2.5">
-              <h4 class="font-bold text-[#EFBF6A] flex items-center gap-1.5"><i class="ph-fill ph-magic-wand"></i> Hapus Background Otomatis</h4>
-              <div class="flex justify-between text-[#7699AE]"><span>Toleransi warna</span><span id="bgTolVal" class="text-[#EFBF6A] font-bold">45</span></div>
-              <input id="bgTol" type="range" min="10" max="120" value="45" /><button
-                data-act="autoBg"
-                class="btn w-full py-2 rounded-xl font-bold text-[#091F46] bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] flex justify-center items-center gap-2"
-              >
-                <i class="ph-bold ph-sparkle"></i> Hapus Background
-              </button>
-            </div>
-            <div class="bg-[#05122B]/40 p-3 rounded-2xl border border-[#37729C]/40 space-y-2.5">
-              <h4 class="font-bold text-[#E9E4DE] flex items-center gap-1.5"><i class="ph-bold ph-eraser"></i> Kuas Penghapus</h4>
-              <div class="flex justify-between text-[#7699AE]"><span>Ukuran</span><span id="eraserVal" class="text-[#EFBF6A] font-bold">30px</span></div>
-              <input id="eraserSize" type="range" min="8" max="140" value="30" /><button
-                id="btnEraser"
-                data-act="toggleEraser"
-                class="btn w-full py-2 rounded-xl font-bold bg-[#37729C]/40 border border-[#37729C] text-[#E9E4DE] flex justify-center items-center gap-2"
-              >
-                <i class="ph-bold ph-paint-brush"></i> Mode Penghapus: OFF
-              </button>
-            </div>
-          </div>
           <div id="p-shape" class="ed-panel space-y-4 text-xs hidden">
-            <div>
-              <label class="block text-[#7699AE] font-semibold mb-2">Bentuk Geometris</label>
-              <div class="grid grid-cols-5 gap-2">
-                <button class="shape-btn btn" data-act="addShape" data-shape="rect"><i class="ph-bold ph-square"></i>Kotak</button>
-                <button class="shape-btn btn" data-act="addShape" data-shape="circle"><i class="ph-bold ph-circle"></i>Bulat</button>
-                <button class="shape-btn btn" data-act="addShape" data-shape="star"><i class="ph-bold ph-star"></i>Bintang</button>
-                <button class="shape-btn btn" data-act="addShape" data-shape="arrow"><i class="ph-bold ph-arrow-right"></i>Panah</button>
-                <button class="shape-btn btn" data-act="addShape" data-shape="badge"><i class="ph-bold ph-seal"></i>Badge</button>
-              </div>
-            </div>
             <div>
               <label class="block text-[#7699AE] font-semibold mb-2">Stiker Emoji</label>
               <div id="stickerGrid" class="grid grid-cols-6 gap-1 bg-[#05122B]/70 p-2 rounded-2xl border border-[#37729C]/40"></div>
@@ -1402,38 +1139,14 @@
               <div class="flex justify-between text-[#7699AE] mb-1"><span>Saturasi</span><span id="vSat">100%</span></div>
               <input id="fSat" type="range" min="0" max="220" value="100" />
             </div>
-            <div>
-              <div class="flex justify-between text-[#7699AE] mb-1"><span>Blur</span><span id="vBlur">0</span></div>
-              <input id="fBlur" type="range" min="0" max="10" step="0.5" value="0" />
-            </div>
-            <div class="pt-2 border-t border-[#37729C]/40">
-              <label class="block text-[#7699AE] mb-2 font-semibold">Filter Instan</label>
-              <div class="grid grid-cols-3 gap-2">
-                <button class="tog btn" data-act="preset" data-p="normal">Normal</button>
-                <button class="tog btn" data-act="preset" data-p="vintage"><span class="dot-pop bg-[#EFBF6A] mr-1"></span>Vintage</button>
-                <button class="tog btn" data-act="preset" data-p="bw"><span class="dot-pop bg-[#E9E4DE] mr-1"></span>Noir</button>
-                <button class="tog btn" data-act="preset" data-p="warm"><span class="dot-pop bg-[#A55D35] mr-1"></span>Warm</button>
-                <button class="tog btn" data-act="preset" data-p="cool"><span class="dot-pop bg-[#37729C] mr-1"></span>Cool</button>
-                <button class="tog btn" data-act="preset" data-p="drama"><span class="dot-pop bg-[#091F46] mr-1"></span>Drama</button>
-                <button class="tog btn" data-act="preset" data-p="vivid"><span class="dot-pop bg-[#EFBF6A] mr-1"></span>Vivid</button>
-              </div>
-            </div>
-          </div>
-          <div id="p-transform" class="ed-panel hidden">
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              <button data-act="rot" data-d="-1" class="btn btn-ghost p-3 rounded-2xl flex flex-col items-center gap-1 font-semibold"><i class="ph-bold ph-arrow-counter-clockwise text-xl text-[#EFBF6A]"></i>Putar Kiri</button>
-              <button data-act="rot" data-d="1" class="btn btn-ghost p-3 rounded-2xl flex flex-col items-center gap-1 font-semibold"><i class="ph-bold ph-arrow-clockwise text-xl text-[#EFBF6A]"></i>Putar Kanan</button>
-              <button data-act="flip" data-d="h" class="btn btn-ghost p-3 rounded-2xl flex flex-col items-center gap-1 font-semibold"><i class="ph-bold ph-flip-horizontal text-xl text-[#37729C]"></i>Flip Horiz</button>
-              <button data-act="flip" data-d="v" class="btn btn-ghost p-3 rounded-2xl flex flex-col items-center gap-1 font-semibold"><i class="ph-bold ph-flip-vertical text-xl text-[#37729C]"></i>Flip Vert</button>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Dialog konfirmasi (Z-index 100 anti ketutup layar) -->
+    <!-- Dialog konfirmasi -->
     <div id="confirm" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div class="glass pop-in rounded-3xl p-6 w-full max-w-sm text-center">
+      <div class="glass rounded-3xl p-6 w-full max-w-sm text-center">
         <div class="w-14 h-14 rounded-2xl bg-[#A55D35]/20 text-[#A55D35] flex items-center justify-center text-3xl mx-auto mb-3">
           <i class="ph-duotone ph-warning-circle"></i>
         </div>
@@ -1448,27 +1161,23 @@
 
     <!-- Modal: Edit Profil -->
     <div id="profileModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center overflow-y-auto max-h-[90vh]">
         <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Edit Profile</h3>
         <div
           class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer"
           onclick="document.getElementById('profFile').click()"
           id="profPreviewBox"
         >
-          <span id="profInit" class="text-[#EFBF6A]">?</span><img id="profImg" class="w-full h-full object-cover hidden" />
+          <span id="profInit" class="text-[#EFBF6A]">?</span>
+          <img id="profImg" class="w-full h-full object-cover hidden" />
         </div>
-        <input type="file" id="profFile" class="hidden" accept="image/*" /><button onclick="document.getElementById('profFile').click()" class="text-xs text-[#EFBF6A] hover:underline mb-4 block mx-auto">Ganti Foto Profil</button>
+        <input type="file" id="profFile" class="hidden" accept="image/*" />
+        <button onclick="document.getElementById('profFile').click()" class="text-xs text-[#EFBF6A] hover:underline mb-4 block mx-auto">Ganti Foto Profil</button>
         <div class="space-y-3 text-left">
           <div><label class="text-xs text-[#7699AE]">Username</label><input id="profName" type="text" class="field mt-1" /></div>
           <div><label class="text-xs text-[#7699AE]">Bio</label><textarea id="profBio" class="field mt-1" rows="2" placeholder="Tulis bio singkat..."></textarea></div>
-          <div>
-            <label class="text-xs text-[#7699AE] flex items-center gap-1"><i class="ph-bold ph-instagram-logo text-[#EFBF6A]"></i> Username Instagram</label>
-            <input id="profInsta" type="text" class="field mt-1" placeholder="cth: naufal_22" />
-          </div>
-          <div>
-            <label class="text-xs text-[#7699AE] flex items-center gap-1"><i class="ph-bold ph-whatsapp-logo text-[#25D366]"></i> Nomor WhatsApp</label>
-            <input id="profWA" type="text" class="field mt-1" placeholder="cth: 08123456789" />
-          </div>
+          <div><label class="text-xs text-[#7699AE]">Username Instagram</label><input id="profInsta" type="text" class="field mt-1" placeholder="cth: naufal_22" /></div>
+          <div><label class="text-xs text-[#7699AE]">Nomor WhatsApp</label><input id="profWA" type="text" class="field mt-1" placeholder="cth: 08123456789" /></div>
         </div>
         <div class="grid grid-cols-2 gap-3 mt-5">
           <button
@@ -1478,21 +1187,20 @@
             "
             class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold"
           >
-            Batal</button
-          ><button onclick="saveProfile()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Simpan</button>
+            Batal
+          </button>
+          <button onclick="saveProfile()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Simpan</button>
         </div>
       </div>
     </div>
 
     <!-- Modal: View User Profile -->
     <div id="viewUserModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center">
         <div id="vUserAvatar" class="w-20 h-20 mx-auto rounded-full bg-[#0D2652] mb-3 border-2 border-[#EFBF6A] flex items-center justify-center text-2xl font-bold text-[#EFBF6A]">?</div>
         <h3 id="vUserName" class="font-extrabold text-lg text-[#E9E4DE]">Username</h3>
         <p id="vUserBio" class="text-xs text-[#7699AE] mt-1 mb-4">No bio set</p>
-
         <div class="flex justify-center items-center gap-4 py-3 border-t border-b border-[#37729C]/40 mb-5" id="vUserSocials"></div>
-
         <button
           onclick="
             document.getElementById('viewUserModal').classList.add('hidden');
@@ -1507,7 +1215,7 @@
 
     <!-- Modal: Buat / Rename Folder -->
     <div id="folderModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center">
         <div class="w-14 h-14 mx-auto bg-[#37729C]/30 text-[#EFBF6A] rounded-2xl flex items-center justify-center text-3xl mb-3 border border-[#EFBF6A]/30">
           <i class="ph-fill ph-folder"></i>
         </div>
@@ -1522,12 +1230,10 @@
 
     <!-- Modal: Pindah Folder -->
     <div id="moveModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm flex flex-col pop-in max-h-[80vh]">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm flex flex-col max-h-[80vh]">
         <h3 class="font-extrabold text-lg mb-1 text-[#E9E4DE] text-center">Pindahkan ke...</h3>
         <p class="text-xs text-[#7699AE] text-center mb-4">Pilih folder tujuan</p>
-
         <div class="overflow-y-auto flex-1 pr-2 space-y-2 mb-4 scrollbar-hide" id="moveFolderList"></div>
-
         <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#37729C]/40">
           <button onclick="closeMoveModal()" class="btn btn-ghost py-2.5 rounded-xl text-sm font-semibold">Batal</button>
           <button onclick="confirmMove()" class="btn btn-primary py-2.5 rounded-xl text-sm font-bold">Pindah</button>
@@ -1537,7 +1243,7 @@
 
     <!-- Modal: Reset Password -->
     <div id="forgotModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center">
         <h3 class="font-extrabold text-lg mb-2 text-[#E9E4DE]">Reset Password</h3>
         <p class="text-xs text-[#7699AE] mb-4">Masukkan email yang terdaftar.</p>
         <input id="forgotEmail" type="email" class="field text-left mb-5" placeholder="nama@email.com" />
@@ -1558,7 +1264,7 @@
 
     <!-- Modal: Buat Grup Baru -->
     <div id="createGroupModal" class="hidden fixed inset-0 z-[80] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center overflow-y-auto max-h-[90vh]">
         <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Buat Grup Baru</h3>
         <div class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer" onclick="document.getElementById('cgFile').click()">
           <span id="cgInit" class="text-[#EFBF6A]"><i class="ph-bold ph-camera"></i></span>
@@ -1577,9 +1283,9 @@
       </div>
     </div>
 
-    <!-- Modal: Edit Grup (Z-Index dinaikkan ke 90 agar tidak tertutup Galeri Grup) -->
+    <!-- Modal: Edit Grup -->
     <div id="editGroupModal" class="hidden fixed inset-0 z-[90] items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center pop-in overflow-y-auto max-h-[90vh]">
+      <div class="glass p-6 rounded-3xl w-full max-w-sm text-center overflow-y-auto max-h-[90vh]">
         <h3 class="font-extrabold text-lg mb-4 text-[#E9E4DE]">Edit Info Grup</h3>
         <div class="w-24 h-24 mx-auto rounded-full bg-[#0D2652] mb-2 overflow-hidden border-2 border-[#EFBF6A] flex items-center justify-center text-3xl font-bold cursor-pointer" onclick="document.getElementById('egFile').click()">
           <span id="egInit" class="text-[#EFBF6A]"><i class="ph-bold ph-camera"></i></span>
@@ -1612,9 +1318,6 @@
           </div>
         </div>
         <div class="flex items-center gap-2 shrink-0">
-          <button onclick="toast('Fitur undang teman akan segera hadir!', 'info')" class="btn btn-ghost px-3 py-1.5 rounded-xl text-xs font-bold text-[#EFBF6A] border border-[#37729C] hidden md:flex">
-            <i class="ph-bold ph-user-plus mr-1"></i> Undang
-          </button>
           <button
             onclick="
               document.getElementById('groupGalleryModal').classList.add('hidden');
@@ -1627,15 +1330,10 @@
         </div>
       </header>
       <div class="flex-1 flex overflow-hidden flex-col md:flex-row">
-        <!-- Sidebar Anggota -->
         <div class="w-full md:w-64 glass md:border-r border-[#37729C]/40 p-4 flex flex-col gap-3 overflow-y-auto border-b md:border-b-0 max-h-[160px] md:max-h-none shrink-0">
-          <div class="flex justify-between items-center mb-1">
-            <h4 class="font-bold text-[#E9E4DE] text-sm">Anggota Grup</h4>
-            <button onclick="toast('Fitur undang teman akan segera hadir!', 'info')" class="md:hidden text-[#EFBF6A] text-xs font-bold"><i class="ph-bold ph-user-plus"></i></button>
-          </div>
+          <h4 class="font-bold text-[#E9E4DE] text-sm">Anggota Grup</h4>
           <div id="ggMembersList" class="space-y-2 flex-1 scrollbar-hide overflow-y-auto"></div>
         </div>
-        <!-- Grid Galeri -->
         <div class="flex-1 p-4 md:p-6 overflow-auto">
           <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
             <p class="text-xs text-[#7699AE]">Foto yang diunggah akan muncul secara realtime untuk semua anggota.</p>
@@ -1647,67 +1345,331 @@
       </div>
     </div>
 
+    <!-- Modal: Upgrade Kapasitas 10 TB (Rp 50.000) -->
+    <div id="upgradeModal" class="hidden fixed inset-0 z-[85] items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div class="glass p-6 rounded-[28px] w-full max-w-md text-center relative overflow-hidden border border-[#EFBF6A]/40">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#EFBF6A] to-[#A55D35] text-[#091F46] flex items-center justify-center text-3xl mb-3 shadow-lg">
+          <i class="ph-fill ph-crown"></i>
+        </div>
+        <span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-[#EFBF6A]/20 text-[#EFBF6A] border border-[#EFBF6A]/30">MyCloud Pro Storage</span>
+        <h3 class="font-extrabold text-xl mt-2 text-[#E9E4DE]">Upgrade Kapasitas ke 10 TB</h3>
+        <p class="text-xs text-[#7699AE] mt-1 mb-4">Gandakan ruang penyimpanan brankas cloud Anda dari 5 TB menjadi 10 TB permanen.</p>
+
+        <div class="bg-[#05122B]/70 border border-white/10 rounded-2xl p-4 text-left space-y-2.5 mb-4">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-[#7699AE]">Kapasitas Saat Ini</span>
+            <span class="font-bold text-[#E9E4DE]">5 TB (Gratis)</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-[#7699AE]">Kapasitas Baru</span>
+            <span class="font-extrabold text-[#EFBF6A]">10 TB (+5 TB Ekstra)</span>
+          </div>
+          <div class="h-px bg-white/10 my-1"></div>
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-semibold text-[#E9E4DE]">Total Pembayaran</span>
+            <span class="text-lg font-extrabold text-[#EFBF6A]">Rp 50.000</span>
+          </div>
+        </div>
+
+        <div class="text-left space-y-3 mb-5">
+          <div>
+            <label class="block text-[11px] font-semibold text-[#7699AE] mb-1">Metode Pembayaran</label>
+            <select id="upPayMethod" class="field text-xs">
+              <option value="QRIS">QRIS (Dana / OVO / GoPay / ShopeePay / M-Banking)</option>
+              <option value="BCA">Transfer Bank BCA - 1234567890 (a.n. MyCloud Archive)</option>
+              <option value="DANA">E-Wallet DANA / GoPay - 081234567890</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#7699AE] mb-1">Unggah Bukti Transfer (Opsional untuk Verifikasi)</label>
+            <input id="upProofFile" type="file" accept="image/*" class="field text-xs !py-2" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="closeUpgradeModal()" class="btn btn-ghost py-3 rounded-2xl text-xs font-bold">Nanti Saja</button>
+          <button onclick="confirmUpgrade10TB()" class="btn btn-primary py-3 rounded-2xl text-xs font-extrabold flex items-center justify-center gap-1.5"><i class="ph-bold ph-check-circle text-base"></i> Konfirmasi &amp; Aktifkan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Konfigurasi Supabase API Key -->
+    <div id="apiConfigModal" class="hidden fixed inset-0 z-[95] items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+      <div class="glass p-6 rounded-[28px] w-full max-w-md text-left border border-[#EFBF6A]/40">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-11 h-11 rounded-2xl bg-[#EFBF6A]/20 text-[#EFBF6A] flex items-center justify-center text-2xl shrink-0">
+            <i class="ph-duotone ph-key"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-[#E9E4DE]">Konfigurasi Supabase API</h3>
+            <p class="text-[11px] text-[#7699AE]">Salin dari Supabase &rarr; Project Settings &rarr; API</p>
+          </div>
+        </div>
+        <div class="space-y-3 mb-5">
+          <div>
+            <label class="block text-[11px] font-semibold text-[#7699AE] mb-1">Project URL</label>
+            <input id="cfgSbUrl" type="url" class="field text-xs" placeholder="https://yfvddvhdixjhuwoqaebz.supabase.co" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#7699AE] mb-1">Anon Public Key</label>
+            <textarea id="cfgSbKey" rows="3" class="field text-xs font-mono" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" onclick="closeApiConfigModal()" class="btn btn-ghost py-2.5 rounded-xl text-xs font-bold">Batal</button>
+          <button type="button" onclick="saveApiConfig()" class="btn btn-primary py-2.5 rounded-xl text-xs font-extrabold">Simpan &amp; Hubungkan</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast -->
     <div id="toasts"></div>
 
     <script>
       (() => {
-        "use strict";
         /* =====================================================================
-           UTIL & HELPERS
+           KONFIGURASI SUPABASE & STATE UTAMA
            ===================================================================== */
+        const DEFAULT_SB_URL = "https://yfvddvhdixjhuwoqaebz.supabase.co";
+        const DEFAULT_SB_KEY = "sb_publishable_Y2FnuTV0HpR2GliMxw1nEQ_TToYiHuy";
+
+        // Bersihkan cache key lama di localStorage jika masih menyimpan key lama yang tidak valid
+        const cachedKey = localStorage.getItem("mycloud_sb_key");
+        if (
+          cachedKey &&
+          cachedKey.startsWith(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmdmRkdmhkaXhqaHV3b3FhZWJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzg3OTIsImV4cCI6MjA5MDgxNDc5Mn0.Q-3s1O8G5tF7P4W7i8K8c2m9S9p4Y7q5L1z8R6n3W0E",
+          )
+        ) {
+          localStorage.removeItem("mycloud_sb_key");
+        }
+
+        let SB_URL = (localStorage.getItem("mycloud_sb_url") || DEFAULT_SB_URL).trim();
+        let SB_KEY = (localStorage.getItem("mycloud_sb_key") || DEFAULT_SB_KEY).trim();
+        let sb = null;
+
+        function initSupabaseClient() {
+          if (!window.supabase || !SB_URL || !SB_KEY) return null;
+          try {
+            return window.supabase.createClient(SB_URL, SB_KEY, {
+              auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+              },
+            });
+          } catch (err) {
+            console.error("Supabase init error:", err);
+            return null;
+          }
+        }
+
+        sb = initSupabaseClient();
+
+        window.openApiConfigModal = () => {
+          $("#cfgSbUrl").value = SB_URL;
+          $("#cfgSbKey").value = SB_KEY;
+          $("#apiConfigModal").classList.remove("hidden");
+          $("#apiConfigModal").classList.add("flex");
+        };
+
+        window.closeApiConfigModal = () => {
+          $("#apiConfigModal").classList.add("hidden");
+          $("#apiConfigModal").classList.remove("flex");
+        };
+
+        window.saveApiConfig = () => {
+          const newUrl = $("#cfgSbUrl").value.trim().replace(/\/$/, "");
+          const newKey = $("#cfgSbKey").value.trim();
+          if (!newUrl || !newKey) return toast("Project URL dan Anon Key wajib diisi!", "error");
+          localStorage.setItem("mycloud_sb_url", newUrl);
+          localStorage.setItem("mycloud_sb_key", newKey);
+          SB_URL = newUrl;
+          SB_KEY = newKey;
+          sb = initSupabaseClient();
+          bindAuthListeners();
+          closeApiConfigModal();
+          toast("API Key Supabase diperbarui! Silakan login kembali.", "success");
+        };
+
         const $ = (s) => document.querySelector(s);
-        const $$ = (s) => [...document.querySelectorAll(s)];
-        const esc = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-        const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-        const uid = (p) => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const fine = matchMedia("(hover: hover) and (pointer: fine)").matches && !reduced;
+        const $$ = (s) => Array.from(document.querySelectorAll(s));
+        const uid = (p = "") => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-        function fmtBytes(b) {
-          if (!b) return "0 B";
-          const k = 1024,
-            u = ["B", "KB", "MB", "GB", "TB"];
-          const i = Math.min(u.length - 1, Math.floor(Math.log(b) / Math.log(k)));
-          return parseFloat((b / Math.pow(k, i)).toFixed(i ? 1 : 0)) + " " + u[i];
-        }
+        const S = {
+          account: null,
+          files: [],
+          folders: [],
+          friends: [],
+          groups: [],
+          currentFolder: null,
+          filter: "all",
+          search: "",
+          viewSize: "md",
+          isSelecting: false,
+          selectedItems: new Set(),
+          urls: new Map(),
+        };
 
-        const fmtDate = (ts) => new Date(ts).toLocaleString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
-
-        function extOf(name) {
-          const parts = String(name || "").split(".");
-          return parts.length > 1 ? parts.pop().toLowerCase() : "";
-        }
+        /* =====================================================================
+           HELPER FORMAT, KATEGORI & MEDIA
+           ===================================================================== */
+        const extOf = (name) =>
+          (
+            String(name || "")
+              .split(".")
+              .pop() || ""
+          ).toLowerCase();
 
         function catOf(mime, name) {
-          const ext = extOf(name);
-          if (/^image\//.test(mime) || ["jpg", "jpeg", "png", "gif", "webp", "heic", "svg", "bmp"].includes(ext)) return "image";
-          if (/^video\//.test(mime) || ["mp4", "webm", "mkv", "mov", "avi"].includes(ext)) return "video";
-          if (/^audio\//.test(mime) || ["mp3", "wav", "ogg", "flac", "m4a"].includes(ext)) return "audio";
+          const m = String(mime || "").toLowerCase();
+          const e = extOf(name);
+          if (m.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp", "heic", "heif", "svg", "bmp"].includes(e)) return "image";
+          if (m.startsWith("video/") || ["mp4", "mov", "webm", "mkv", "avi", "m4v", "3gp"].includes(e)) return "video";
+          if (m.startsWith("audio/") || ["mp3", "wav", "ogg", "m4a", "aac", "flac"].includes(e)) return "audio";
           return "document";
         }
 
-        function visibleFolders() {
-          let list = S.folders.filter((f) => (S.currentFolder ? f.parentId === S.currentFolder : !f.parentId));
-          if (S.search) {
-            const q = S.search.toLowerCase();
-            list = list.filter((f) => f.name.toLowerCase().includes(q));
+        function fmtBytes(b) {
+          const n = Number(b) || 0;
+          if (n === 0) return "0 B";
+          const u = ["B", "KB", "MB", "GB", "TB"];
+          const i = Math.min(u.length - 1, Math.floor(Math.log(n) / Math.log(1024)));
+          return (n / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 2) + " " + u[i];
+        }
+
+        function fmtDate(ts) {
+          if (!ts) return "-";
+          return new Date(Number(ts)).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+        }
+
+        function urlFor(rec, kind = "full") {
+          const key = rec.id + ":" + kind;
+          if (S.urls.has(key)) return S.urls.get(key);
+          if (rec.blob) {
+            const u = URL.createObjectURL(rec.blob);
+            S.urls.set(key, u);
+            return u;
           }
-          return list;
+          if (sb) {
+            const targetPath = kind === "thumb" && rec.thumb_path ? rec.thumb_path : rec.path;
+            if (targetPath) {
+              if (targetPath.startsWith("http")) return targetPath;
+              const { data } = sb.storage.from("vault").getPublicUrl(targetPath);
+              if (data && data.publicUrl) {
+                S.urls.set(key, data.publicUrl);
+                return data.publicUrl;
+              }
+            }
+          }
+          return "";
+        }
+
+        function revokeFor(id) {
+          ["thumb", "full"].forEach((k) => {
+            const u = S.urls.get(id + ":" + k);
+            if (u && u.startsWith("blob:")) URL.revokeObjectURL(u);
+            S.urls.delete(id + ":" + k);
+          });
+        }
+
+        function loadBitmap(blobOrUrl) {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            const isBlob = blobOrUrl instanceof Blob;
+            const url = isBlob ? URL.createObjectURL(blobOrUrl) : blobOrUrl;
+            img.onload = () => {
+              if (isBlob) URL.revokeObjectURL(url);
+              resolve(img);
+            };
+            img.onerror = (e) => {
+              if (isBlob) URL.revokeObjectURL(url);
+              reject(e);
+            };
+            img.src = url;
+          });
+        }
+
+        const srcSize = (s) => ({ w: s.naturalWidth || s.videoWidth || s.width || 1, h: s.naturalHeight || s.videoHeight || s.height || 1 });
+        const toBlobP = (canvas, type = "image/jpeg", q = 0.85) => new Promise((res) => canvas.toBlob(res, type, q));
+
+        async function makeThumb(file, mime) {
+          try {
+            const img = await loadBitmap(file);
+            const { w, h } = srcSize(img);
+            const scale = Math.min(1, 520 / Math.max(w, h));
+            const c = document.createElement("canvas");
+            c.width = Math.max(1, Math.round(w * scale));
+            c.height = Math.max(1, Math.round(h * scale));
+            c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+            const blob = await toBlobP(c, "image/jpeg", 0.78);
+            return { blob, w, h };
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function visibleFolders() {
+          if (S.currentFolder) return [];
+          const q = S.search.trim().toLowerCase();
+          return S.folders.filter((f) => !q || (f.name || "").toLowerCase().includes(q));
         }
 
         function visibleFiles() {
-          let list = S.files.filter((f) => (S.currentFolder ? f.folderId === S.currentFolder : !f.folderId));
-          if (S.filter !== "all") {
-            if (S.filter === "live") list = list.filter((f) => f.category === "video" || f.isLive);
-            else if (S.filter === "edited") list = list.filter((f) => f.edited);
-            else list = list.filter((f) => f.category === S.filter);
-          }
-          if (S.search) {
-            const q = S.search.toLowerCase();
-            list = list.filter((f) => f.name.toLowerCase().includes(q));
-          }
-          return list;
+          const curFolder = S.currentFolder ? String(S.currentFolder) : null;
+          const q = S.search.trim().toLowerCase();
+          const seen = new Set();
+
+          return S.files.filter((f) => {
+            const fid = String(f.id);
+            if (seen.has(fid)) return false;
+            seen.add(fid);
+
+            const itemFolder = f.folderId || f.folder_id || null;
+            const normFolder = itemFolder ? String(itemFolder) : null;
+
+            if (!q) {
+              if (normFolder !== curFolder) return false;
+            } else {
+              if (!(f.name || "").toLowerCase().includes(q)) return false;
+            }
+
+            if (S.filter === "image" && f.category !== "image") return false;
+            if (S.filter === "live" && f.category !== "video" && !f.isLive) return false;
+            if (S.filter === "document" && f.category !== "document" && f.category !== "audio") return false;
+            if (S.filter === "edited" && !f.edited) return false;
+
+            return true;
+          });
+        }
+
+        /* =====================================================================
+           DIALOG KONFIRMASI & TOAST
+           ===================================================================== */
+        const confirmOpen = () => !$("#confirm").classList.contains("hidden");
+
+        function confirmBox(title, msg, okLabel = "Hapus") {
+          return new Promise((resolve) => {
+            const box = $("#confirm");
+            $("#cfTitle").textContent = title;
+            $("#cfMsg").textContent = msg;
+            $("#cfOk").textContent = okLabel;
+            box.classList.remove("hidden");
+            box.classList.add("flex");
+
+            const cleanup = (val) => {
+              box.classList.add("hidden");
+              box.classList.remove("flex");
+              $("#cfOk").onclick = null;
+              $("#cfCancel").onclick = null;
+              resolve(val);
+            };
+            $("#cfOk").onclick = () => cleanup(true);
+            $("#cfCancel").onclick = () => cleanup(false);
+          });
         }
 
         function updateStats() {
@@ -1715,621 +1677,476 @@
             sizeEl = $("#statSize"),
             barEl = $("#deviceBar"),
             devEl = $("#statDevice");
+          const planLabelEl = $("#statPlanLabel"),
+            btnUpgradeEl = $("#btnUpgradePlan");
           const totalSize = S.files.reduce((acc, f) => acc + (f.size || 0), 0);
-          if (countEl) countTo(countEl, S.files.length, (v) => Math.round(v).toString());
+          // Kapasitas dasar 5 TB (kecuali akun sudah aktif paket Pro 10 TB)
+          const isPro = S.account && S.account.plan === "10tb";
+          const maxTB = isPro ? 10 : 5;
+          const maxBytes = maxTB * 1024 * 1024 * 1024 * 1024;
+
+          if (countEl) countEl.textContent = S.files.length.toString();
           if (sizeEl) sizeEl.textContent = fmtBytes(totalSize);
-          const maxBytes = 2 * 1024 * 1024 * 1024 * 1024; // 2 TB
           const pct = Math.min(100, Math.max(0.5, (totalSize / maxBytes) * 100));
           if (barEl) barEl.style.width = pct.toFixed(2) + "%";
-          if (devEl) devEl.textContent = fmtBytes(totalSize) + " / 2 TB";
+          if (devEl) devEl.textContent = `${fmtBytes(totalSize)} / ${maxTB} TB`;
+
+          if (planLabelEl) {
+            planLabelEl.innerHTML = isPro ? `<span class="text-[#EFBF6A] font-bold"><i class="ph-fill ph-crown"></i> Paket Pro 10 TB Aktif</span>` : `Paket Dasar · Max : 5 TB`;
+          }
+          if (btnUpgradeEl) {
+            btnUpgradeEl.classList.toggle("hidden", isPro);
+          }
         }
 
         function toast(msg, type = "info", ms = 3200) {
-          const icons = { info: "ph-info", success: "ph-check-circle", error: "ph-warning-circle" };
+          const box = $("#toasts");
+          if (!box) return;
           const el = document.createElement("div");
-          el.className = "toast toast-" + type;
-          el.innerHTML = `<i class="ph-fill ${icons[type] || icons.info} text-xl"></i><span>${esc(msg)}</span><div class="toast-bar" style="animation-duration:${ms}ms"></div>`;
-          $("#toasts").appendChild(el);
+          const icon = type === "success" ? "ph-check-circle" : type === "error" ? "ph-warning-circle" : "ph-info";
+          el.className = `toast toast-${type}`;
+          el.innerHTML = `<i class="ph-fill ${icon} text-lg shrink-0"></i><span>${esc(msg)}</span><div class="toast-bar" style="animation-duration:${ms}ms"></div>`;
+          box.appendChild(el);
           setTimeout(() => {
             el.classList.add("out");
-            setTimeout(() => el.remove(), 380);
+            setTimeout(() => el.remove(), 360);
           }, ms);
         }
 
-        function confirmBox(title, msg, okLabel = "Hapus") {
-          return new Promise((res) => {
-            $("#cfTitle").textContent = title;
-            $("#cfMsg").textContent = msg;
-            $("#cfOk").textContent = okLabel;
-            const m = $("#confirm");
-            m.classList.remove("hidden");
-            m.classList.add("flex");
-            const done = (v) => {
-              m.classList.add("hidden");
-              m.classList.remove("flex");
-              $("#cfOk").onclick = $("#cfCancel").onclick = null;
-              res(v);
-            };
-            $("#cfOk").onclick = () => done(true);
-            $("#cfCancel").onclick = () => done(false);
-          });
-        }
-        const confirmOpen = () => !$("#confirm").classList.contains("hidden");
-
-        function countTo(el, to, fmt) {
-          const from = parseFloat(el.dataset.v || 0);
-          el.dataset.v = to;
-          if (reduced) {
-            el.textContent = fmt(to);
-            return;
-          }
-          const t0 = performance.now(),
-            dur = 650;
-          (function step(t) {
-            const p = Math.min(1, (t - t0) / dur),
-              e = 1 - Math.pow(1 - p, 3);
-            el.textContent = fmt(from + (to - from) * e);
-            if (p < 1) requestAnimationFrame(step);
-          })(t0);
-        }
-
-        function loadBitmap(blob) {
-          if (window.createImageBitmap) {
-            return createImageBitmap(blob).catch(() => loadViaImg(blob));
-          }
-          return loadViaImg(blob);
-        }
-
-        function loadViaImg(blob) {
-          return new Promise((res, rej) => {
-            const u = URL.createObjectURL(blob),
-              im = new Image();
-            im.onload = () => {
-              res(im);
-              setTimeout(() => URL.revokeObjectURL(u), 4e3);
-            };
-            im.onerror = () => {
-              URL.revokeObjectURL(u);
-              rej(new Error("Gagal membaca gambar"));
-            };
-            im.src = u;
-          });
-        }
-
-        const srcSize = (s) => ({ w: s.naturalWidth || s.width, h: s.naturalHeight || s.height });
-
-        function newCanvas(w, h) {
-          const c = document.createElement("canvas");
-          c.width = w;
-          c.height = h;
-          c.getContext("2d", { willReadFrequently: true });
-          return c;
-        }
-
-        const toBlobP = (cv2, type, q) => new Promise((res) => cv2.toBlob(res, type, q));
-
-        async function makeThumb(blob, mime) {
-          try {
-            const src = await loadBitmap(blob);
-            const { w, h } = srcSize(src);
-            if (!w || !h) return null;
-            const sc = Math.min(1, 640 / Math.max(w, h));
-            const c = document.createElement("canvas");
-            c.width = Math.max(1, Math.round(w * sc));
-            c.height = Math.max(1, Math.round(h * sc));
-            c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
-            if (src.close) src.close();
-            const keepAlpha = /png|webp|gif/.test(mime || "");
-            const tb = await toBlobP(c, keepAlpha ? "image/png" : "image/jpeg", 0.8);
-            return tb ? { blob: tb, w, h } : null;
-          } catch (e) {
-            return null;
-          }
-        }
-
         /* =====================================================================
-           STATE & CONFIG SUPABASE
+           AUTENTIKASI & SINKRONISASI DATA CLOUD (FAST LOGIN 0ms DELAY)
            ===================================================================== */
-        const S = {
-          account: null,
-          files: [],
-          folders: [],
-          friends: [],
-          groups: [],
-          filter: "all",
-          search: "",
-          urls: new Map(),
-          currentFolder: null,
-          viewSize: "md",
-          isSelecting: false,
-          selectedItems: new Set(),
-        };
-
-        const SUPABASE_URL = "https://yfvddvhdixjhuwoqaebz.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_Y2FnuTV0HpR2GliMxw1nEQ_TToYiHuy";
-        let sb = null;
-        try {
-          if (window.supabase && /^https?:\/\//.test(SUPABASE_URL)) {
-            sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-          }
-        } catch (e) {
-          console.warn("Supabase init optional warning:", e);
-        }
-
-        function urlFor(rec, kind) {
-          const isThumb = kind === "thumb";
-          const path = isThumb ? rec.thumb_path || rec.path : rec.path;
-
-          if (path && sb) {
-            try {
-              return sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
-            } catch (e) {}
-          }
-
-          const k = rec.id + ":" + kind;
-          if (!S.urls.has(k)) {
-            const b = isThumb ? rec.thumb || rec.blob : rec.blob;
-            if (b) S.urls.set(k, URL.createObjectURL(b));
-          }
-          return S.urls.get(k) || "";
-        }
-
-        function revokeFor(id) {
-          for (const k of [...S.urls.keys()]) {
-            if (k.startsWith(id + ":")) {
-              URL.revokeObjectURL(S.urls.get(k));
-              S.urls.delete(k);
-            }
-          }
-        }
-
-        function revokeAll() {
-          S.urls.forEach((u) => URL.revokeObjectURL(u));
-          S.urls.clear();
-        }
-
         const accFromUser = (u) => {
           const m = u.user_metadata || {};
-          return { userKey: u.id, email: u.email || "", username: m.full_name || m.name || (u.email || "user").split("@")[0], bio: m.bio || "", instagram: m.instagram || "", whatsapp: m.whatsapp || "", avatarUrl: m.avatar_url || "" };
+          return {
+            userKey: u.id,
+            email: u.email || "",
+            username: m.full_name || m.name || (u.email || "user").split("@")[0],
+            bio: m.bio || "",
+            instagram: m.instagram || "",
+            whatsapp: m.whatsapp || "",
+            avatarUrl: m.avatar_url || "",
+            plan: m.storage_plan || "5tb",
+          };
         };
 
-        const authMsg = (m) => (/invalid login/i.test(m) ? "Email atau password salah" : /not confirmed/i.test(m) ? "Email belum dikonfirmasi." : /already registered/i.test(m) ? "Email sudah terdaftar." : m);
-        const redirectUrl = () => location.origin + location.pathname;
+        const authMsg = (m) => {
+          if (/invalid api key/i.test(m)) return "API Key Supabase tidak cocok! Klik 'Konfigurasi Supabase API Key' di bawah untuk menempel Anon Key yang asli.";
+          if (/invalid login/i.test(m)) return "Email atau password salah";
+          if (/not confirmed/i.test(m)) return "Email belum dikonfirmasi.";
+          if (/already registered/i.test(m)) return "Email sudah terdaftar.";
+          return m;
+        };
 
         function switchAuth(tab) {
-          const login = tab === "login";
-          $("#tabLogin").classList.toggle("on", login);
-          $("#tabRegister").classList.toggle("on", !login);
-          $("#authInd").style.transform = login ? "translateX(0)" : "translateX(100%)";
-          const show = login ? $("#loginForm") : $("#registerForm"),
-            hide = login ? $("#registerForm") : $("#loginForm");
-          hide.classList.add("hidden");
-          hide.classList.remove("fade-up");
-          show.classList.remove("hidden");
-          void show.offsetWidth;
-          show.classList.add("fade-up");
+          const isLogin = tab === "login";
+          $("#tabLogin").classList.toggle("on", isLogin);
+          $("#tabRegister").classList.toggle("on", !isLogin);
+          $("#authInd").style.transform = isLogin ? "translateX(0)" : "translateX(100%)";
+          $("#loginForm").classList.toggle("hidden", !isLogin);
+          $("#registerForm").classList.toggle("hidden", isLogin);
         }
 
-        function authBusy(on, text) {
-          $("#authLoading").classList.toggle("hidden", !on);
-          $("#authLoading").classList.toggle("flex", on);
-          if (text) $("#authLoadingText").textContent = text;
+        function setAuthBusy(busy, text = "Memproses...") {
+          const ld = $("#authLoading");
+          const lf = $("#loginForm");
+          const rf = $("#registerForm");
+          if (busy) {
+            $("#authLoadingText").textContent = text;
+            ld.classList.remove("hidden");
+            ld.classList.add("flex");
+            lf.classList.add("hidden");
+            rf.classList.add("hidden");
+          } else {
+            ld.classList.add("hidden");
+            ld.classList.remove("flex");
+            const isLogin = $("#tabLogin").classList.contains("on");
+            lf.classList.toggle("hidden", !isLogin);
+            rf.classList.toggle("hidden", isLogin);
+          }
         }
 
-        function authShake() {
-          const c = $("#authCard");
-          c.classList.remove("shake");
-          void c.offsetWidth;
-          c.classList.add("shake");
+        function updateAvatarUI(url, name) {
+          const init = (name && name[0] ? name[0] : "?").toUpperCase();
+          const img = $("#hdrAvatarImg");
+          const ini = $("#hdrAvatarInit");
+          if (url) {
+            img.src = url;
+            img.classList.remove("hidden");
+            ini.classList.add("hidden");
+          } else {
+            img.classList.add("hidden");
+            ini.classList.remove("hidden");
+            ini.textContent = init;
+          }
         }
 
-        /* =====================================================================
-           PERSISTENCE & SAFE CALLS
-           ===================================================================== */
         async function upsertProfile(acc) {
-          if (!sb) return;
+          if (!sb || !acc) return;
           try {
-            const payload = {
+            await sb.from("profiles").upsert({
               id: acc.userKey,
               username: acc.username,
               email: acc.email,
-              bio: acc.bio || "",
-              instagram: acc.instagram || "",
-              whatsapp: acc.whatsapp || "",
-              avatar_url: acc.avatarUrl || "",
-            };
-            let { error } = await sb.from("profiles").upsert(payload);
-            if (error) {
-              // Jika gagal karena kolom avatar_url tidak ada, coba simpan tanpa foto profil
-              delete payload.avatar_url;
-              await sb.from("profiles").upsert(payload);
-            }
-          } catch (e) {
-            console.warn(e);
-          }
+              bio: acc.bio,
+              instagram: acc.instagram,
+              whatsapp: acc.whatsapp,
+              avatar_url: acc.avatarUrl,
+            });
+          } catch (e) {}
         }
 
         async function loadFolders() {
           if (!sb || !S.account) return;
           try {
-            let res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
-            if (res.error) {
-              res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
-            }
+            let res = await sb.from("folders").select("*").or(`userKey.eq.${S.account.userKey},user_id.eq.${S.account.userKey},userkey.eq.${S.account.userKey}`);
+            if (res.error) res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
             if (!res.error && res.data) {
-              S.folders = res.data;
+              S.folders = res.data.map((f) => ({
+                ...f,
+                id: String(f.id),
+                userKey: f.userKey || f.user_id || f.userkey || S.account.userKey,
+                name: f.name,
+                createdAt: f.createdAt || f.created_at || Date.now(),
+              }));
+              S.folders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             }
-          } catch (e) {
-            S.folders = [];
-          }
+          } catch (e) {}
         }
 
         async function loadFiles() {
           if (!sb || !S.account) return;
           try {
-            let res = await sb.from("files").select("*").eq("userKey", S.account.userKey);
-            if (res.error) {
-              res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
+            const { data, error } = await sb.from("files").select("*").eq("userKey", S.account.userKey);
+            if (!error && data) {
+              S.files = data.map((f) => ({
+                ...f,
+                id: String(f.id),
+                category: f.category || catOf(f.mime, f.name),
+                folderId: f.folderId || f.folder_id || null,
+                createdAt: f.createdAt || f.created_at || Date.now(),
+              }));
+              S.files.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             }
-            if (!res.error && res.data) {
-              S.files = res.data;
-            }
-          } catch (e) {
-            S.files = [];
-          }
-          renderGrid();
-          updateStats();
+          } catch (e) {}
         }
 
         async function loadFriends() {
           if (!sb || !S.account) return;
           try {
-            let res = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
-            if (res.error) {
-              res = await sb.from("friends").select("*").eq("user_id", S.account.userKey);
-            }
-            if (res.data) {
-              S.friends = res.data;
-              if ($("#friendsSec") && !$("#friendsSec").classList.contains("hidden")) {
-                window.renderFriends();
-              }
-            }
-          } catch (e) {
-            S.friends = [];
-          }
+            const { data } = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
+            if (data) S.friends = data;
+          } catch (e) {}
         }
 
         async function loadGroups() {
           if (!sb || !S.account) return;
           try {
-            const { data: memberOf } = await sb.from("group_members").select("group_id").eq("user_id", S.account.userKey);
-            if (!memberOf || memberOf.length === 0) {
-              S.groups = [];
-              window.renderGroups();
-              return;
+            const { data: mems } = await sb.from("group_members").select("group_id").eq("user_id", S.account.userKey);
+            if (mems && mems.length > 0) {
+              const gIds = mems.map((m) => m.group_id);
+              const { data: grps } = await sb.from("groups").select("*").in("id", gIds);
+              if (grps) {
+                S.groups = grps;
+                if (typeof window.renderGroups === "function") window.renderGroups();
+              }
             }
-            const groupIds = memberOf.map((m) => m.group_id);
-            const { data: groupsData } = await sb.from("groups").select("*").in("id", groupIds);
-            S.groups = groupsData || [];
-            window.renderGroups();
-          } catch (e) {
-            S.groups = [];
+          } catch (e) {}
+        }
+
+        // Masuk ke Vault secara instan tanpa menunggu network selesai
+        function enterVault(user) {
+          if (!user) return;
+          const isSameUser = S.account && S.account.userKey === user.id;
+          S.account = accFromUser(user);
+
+          $("#authScreen").classList.add("hidden");
+          $("#app").classList.remove("hidden");
+          $("#app").classList.add("flex");
+          setAuthBusy(false);
+
+          $("#hdrName").textContent = S.account.username;
+          $("#hdrKey").textContent = `ID: ${S.account.userKey.slice(0, 8)}...`;
+          updateAvatarUI(S.account.avatarUrl, S.account.username);
+          updateStats();
+
+          if (!isSameUser && sb) {
+            // Sinkronisasi profil & seluruh data secara paralel di background
+            Promise.allSettled([
+              sb
+                .from("profiles")
+                .select("*")
+                .eq("id", S.account.userKey)
+                .single()
+                .then(({ data }) => {
+                  if (data) {
+                    S.account.username = data.username || S.account.username;
+                    S.account.bio = data.bio || S.account.bio;
+                    S.account.instagram = data.instagram || S.account.instagram;
+                    S.account.whatsapp = data.whatsapp || S.account.whatsapp;
+                    S.account.avatarUrl = data.avatar_url || S.account.avatarUrl;
+                    $("#hdrName").textContent = S.account.username;
+                    updateAvatarUI(S.account.avatarUrl, S.account.username);
+                  } else {
+                    upsertProfile(S.account);
+                  }
+                }),
+              loadFolders().then(() => renderGrid()),
+              loadFiles().then(() => {
+                renderGrid();
+                updateStats();
+              }),
+              loadFriends(),
+              loadGroups(),
+            ]);
+          }
+        }
+
+        function showAuthScreen() {
+          S.account = null;
+          S.files = [];
+          S.folders = [];
+          S.friends = [];
+          S.groups = [];
+          S.currentFolder = null;
+          $("#app").classList.add("hidden");
+          $("#app").classList.remove("flex");
+          $("#authScreen").classList.remove("hidden");
+          setAuthBusy(false);
+        }
+
+        async function doLogin(e) {
+          e.preventDefault();
+          const email = $("#loginUser").value.trim();
+          const password = $("#loginPin").value;
+          if (!email || !password) return;
+          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
+
+          setAuthBusy(true, "Membuka brankas...");
+          try {
+            const { data, error } = await sb.auth.signInWithPassword({ email, password });
+            if (error) {
+              setAuthBusy(false);
+              $("#authCard").classList.add("shake");
+              setTimeout(() => $("#authCard").classList.remove("shake"), 500);
+              if (/invalid api key/i.test(error.message)) {
+                openApiConfigModal();
+              }
+              return toast(authMsg(error.message), "error", 5000);
+            }
+            if (data && data.user) {
+              enterVault(data.user);
+              toast(`Selamat datang kembali, ${accFromUser(data.user).username}!`, "success");
+            }
+          } catch (err) {
+            setAuthBusy(false);
+            toast("Gagal masuk ke akun", "error");
           }
         }
 
         async function doRegister(e) {
           e.preventDefault();
-          if (!sb) return toast("Supabase tidak aktif", "error");
-          const email = $("#regUser").value.trim(),
-            pw = $("#regPin").value,
-            pw2 = $("#regPin2").value;
-          if (!/^\S+@\S+\.\S+$/.test(email)) {
-            authShake();
-            return toast("Format email tidak valid", "error");
-          }
-          if (pw.length < 6) {
-            authShake();
-            return toast("Password minimal 6 karakter", "error");
-          }
-          if (pw !== pw2) {
-            authShake();
-            return toast("Konfirmasi password tidak cocok", "error");
-          }
-          $("#registerForm").classList.add("hidden");
-          authBusy(true, "Membuat akun...");
+          const email = $("#regUser").value.trim();
+          const p1 = $("#regPin").value;
+          const p2 = $("#regPin2").value;
+          if (p1.length < 6) return toast("Password minimal 6 karakter", "error");
+          if (p1 !== p2) return toast("Konfirmasi password tidak cocok", "error");
+          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
 
-          // Ekstrak nama default dari email agar database tidak menolak data kosong
-          const defaultUsername = email.split("@")[0];
-
-          // Sisipkan data username ke dalam metadata Supabase Auth
-          const { data, error } = await sb.auth.signUp({
-            email,
-            password: pw,
-            options: {
-              data: {
-                username: defaultUsername,
-                full_name: defaultUsername,
-                name: defaultUsername,
+          setAuthBusy(true, "Membuat brankas baru...");
+          try {
+            const { data, error } = await sb.auth.signUp({
+              email,
+              password: p1,
+              options: {
+                data: {
+                  full_name: email.split("@")[0],
+                  storage_plan: "5tb",
+                },
               },
-              emailRedirectTo: redirectUrl(),
-            },
-          });
-
-          authBusy(false);
-          $("#registerForm").classList.remove("hidden");
-
-          if (error) {
-            authShake();
-            if (error.message.includes("Database error saving new user")) {
-              return toast("Error Database Supabase: Cek SQL Editor (Trigger RLS)", "error", 6000);
+            });
+            if (error) {
+              setAuthBusy(false);
+              return toast(authMsg(error.message), "error");
             }
-            return toast(authMsg(error.message), "error", 4500);
-          }
-
-          // Paksa simpan profil ke tabel profiles agar aman
-          if (data.user) {
-            try {
-              await sb.from("profiles").upsert({
-                id: data.user.id,
-                username: defaultUsername,
-                email: email,
-              });
-            } catch (err) {}
-          }
-
-          if (data.user && data.user.identities && !data.user.identities.length) {
-            authShake();
-            switchAuth("login");
-            $("#loginUser").value = email;
-            return toast("Email sudah terdaftar.", "error");
-          }
-          $("#regPin").value = $("#regPin2").value = "";
-          if (!data.session) {
-            toast("Pendaftaran berhasil. Silakan masuk.", "success", 6e3);
-            switchAuth("login");
-            $("#loginUser").value = email;
-          }
-        }
-
-        async function doLogin(e) {
-          e.preventDefault();
-          if (!sb) return toast("Supabase tidak terhubung", "error");
-          const email = $("#loginUser").value.trim(),
-            pw = $("#loginPin").value;
-          if (!email || !pw) {
-            authShake();
-            return toast("Isi email dan password", "error");
-          }
-          $("#loginForm").classList.add("hidden");
-          authBusy(true, "Memverifikasi...");
-          const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
-          authBusy(false);
-          $("#loginForm").classList.remove("hidden");
-          if (error) {
-            authShake();
-            $("#loginPin").value = "";
-            return toast(authMsg(error.message), "error", 4500);
-          }
-          $("#loginPin").value = "";
-          if (data && data.user) {
-            enterVault(await fetchProfileAcc(data.user));
+            if (data && data.session && data.user) {
+              enterVault(data.user);
+              toast("Akun berhasil dibuat! Kapasitas 5 TB siap digunakan.", "success");
+            } else {
+              setAuthBusy(false);
+              switchAuth("login");
+              toast("Pendaftaran berhasil! Silakan cek email atau langsung masuk.", "success", 4500);
+            }
+          } catch (err) {
+            setAuthBusy(false);
+            toast("Gagal mendaftar akun", "error");
           }
         }
 
         async function doGoogle() {
-          if (!sb) return toast("Google Auth memerlukan konfigurasi Supabase", "error");
-          const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: redirectUrl() } });
-          if (error) toast(authMsg(error.message), "error", 4500);
+          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
+          const { error } = await sb.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: window.location.href },
+          });
+          if (error) toast(authMsg(error.message), "error");
         }
 
-        async function fetchProfileAcc(u) {
-          const acc = accFromUser(u);
-          if (!sb) return acc;
-          try {
-            const { data } = await sb.from("profiles").select("*").eq("id", u.id).maybeSingle();
-            if (data) {
-              acc.username = data.username || acc.username;
-              acc.bio = data.bio || "";
-              acc.instagram = data.instagram || "";
-              acc.whatsapp = data.whatsapp || "";
-              acc.avatarUrl = data.avatar_url || data.avatarUrl || null;
+        window.doForgot = async () => {
+          const email = $("#forgotEmail").value.trim();
+          if (!email) return toast("Masukkan alamat email", "error");
+          if (!sb) return;
+          const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
+          if (error) return toast(authMsg(error.message), "error");
+          $("#forgotModal").classList.add("hidden");
+          $("#forgotModal").classList.remove("flex");
+          toast("Link reset password telah dikirim ke email Anda.", "success");
+        };
+
+        async function logout() {
+          if (sb) await sb.auth.signOut();
+          showAuthScreen();
+          toast("Anda telah keluar dari brankas.", "info");
+        }
+
+        // Cek sesi aktif saat halaman dibuka & dengarkan perubahan auth secara stabil
+        function bindAuthListeners() {
+          if (!sb) return;
+          sb.auth.getSession().then(({ data, error }) => {
+            if (error && /invalid api key/i.test(error.message)) {
+              toast("API Key Supabase tidak terbaca/tidak valid. Silakan perbarui API Key.", "error", 5000);
+              return;
             }
-          } catch (e) {
-            console.warn("Profil error", e);
-          }
-          return acc;
-        }
-
-        function enterVault(acc) {
-          S.account = acc;
-          $("#hdrName").textContent = acc.username;
-          $("#hdrKey").textContent = "Archive: " + (acc.email || acc.userKey.slice(0, 8));
-
-          updateAvatarUI(acc.avatarUrl, acc.username);
-
-          const a = $("#authScreen");
-          a.style.transition = "opacity .4s";
-          a.style.opacity = "0";
-          setTimeout(() => {
-            a.classList.add("hidden");
-            a.style.opacity = "";
-          }, 400);
-          $("#app").classList.remove("hidden");
-          $("#app").classList.add("flex");
-          S.filter = "all";
-          S.search = "";
-          S.currentFolder = null;
-          S.isSelecting = false;
-          S.selectedItems.clear();
-          $("#searchInput").value = "";
-          setFilterUI();
-
-          upsertProfile(acc);
-          loadFriends();
-          loadGroups();
-          loadFolders().then(() => loadFiles());
-        }
-
-        function updateAvatarUI(avatarUrl, username) {
-          const initEl = $("#hdrAvatarInit");
-          const imgEl = $("#hdrAvatarImg");
-          if (avatarUrl) {
-            imgEl.src = avatarUrl;
-            imgEl.classList.remove("hidden");
-            initEl.classList.add("hidden");
-          } else {
-            imgEl.classList.add("hidden");
-            initEl.classList.remove("hidden");
-            initEl.textContent = (username ? username[0] : "?").toUpperCase();
-          }
-        }
-
-        async function loadFolders() {
-          if (!sb || !S.account) return;
-          try {
-            let res = await sb.from("folders").select("*").eq("userKey", S.account.userKey);
-            if (res.error) res = await sb.from("folders").select("*").eq("user_id", S.account.userKey);
-            if (res.error) res = await sb.from("folders").select("*").eq("userkey", S.account.userKey);
-            if (!res.error && res.data) {
-              S.folders = res.data.map((f) => ({
-                ...f,
-                userKey: f.userKey || f.user_id || f.userkey,
-                createdAt: f.createdAt || f.created_at || f.createdat,
-              }));
-              S.folders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            if (data && data.session && data.session.user) {
+              enterVault(data.session.user);
+            } else {
+              showAuthScreen();
             }
-          } catch (e) {
-            S.folders = [];
-          }
-        }
+          });
 
-        async function loadFiles() {
-          if (!sb || !S.account) return;
-          try {
-            let res = await sb.from("files").select("*").eq("userKey", S.account.userKey);
-            if (res.error) res = await sb.from("files").select("*").eq("user_id", S.account.userKey);
-            if (res.error) res = await sb.from("files").select("*").eq("userkey", S.account.userKey);
-            if (!res.error && res.data) {
-              S.files = res.data.map((f) => ({
-                ...f,
-                userKey: f.userKey || f.user_id || f.userkey,
-                isLive: f.isLive || f.is_live || f.islive || false,
-                createdAt: f.createdAt || f.created_at || f.createdat,
-                folderId: f.folderId || f.folder_id || f.folderid,
-              }));
-              S.files.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            }
-          } catch (e) {
-            S.files = [];
-          }
-          renderGrid();
-          updateStats();
-        }
-
-        function logout() {
-          if (sb) sb.auth.signOut();
-          S.account = null;
-          S.files = [];
-          S.folders = [];
-          revokeAll();
-          $("#app").classList.add("hidden");
-          $("#app").classList.remove("flex");
-          const a = $("#authScreen");
-          a.classList.remove("hidden");
-          a.style.opacity = "1";
-          toast("Berhasil keluar", "info");
-        }
-
-        // Cek sesi otomatis saat reload
-        if (sb) {
-          sb.auth.getSession().then(async ({ data: { session } }) => {
-            if (session && session.user) {
-              const acc = await fetchProfileAcc(session.user);
-              enterVault(acc);
+          sb.auth.onAuthStateChange((event, session) => {
+            if (event === "SIGNED_OUT") {
+              showAuthScreen();
+            } else if ((event === "SIGNED_IN" || event === "TOKEN_REFRESHED") && session && session.user) {
+              if (!S.account || S.account.userKey !== session.user.id) {
+                enterVault(session.user);
+              }
             }
           });
         }
 
+        bindAuthListeners();
+
         /* =====================================================================
-           UPLOAD FILE HANDLING
+           UNGGAH, UNDUH, HAPUS & RENDER GALERI
            ===================================================================== */
         async function handleFiles(filesList) {
           if (!filesList || !filesList.length) return;
           if (!S.account) return toast("Silakan login terlebih dahulu", "error");
 
           const files = Array.from(filesList);
-          const statusBox = $("#uploadStatus");
-          const statusText = $("#uploadText");
-          const progressBar = $("#uploadBar");
+          const isPro = S.account.plan === "10tb";
+          const limitBytes = (isPro ? 10 : 5) * 1024 * 1024 * 1024 * 1024;
+          const currentUsed = S.files.reduce((acc, f) => acc + (f.size || 0), 0);
+          const incomingSize = files.reduce((acc, f) => acc + (f.size || 0), 0);
 
-          statusBox.classList.remove("hidden");
-          let total = files.length,
-            done = 0;
+          if (currentUsed + incomingSize > limitBytes) {
+            toast("Kapasitas dasar 5 TB penuh! Silakan upgrade ke 10 TB (Rp 50.000).", "error", 4500);
+            if (!isPro) openUpgradeModal();
+            return;
+          }
 
-          for (const file of files) {
-            statusText.textContent = `Mengunggah (${done + 1}/${total}): ${file.name}`;
-            progressBar.style.width = `${Math.round((done / total) * 100)}%`;
+          const currentFolderId = S.currentFolder ? String(S.currentFolder) : null;
+
+          const statusEl = $("#uploadStatus");
+          const textEl = $("#uploadText");
+          const barEl = $("#uploadBar");
+
+          if (statusEl) {
+            statusEl.classList.remove("hidden");
+            if (barEl) barEl.style.width = "0%";
+          }
+
+          let completedCount = 0;
+
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const ext = extOf(file.name);
+            const category = catOf(file.type, file.name);
+            const fileId = uid("f_");
+            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+            const storagePath = `${S.account.userKey}/${fileId}_${safeName}`;
+
+            if (textEl) textEl.textContent = `Memproses (${i + 1}/${files.length}): ${file.name}`;
+            if (barEl) barEl.style.width = `${Math.round(((i + 0.3) / files.length) * 100)}%`;
+
+            let processFile = file;
+
+            if ((ext === "heic" || ext === "heif") && window.heic2any) {
+              try {
+                const blob = await window.heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
+                const resBlob = Array.isArray(blob) ? blob[0] : blob;
+                processFile = new File([resBlob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
+              } catch (e) {
+                console.warn("HEIC convert error:", e);
+              }
+            }
+
+            let finalMime = processFile.type || file.type;
+            if (!finalMime || finalMime === "application/octet-stream") {
+              if (ext === "mov") finalMime = "video/quicktime";
+              else if (ext === "mp4") finalMime = "video/mp4";
+              else if (category === "video") finalMime = "video/mp4";
+              else finalMime = "application/octet-stream";
+            }
+
+            const rec = {
+              id: fileId,
+              userKey: S.account.userKey,
+              name: file.name,
+              size: processFile.size,
+              mime: finalMime,
+              category,
+              isLive: ext === "mov",
+              edited: false,
+              createdAt: Date.now(),
+              w: null,
+              h: null,
+              path: storagePath,
+              thumb_path: null,
+              folderId: currentFolderId,
+              blob: processFile,
+            };
+
+            const localUrl = URL.createObjectURL(processFile);
+            S.urls.set(rec.id + ":thumb", localUrl);
+            S.urls.set(rec.id + ":full", localUrl);
 
             try {
-              let processFile = file;
-              const ext = extOf(file.name);
-
-              // Konversi HEIC jika ada
-              if (ext === "heic" && window.heic2any) {
-                try {
-                  const blob = await window.heic2any({ blob: file, toType: "image/jpeg", quality: 0.8 });
-                  const resBlob = Array.isArray(blob) ? blob[0] : blob;
-                  processFile = new File([resBlob], file.name.replace(/\.heic$/i, ".jpg"), { type: "image/jpeg" });
-                } catch (e) {
-                  console.warn("HEIC conversion bypassed:", e);
-                }
-              }
-
-              const category = catOf(processFile.type, processFile.name);
-              const fileId = uid("f_");
-              const safeName = processFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-              const storagePath = `${S.account.userKey}/${fileId}_${safeName}`;
               let thumbPath = null;
-              let imgWidth = null,
-                imgHeight = null;
-
-              if (category === "image") {
-                const thumbData = await makeThumb(processFile, processFile.type);
+              if (rec.category === "image") {
+                const thumbData = await makeThumb(processFile, finalMime);
                 if (thumbData) {
-                  imgWidth = thumbData.w;
-                  imgHeight = thumbData.h;
+                  rec.w = thumbData.w;
+                  rec.h = thumbData.h;
                   if (sb) {
-                    const tPath = `${S.account.userKey}/thumbs/t_${fileId}_${safeName}.jpg`;
-                    const { data: tUp } = await sb.storage.from("vault").upload(tPath, thumbData.blob, { upsert: true });
+                    const tPath = `${S.account.userKey}/thumbs/t_${rec.id}_${safeName}.jpg`;
+                    const { data: tUp } = await sb.storage.from("vault").upload(tPath, thumbData.blob, { upsert: true, contentType: "image/jpeg" });
                     if (tUp) thumbPath = tPath;
                   }
                 }
               }
 
               if (sb) {
-                const { error: upErr } = await sb.storage.from("vault").upload(storagePath, processFile, { upsert: true });
-                if (upErr) throw upErr;
-              }
+                const { error: upErr } = await sb.storage.from("vault").upload(rec.path, processFile, {
+                  upsert: true,
+                  contentType: finalMime,
+                });
 
-              const rec = {
-                id: fileId,
-                userKey: S.account.userKey,
-                name: processFile.name,
-                size: processFile.size,
-                mime: processFile.type || "application/octet-stream",
-                category,
-                isLive: false,
-                edited: false,
-                createdAt: Date.now(),
-                w: imgWidth,
-                h: imgHeight,
-                path: storagePath,
-                thumb_path: thumbPath,
-                folderId: S.currentFolder || null,
-                blob: processFile,
-              };
+                if (upErr) {
+                  toast(`Gagal unggah ${file.name}: ${upErr.message}`, "error");
+                }
 
-              if (sb) {
                 let { error: dbErr } = await sb.from("files").insert({
                   id: rec.id,
                   userKey: rec.userKey,
@@ -2343,66 +2160,39 @@
                   w: rec.w,
                   h: rec.h,
                   path: rec.path,
-                  thumb_path: rec.thumb_path,
-                  folderId: rec.folderId,
+                  thumb_path: thumbPath,
+                  folderId: currentFolderId,
+                  folder_id: currentFolderId,
                 });
-
                 if (dbErr) {
-                  console.warn("Insert 1 (dengan folderId) gagal:", dbErr.message);
-                  let { error: dbErr2 } = await sb.from("files").insert({
+                  await sb.from("files").insert({
                     id: rec.id,
                     userKey: rec.userKey,
                     name: rec.name,
                     size: rec.size,
                     mime: rec.mime,
                     category: rec.category,
-                    isLive: rec.isLive,
-                    edited: rec.edited,
-                    createdAt: rec.createdAt,
-                    w: rec.w,
-                    h: rec.h,
                     path: rec.path,
-                    thumb_path: rec.thumb_path,
+                    folderId: currentFolderId,
                   });
-                  if (dbErr2) {
-                    console.warn("Insert 2 (tanpa folderId) gagal:", dbErr2.message);
-                    let { error: dbErr3 } = await sb.from("files").insert({
-                      id: rec.id,
-                      user_id: rec.userKey,
-                      name: rec.name,
-                      size: rec.size,
-                      mime: rec.mime,
-                      category: rec.category,
-                      is_live: rec.isLive,
-                      edited: rec.edited,
-                      created_at: rec.createdAt,
-                      w: rec.w,
-                      h: rec.h,
-                      path: rec.path,
-                      thumb_path: rec.thumb_path,
-                      folder_id: rec.folderId,
-                    });
-                    if (dbErr3) console.error("Semua percobaan simpan ke database gagal:", dbErr3.message);
-                  }
                 }
               }
-
-              S.files.unshift(rec);
-              renderGrid(); // Render foto secara instan satu per satu saat berhasil diupload!
-              updateStats();
             } catch (err) {
-              console.error("Upload error:", err);
-              toast(`Gagal mengunggah ${file.name}`, "error");
+              console.warn("Upload database error:", err);
             }
-            done++;
-            progressBar.style.width = `${Math.round((done / total) * 100)}%`;
+
+            S.files.unshift(rec);
+            completedCount++;
+            if (barEl) barEl.style.width = `${Math.round((completedCount / files.length) * 100)}%`;
           }
 
-          statusText.textContent = "Upload selesai!";
-          setTimeout(() => statusBox.classList.add("hidden"), 1500);
-          toast(`${total} file berhasil diunggah!`, "success");
           renderGrid();
           updateStats();
+
+          setTimeout(() => {
+            if (statusEl) statusEl.classList.add("hidden");
+            toast(`Sukses mengunggah ${files.length} file!`, "success");
+          }, 300);
         }
 
         async function downloadRec(rec) {
@@ -2423,14 +2213,12 @@
           const ok = await confirmBox("Hapus File?", `Yakin menghapus "${rec.name}"?`);
           if (!ok) return false;
 
-          // FAST RESPON (Optimistic UI): Hapus dari layar secara instan!
           S.files = S.files.filter((f) => f.id !== rec.id);
           revokeFor(rec.id);
           toast("File dihapus", "success");
           renderGrid();
           updateStats();
 
-          // Eksekusi ke database diam-diam di background (tanpa memblokir layar)
           try {
             if (sb) {
               sb.from("files")
@@ -2450,19 +2238,18 @@
         }
 
         function folderCardHTML(f, i) {
-          const delay = Math.min(i, 16) * 35;
+          const delay = Math.min(i, 16) * 30;
           const isSel = S.selectedItems.has(f.id);
           const selCls = S.isSelecting ? (isSel ? "selectable selected" : "selectable") : "";
 
-          return `<div class="folder-card relative tilt ${selCls}" data-act="folderClick" data-id="${f.id}" style="animation-delay:${delay}ms">
+          return `<div class="folder-card relative ${selCls}" data-act="folderClick" data-id="${f.id}" style="animation-delay:${delay}ms">
             <div class="check-badge"><i class="ph-bold ph-check"></i></div>
             <i class="ph-duotone ph-folder text-5xl text-[#EFBF6A] mb-2"></i>
             <h4 class="font-bold text-[#E9E4DE] text-sm break-all truncate w-full px-2">${esc(f.name)}</h4>
-            <div class="flex gap-1.5 mt-3 absolute bottom-3 opacity-0 transition-opacity duration-200" style="backdrop-filter:blur(4px)">
+            <div class="folder-actions flex gap-1.5 mt-3 absolute bottom-3 opacity-0 transition-opacity duration-200">
                <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="renameFolder" title="Ganti Nama"><i class="ph-bold ph-pencil-simple"></i></button>
                <button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-7 !h-7 text-xs" data-act="delFolder" title="Hapus"><i class="ph-bold ph-trash"></i></button>
             </div>
-            <style>.folder-card:hover > div { opacity: 1; }</style>
           </div>`;
         }
 
@@ -2478,7 +2265,7 @@
         }
 
         function cardHTML(f, i) {
-          const delay = Math.min(i, 16) * 35;
+          const delay = Math.min(i, 16) * 30;
           let media = "",
             caption = "";
           const isSel = S.selectedItems.has(f.id);
@@ -2488,16 +2275,24 @@
             const ar = f.w && f.h ? `style="aspect-ratio:${f.w}/${f.h}"` : "";
             media = `<div class="checker w-full" ${ar}><img src="${urlFor(f, "thumb")}" alt="${esc(f.name)}" loading="lazy" decoding="async" draggable="false" class="w-full h-full block object-contain"></div>`;
           } else if (f.category === "video") {
-            media = `<video src="${urlFor(f, "full")}#t=0.1" muted loop playsinline preload="metadata" class="w-full block bg-black min-h-[120px]"></video><span class="play-chip"><i class="ph-fill ph-play"></i></span>`;
+            const isMov = extOf(f.name) === "mov" || f.mime === "video/quicktime";
+            media = `<div class="relative w-full bg-[#061533] min-h-[140px] flex items-center justify-center overflow-hidden">
+              <video src="${urlFor(f, "full")}#t=0.1" muted loop playsinline preload="metadata" class="w-full block object-cover relative z-[1]" onerror="this.style.display='none'"></video>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-[#7699AE] pointer-events-none">
+                <i class="ph-duotone ph-film-strip text-4xl text-[#EFBF6A]"></i>
+                <span class="text-[10px] font-bold tracking-wider mt-1 uppercase">${isMov ? "iPhone MOV" : "VIDEO"}</span>
+              </div>
+            </div><span class="play-chip"><i class="ph-fill ph-play"></i></span>`;
           } else {
             const ic = iconFor(f),
               ext = (extOf(f.name) || "file").toUpperCase().slice(0, 5);
             media = `<div class="doc-face aspect-[4/3] flex flex-col items-center justify-center gap-2"><i class="ph-duotone ${ic.i} text-5xl ${ic.c}"></i><span class="text-[11px] font-extrabold tracking-widest text-[#E9E4DE]">${esc(ext)}</span></div>`;
             caption = `<div class="px-3 py-2 border-t border-[#37729C]/40"><p class="text-xs font-semibold truncate text-[#E9E4DE]">${esc(f.name)}</p><p class="text-[10px] text-[#7699AE]">${fmtBytes(f.size)}</p></div>`;
           }
-          const chips = (f.isLive ? '<span class="chip chip-live"><i class="ph-fill ph-play-circle"></i>LIVE</span>' : "") + (f.edited && !f.isLive ? '<span class="chip chip-edit"><i class="ph-fill ph-paint-brush"></i>EDIT</span>' : "");
+          const chips =
+            (f.isLive ? '<span class="chip chip-live"><i class="ph-fill ph-play-circle"></i>MOV / LIVE</span>' : "") + (f.edited && !f.isLive ? '<span class="chip chip-edit"><i class="ph-fill ph-paint-brush"></i>EDIT</span>' : "");
           const showOverlayInfo = f.category !== "document" && f.category !== "audio";
-          return `<div class="card tilt ${selCls}" data-act="${S.isSelecting ? "toggleItem" : "open"}" data-id="${f.id}" style="animation-delay:${delay}ms">
+          return `<div class="card ${selCls}" data-act="${S.isSelecting ? "toggleItem" : "open"}" data-id="${f.id}" style="animation-delay:${delay}ms">
           <div class="check-badge"><i class="ph-bold ph-check"></i></div>
           <div class="relative">${media}${chips}<div class="card-overlay"><div class="min-w-0">${showOverlayInfo ? `<p class="text-xs font-semibold truncate text-[#E9E4DE]">${esc(f.name)}</p><p class="text-[10px] text-[#E9E4DE]/80">${fmtBytes(f.size)}</p>` : ""}</div><div class="flex gap-1.5 shrink-0 z-20">${f.category === "image" ? '<button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="editCard" title="Edit di Studio"><i class="ph-bold ph-paint-brush"></i></button>' : ""}<button class="btn icon-btn bg-[#EFBF6A] hover:opacity-90 text-[#091F46]" data-act="dlCard" title="Unduh"><i class="ph-bold ph-download-simple"></i></button><button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white" data-act="delCard" title="Hapus"><i class="ph-bold ph-trash"></i></button></div></div></div>${caption}</div>`;
         }
@@ -2515,7 +2310,7 @@
               btnBack.classList.remove("inline-flex");
             }
           } else {
-            const f = S.folders.find((x) => x.id === S.currentFolder);
+            const f = S.folders.find((x) => String(x.id) === String(S.currentFolder));
             bcSep.classList.remove("hidden");
             bcCur.classList.remove("hidden");
             bcCur.textContent = f ? f.name : "Folder";
@@ -2589,8 +2384,7 @@
           if (editingFolderId) {
             if (sb && S.account) {
               try {
-                let res = await sb.from("folders").update({ name }).eq("id", editingFolderId);
-                if (res.error) await sb.from("folders").update({ name }).eq("id", editingFolderId);
+                await sb.from("folders").update({ name }).eq("id", editingFolderId);
               } catch (e) {}
             }
             const f = S.folders.find((x) => x.id === editingFolderId);
@@ -2604,34 +2398,24 @@
               createdAt: Date.now(),
             };
 
+            S.folders.unshift(newFolder);
+
             if (sb && S.account) {
               try {
-                let res = await sb.from("folders").insert({
+                await sb.from("folders").insert({
                   id: newFolder.id,
                   userKey: newFolder.userKey,
+                  user_id: newFolder.userKey,
+                  userkey: newFolder.userKey,
                   name: newFolder.name,
                   createdAt: newFolder.createdAt,
+                  created_at: newFolder.createdAt,
                 });
-                if (res.error) {
-                  res = await sb.from("folders").insert({
-                    id: newFolder.id,
-                    user_id: newFolder.userKey,
-                    name: newFolder.name,
-                    created_at: newFolder.createdAt,
-                  });
-                  if (res.error) {
-                    await sb.from("folders").insert({
-                      id: newFolder.id,
-                      userkey: newFolder.userKey,
-                      name: newFolder.name,
-                      createdat: newFolder.createdAt,
-                    });
-                  }
-                }
-              } catch (err) {}
+              } catch (err) {
+                console.error("Gagal simpan folder ke DB:", err);
+              }
             }
 
-            S.folders.unshift(newFolder);
             toast("Folder berhasil dibuat!", "success");
           }
           closeFolderModal();
@@ -2641,8 +2425,12 @@
         function toggleSelection(id) {
           if (S.selectedItems.has(id)) S.selectedItems.delete(id);
           else S.selectedItems.add(id);
+
+          const el = document.querySelector(`[data-id="${id}"]`);
+          if (el) {
+            el.classList.toggle("selected", S.selectedItems.has(id));
+          }
           updateSelectUI();
-          renderGrid();
         }
 
         function updateSelectUI() {
@@ -2698,7 +2486,7 @@
         };
 
         window.confirmMove = async () => {
-          const target = moveTargetFolderId;
+          const target = moveTargetFolderId ? String(moveTargetFolderId) : null;
           const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
 
           if (fileIds.length === 0) {
@@ -2706,30 +2494,31 @@
             return closeMoveModal();
           }
 
-          // FAST RESPON (Optimistic UI): Pindahkan secara lokal di layar
-          fileIds.forEach((id) => {
-            const f = S.files.find((x) => x.id === id);
-            if (f) f.folderId = target;
+          S.files.forEach((f) => {
+            if (fileIds.includes(String(f.id))) {
+              f.folderId = target;
+              f.folder_id = target;
+            }
           });
 
-          toast(`${fileIds.length} file berhasil dipindahkan`, "success");
+          toast(`${fileIds.length} file ditarik ke folder tujuan`, "success");
           S.isSelecting = false;
           updateSelectUI();
           closeMoveModal();
           renderGrid();
+          updateStats();
 
-          // Eksekusi ke Supabase diam-diam di background
-          try {
-            if (sb) {
-              sb.from("files")
-                .update({ folderId: target })
-                .in("id", fileIds)
-                .then(({ error: mErr }) => {
-                  if (mErr) sb.from("files").update({ folder_id: target }).in("id", fileIds);
-                });
+          if (sb && S.account) {
+            try {
+              const { error } = await sb.from("files").update({ folderId: target, folder_id: target }).in("id", fileIds).eq("userKey", S.account.userKey);
+
+              if (error) {
+                await sb.from("files").update({ folderId: target }).in("id", fileIds);
+                await sb.from("files").update({ folder_id: target }).in("id", fileIds);
+              }
+            } catch (e) {
+              console.error("Gagal sinkronisasi pindah file ke database:", e);
             }
-          } catch (e) {
-            console.error("Gagal memindah file di background");
           }
         };
 
@@ -2749,7 +2538,6 @@
             if (f.thumb_path) storagePaths.push(f.thumb_path);
           });
 
-          // FAST RESPON (Optimistic UI): Hapus seketika dari memori & layar
           if (fileIds.length > 0) S.files = S.files.filter((f) => !fileIds.includes(f.id));
           if (folderIds.length > 0) {
             S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
@@ -2764,7 +2552,6 @@
           renderGrid();
           updateStats();
 
-          // Hapus di Supabase secara asinkronus (diam-diam di belakang layar)
           try {
             if (fileIds.length > 0 && sb) {
               sb.from("files")
@@ -2783,15 +2570,13 @@
                   if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
                 });
             }
-          } catch (e) {
-            console.error("Gagal menghapus beberapa item di background");
-          }
+          } catch (e) {}
         }
 
         /* =====================================================================
            LIGHTBOX LOGIC
            ===================================================================== */
-        const LB = { list: [], i: 0, s: 1, x: 0, y: 0, ptrs: new Map(), pinch: null, start: null, open: false };
+        const LB = { list: [], i: 0, s: 1, x: 0, y: 0, open: false };
         const lbImg = () => $("#lbImg");
 
         function openLightbox(id) {
@@ -2806,7 +2591,7 @@
           const lb = $("#lightbox");
           lb.classList.remove("hidden");
           lb.classList.add("show");
-          renderLB(0);
+          renderLB();
         }
 
         function closeLightbox() {
@@ -2829,7 +2614,7 @@
           });
         }
 
-        function renderLB(dir) {
+        function renderLB() {
           const f = LB.list[LB.i];
           if (!f) return;
           killMedia();
@@ -2837,24 +2622,34 @@
           LB.x = LB.y = 0;
           const stage = $("#lbStage"),
             url = urlFor(f, "full");
-          const anim = dir > 0 ? "slide-next" : dir < 0 ? "slide-prev" : "pop-in";
           const isPdf = f.mime === "application/pdf",
-            isText = f.mime.startsWith("text/");
+            isText = (f.mime || "").startsWith("text/");
           let html = "";
 
-          if (f.category === "image") html = `<img id="lbImg" class="lb-img ${anim}" src="${url}" alt="${esc(f.name)}" draggable="false">`;
-          else if (f.category === "video") html = `<video class="${anim} max-w-[94vw] max-h-[78vh] rounded-xl bg-black" src="${url}" controls autoplay playsinline></video>`;
-          else if (f.category === "audio")
-            html = `<div class="${anim} glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ph-file-audio text-7xl text-[#EFBF6A]"></i><p class="font-bold mt-3 truncate text-[#E9E4DE]">${esc(f.name)}</p><audio class="w-full mt-4" src="${url}" controls autoplay></audio></div>`;
-          else if (isPdf || isText) html = `<iframe class="${anim} w-[min(96vw,1000px)] h-[78vh] rounded-xl bg-white" src="${url}" title="${esc(f.name)}"></iframe>`;
-          else {
+          if (f.category === "image") {
+            html = `<img id="lbImg" class="lb-img" src="${url}" alt="${esc(f.name)}" draggable="false">`;
+          } else if (f.category === "video") {
+            const isMov = extOf(f.name) === "mov" || f.mime === "video/quicktime";
+            html = `<div class="flex flex-col items-center justify-center max-w-[94vw]">
+              <video class="max-w-[94vw] max-h-[72vh] rounded-2xl bg-black shadow-2xl border border-white/15" src="${url}" controls autoplay playsinline onerror="this.nextElementSibling.classList.remove('hidden')"></video>
+              <div class="${isMov ? "" : "hidden"} mt-3 glass px-4 py-2.5 rounded-2xl flex items-center gap-3 text-xs text-[#E9E4DE]">
+                <i class="ph-fill ph-apple-logo text-lg text-[#EFBF6A]"></i>
+                <span>Format video <b>.MOV (iPhone)</b>. Jika layar video hitam di browser PC/Windows, klik <b>Unduh</b> untuk memutarnya.</span>
+                <button data-act="lbDl" class="btn btn-primary px-3 py-1.5 rounded-xl text-xs shrink-0">Unduh</button>
+              </div>
+            </div>`;
+          } else if (f.category === "audio") {
+            html = `<div class="glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ph-file-audio text-7xl text-[#EFBF6A]"></i><p class="font-bold mt-3 truncate text-[#E9E4DE]">${esc(f.name)}</p><audio class="w-full mt-4" src="${url}" controls autoplay></audio></div>`;
+          } else if (isPdf || isText) {
+            html = `<iframe class="w-[min(96vw,1000px)] h-[78vh] rounded-xl bg-white" src="${url}" title="${esc(f.name)}"></iframe>`;
+          } else {
             const ic = iconFor(f);
-            html = `<div class="${anim} glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ${ic.i} text-7xl ${ic.c}"></i><p class="font-bold mt-3 break-all text-[#E9E4DE]">${esc(f.name)}</p><p class="text-xs text-[#7699AE] mt-1">Pratinjau tidak tersedia.</p><button data-act="lbDl" class="btn btn-primary mt-5 px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2"><i class="ph-bold ph-download-simple"></i> Unduh File</button></div>`;
+            html = `<div class="glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ${ic.i} text-7xl ${ic.c}"></i><p class="font-bold mt-3 break-all text-[#E9E4DE]">${esc(f.name)}</p><p class="text-xs text-[#7699AE] mt-1">Pratinjau tidak tersedia.</p><button data-act="lbDl" class="btn btn-primary mt-5 px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2"><i class="ph-bold ph-download-simple"></i> Unduh File</button></div>`;
           }
 
           stage.innerHTML = html;
           $("#lbName").textContent = f.name;
-          $("#lbMeta").textContent = `${LB.i + 1}/${LB.list.length} &middot; ${fmtDate(f.createdAt)} &middot; ${fmtBytes(f.size)}`;
+          $("#lbMeta").textContent = `${LB.i + 1}/${LB.list.length} · ${fmtDate(f.createdAt)} · ${fmtBytes(f.size)}`;
           const isImg = f.category === "image";
           $("#lbEditBtn").classList.toggle("hidden", !isImg);
           $("#lbZoomBox").classList.toggle("hidden", !isImg);
@@ -2869,7 +2664,6 @@
           const im = lbImg();
           if (im) im.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`;
           $("#lbZoomVal").textContent = Math.round(LB.s * 100) + "%";
-          $("#lbStage").classList.toggle("zoomed", LB.s > 1);
         }
 
         function lbZoom(f) {
@@ -2885,7 +2679,7 @@
           const n = LB.list.length;
           if (n < 2) return;
           LB.i = (LB.i + d + n) % n;
-          renderLB(d);
+          renderLB();
         }
 
         async function lbDelete() {
@@ -2896,7 +2690,7 @@
             if (!LB.list.length) closeLightbox();
             else {
               LB.i = Math.min(LB.i, LB.list.length - 1);
-              renderLB(0);
+              renderLB();
             }
           }
         }
@@ -2907,43 +2701,11 @@
         const MAXPX = 3200;
         const cv = $("#edCanvas"),
           cx = cv ? cv.getContext("2d") : null;
-        const FILTER_DEFAULT = { brightness: 100, contrast: 100, saturate: 100, blur: 0, sepia: 0, tint: null };
-        const E = {
-          open: false,
-          rec: null,
-          base: null,
-          filters: { ...FILTER_DEFAULT },
-          layers: [],
-          sel: null,
-          eraser: false,
-          eraserSize: 30,
-          transparent: false,
-          pointer: null,
-          drag: null,
-          erasing: false,
-          last: null,
-          dirty: false,
-          tab: "text",
-          align: "center",
-          bold: false,
-          italic: false,
-          raf: 0,
-        };
-
+        const E = { open: false, rec: null, base: null, layers: [], sel: null, dirty: false };
         const STICKERS = ["⭐", "🔥", "👑", "❤️", "📸", "📌", "💫", "🎉", "✨", "🌈", "😎", "💯"];
         if ($("#stickerGrid")) {
           $("#stickerGrid").innerHTML = STICKERS.map((s) => `<button class="sticker-btn" data-act="addSticker" data-e="${s}">${s}</button>`).join("");
         }
-
-        const PRESETS = {
-          normal: { brightness: 100, contrast: 100, saturate: 100, blur: 0, sepia: 0, tint: null },
-          vintage: { brightness: 105, contrast: 92, saturate: 78, blur: 0, sepia: 35, tint: null },
-          bw: { brightness: 100, contrast: 125, saturate: 0, blur: 0, sepia: 0, tint: null },
-          warm: { brightness: 108, contrast: 105, saturate: 125, blur: 0, sepia: 12, tint: { c: "245,158,11", a: 0.13 } },
-          cool: { brightness: 98, contrast: 110, saturate: 105, blur: 0, sepia: 0, tint: { c: "6,182,212", a: 0.15 } },
-          drama: { brightness: 90, contrast: 150, saturate: 135, blur: 0, sepia: 0, tint: null },
-          vivid: { brightness: 105, contrast: 108, saturate: 155, blur: 0, sepia: 0, tint: null },
-        };
 
         function busy(on, text) {
           const b = $("#edBusy");
@@ -2953,44 +2715,16 @@
           if (text) $("#edBusyText").textContent = text;
         }
 
-        const markDirty = () => {
-          E.dirty = true;
-        };
-        const getSel = () => E.layers.find((l) => l.id === E.sel) || null;
-
-        function scaleK() {
-          const r = cv.getBoundingClientRect();
-          return r.width ? cv.width / r.width : 1;
-        }
-
         async function loadBase(rec) {
-          const src = await loadBitmap(rec.blob);
+          const src = await loadBitmap(rec.blob || urlFor(rec, "full"));
           const { w, h } = srcSize(src);
           const sc = Math.min(1, MAXPX / Math.max(w, h));
-          const b = newCanvas(Math.max(1, Math.round(w * sc)), Math.max(1, Math.round(h * sc)));
+          const b = document.createElement("canvas");
+          b.width = Math.max(1, Math.round(w * sc));
+          b.height = Math.max(1, Math.round(h * sc));
           b.getContext("2d").drawImage(src, 0, 0, b.width, b.height);
           if (src.close) src.close();
           E.base = b;
-        }
-
-        function resetEditorState() {
-          E.filters = { ...FILTER_DEFAULT };
-          E.layers = [];
-          E.sel = null;
-          E.eraser = false;
-          E.transparent = false;
-          E.dirty = false;
-          E.drag = null;
-          E.erasing = false;
-          E.pointer = null;
-          syncFilterUI();
-          updateEraserUI();
-          layerBar();
-          const mx = Math.max(200, Math.round(E.base.width / 2));
-          $("#edSize").max = mx;
-          const def = Math.round(clamp(E.base.width * 0.06, 20, mx));
-          $("#edSize").value = def;
-          $("#edSizeVal").textContent = def;
         }
 
         async function openEditor(id) {
@@ -2998,19 +2732,19 @@
           if (!rec || rec.category !== "image") return;
           E.rec = rec;
           E.open = true;
+          E.layers = [];
+          E.dirty = false;
           $("#edFileName").textContent = rec.name;
           const ed = $("#editor");
           ed.classList.remove("hidden");
           ed.classList.add("show");
-          switchEdTab("text");
           busy(true, "Memuat gambar...");
           try {
             if (!rec.blob && sb && rec.path) {
               const { data } = await sb.storage.from("vault").download(rec.path);
-              rec.blob = data;
+              if (data) rec.blob = data;
             }
             await loadBase(rec);
-            resetEditorState();
             renderEditor();
           } catch (e) {
             toast("Gagal membuka gambar", "error");
@@ -3023,7 +2757,6 @@
           E.open = false;
           E.base = null;
           E.rec = null;
-          if (cv) cv.style.cursor = "";
           const ed = $("#editor");
           ed.classList.add("hidden");
           ed.classList.remove("show");
@@ -3035,78 +2768,14 @@
         }
 
         function switchEdTab(tab) {
-          E.tab = tab;
           $$(".ed-tab").forEach((b) => b.classList.toggle("on", b.dataset.tab === tab));
-          ["text", "bg", "shape", "filter", "transform"].forEach((t) => {
+          ["text", "shape", "filter"].forEach((t) => {
             const p = $("#p-" + t);
-            if (!p) return;
-            const show = t === tab;
-            if (show) p.classList.remove("hidden");
-            else p.classList.add("hidden");
-          });
-          if (tab !== "bg" && E.eraser) {
-            E.eraser = false;
-            updateEraserUI();
-          }
-        }
-
-        function scheduleRender() {
-          if (E.raf) return;
-          E.raf = requestAnimationFrame(() => {
-            E.raf = 0;
-            renderEditor();
+            if (p) p.classList.toggle("hidden", t !== tab);
           });
         }
 
-        function drawBase() {
-          if (!cx || !E.base) return;
-          cx.drawImage(E.base, 0, 0);
-        }
-
-        function setFont(c, l) {
-          c.font = `${l.italic ? "italic " : ""}${l.bold ? "700 " : "400 "}${l.size}px ${l.fontFamily}`;
-        }
-
-        function drawLayer(c, l) {
-          c.save();
-          if (l.type === "text") {
-            setFont(c, l);
-            c.fillStyle = l.color;
-            c.textAlign = l.align;
-            c.textBaseline = "middle";
-            c.fillText(l.text, l.x, l.y);
-          } else if (l.type === "sticker") {
-            c.font = `${l.size}px sans-serif`;
-            c.textAlign = "center";
-            c.textBaseline = "middle";
-            c.fillText(l.emoji, l.x, l.y);
-          } else if (l.type === "shape") {
-            const s = l.size;
-            c.translate(l.x, l.y);
-            c.fillStyle = l.color;
-            c.beginPath();
-            if (l.shape === "rect") c.rect(-s / 2, -s / 2, s, s);
-            else if (l.shape === "circle") c.arc(0, 0, s / 2, 0, Math.PI * 2);
-            c.fill();
-          }
-          c.restore();
-        }
-
-        function bounds(l) {
-          if (l.type === "text") {
-            cx.save();
-            setFont(cx, l);
-            const w = cx.measureText(l.text).width;
-            cx.restore();
-            const h = l.size * 1.2,
-              x = l.align === "left" ? l.x : l.align === "right" ? l.x - w : l.x - w / 2;
-            return { x, y: l.y - h / 2, w, h };
-          }
-          const s = l.size;
-          return { x: l.x - s / 2, y: l.y - s / 2, w: s, h: s };
-        }
-
-        function renderEditor(exp) {
+        function renderEditor() {
           if (!E.base || !cx) return;
           const b = E.base;
           if (cv.width !== b.width || cv.height !== b.height) {
@@ -3114,24 +2783,46 @@
             cv.height = b.height;
           }
           cx.clearRect(0, 0, cv.width, cv.height);
-          drawBase();
-          E.layers.forEach((l) => drawLayer(cx, l));
+          const br = $("#fBright") ? $("#fBright").value : 100;
+          const ct = $("#fContrast") ? $("#fContrast").value : 100;
+          const st = $("#fSat") ? $("#fSat").value : 100;
+          cx.filter = `brightness(${br}%) contrast(${ct}%) saturate(${st}%)`;
+          cx.drawImage(E.base, 0, 0);
+          cx.filter = "none";
+
+          E.layers.forEach((l) => {
+            cx.save();
+            if (l.type === "text") {
+              cx.font = `700 ${l.size}px ${l.fontFamily}`;
+              cx.fillStyle = l.color;
+              cx.textAlign = "center";
+              cx.textBaseline = "middle";
+              cx.fillText(l.text, l.x, l.y);
+            } else if (l.type === "sticker") {
+              cx.font = `${l.size}px sans-serif`;
+              cx.textAlign = "center";
+              cx.textBaseline = "middle";
+              cx.fillText(l.emoji, l.x, l.y);
+            }
+            cx.restore();
+          });
         }
 
-        function layerBar() {
-          const bar = $("#layerBar"),
-            l = getSel();
-          if (!bar) return;
-          bar.classList.toggle("hidden", !l);
-          bar.classList.toggle("flex", !!l);
-          if (l) $("#layerInfo").textContent = l.type === "text" ? `Teks: "${l.text}"` : `Layer ${l.type}`;
-        }
-
-        function syncFilterUI() {}
-        function updateEraserUI() {}
+        ["fBright", "fContrast", "fSat"].forEach((id) => {
+          const el = $("#" + id);
+          if (el) {
+            el.addEventListener("input", () => {
+              if (id === "fBright") $("#vBright").textContent = el.value + "%";
+              if (id === "fContrast") $("#vContrast").textContent = el.value + "%";
+              if (id === "fSat") $("#vSat").textContent = el.value + "%";
+              E.dirty = true;
+              renderEditor();
+            });
+          }
+        });
 
         /* =====================================================================
-           GLOBAL PROFILE & USER MODAL FUNCTIONS
+           GLOBAL PROFILE & SOCIAL MODAL FUNCTIONS
            ===================================================================== */
         let tempAvatarData = null;
 
@@ -3193,14 +2884,12 @@
             if (data) {
               $("#vUserName").textContent = data.username;
               $("#vUserBio").textContent = data.bio || "Belum ada bio.";
-
               const vBox = $("#vUserAvatar");
               if (data.avatar_url) {
                 vBox.innerHTML = `<img src="${data.avatar_url}" class="w-full h-full object-cover rounded-full" />`;
               } else {
                 vBox.textContent = (data.username[0] || "?").toUpperCase();
               }
-
               const socEl = $("#vUserSocials");
               let socHTML = "";
               if (data.instagram) socHTML += `<a href="https://instagram.com/${data.instagram}" target="_blank" class="btn px-3 py-2 rounded-xl bg-purple-600 text-white font-bold text-xs">Instagram</a>`;
@@ -3223,34 +2912,25 @@
           fl.innerHTML = S.friends
             .map(
               (f) =>
-                `<div class="glass p-4 flex justify-between items-center rounded-xl"><div class="flex items-center gap-3 cursor-pointer" onclick="viewUserProfile('${f.friendId}')"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${(f.friendName[0] || "?").toUpperCase()}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${esc(f.friendName)}</p></div></div></div>`,
+                `<div class="glass p-4 flex justify-between items-center rounded-2xl"><div class="flex items-center gap-3 cursor-pointer" onclick="viewUserProfile('${f.friendId}')"><div class="w-10 h-10 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A]">${(f.friendName[0] || "?").toUpperCase()}</div><div><p class="font-bold text-sm text-[#E9E4DE]">${esc(f.friendName)}</p></div></div></div>`,
             )
             .join("");
         };
 
         window.addFriend = async () => {
           const v = $("#searchFriend").value.trim();
-          if (!v || !S.account) return;
-          if (!sb) return toast("Fitur sosial membutuhkan Supabase", "error");
-
+          if (!v || !S.account || !sb) return;
           try {
             let { data } = await sb.from("profiles").select("*").eq("username", v);
             const friendData = data && data[0] ? data[0] : null;
-
             if (!friendData) return toast(`Pengguna "${v}" tidak ditemukan`, "error");
 
-            const newFriend = {
-              userKey: S.account.userKey,
-              friendId: friendData.id,
-              friendName: friendData.username,
-              status: "Pending",
-            };
-
+            const newFriend = { userKey: S.account.userKey, friendId: friendData.id, friendName: friendData.username, status: "Pending" };
             await sb.from("friends").insert(newFriend);
             S.friends.unshift(newFriend);
             window.renderFriends();
             $("#searchFriend").value = "";
-            toast(`Undangan pertemanan dikirim!`, "success");
+            toast("Undangan pertemanan dikirim!", "success");
           } catch (e) {
             toast("Gagal mencari pengguna", "error");
           }
@@ -3267,43 +2947,22 @@
             .map((g) => {
               const init = g.name ? g.name[0].toUpperCase() : "?";
               const av = g.avatar_url ? `<img src="${g.avatar_url}" class="w-full h-full object-cover">` : `<span>${init}</span>`;
-              return `<div class="glass p-4 rounded-2xl cursor-pointer hover:border-[#EFBF6A] hover:bg-[#37729C]/10 transition flex items-center gap-4" onclick="openGroupGallery('${g.id}')">
-                    <div class="w-14 h-14 rounded-full bg-[#37729C]/40 border-2 border-[#EFBF6A] flex items-center justify-center overflow-hidden shrink-0 text-xl font-bold text-[#EFBF6A]">
-                       ${av}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <h4 class="font-bold text-[#E9E4DE] text-base truncate">${esc(g.name)}</h4>
-                      <p class="text-xs text-[#7699AE] truncate mt-0.5">${esc(g.bio || "Tidak ada deskripsi")}</p>
-                    </div>
-                    <div class="text-[#7699AE]"><i class="ph-bold ph-caret-right"></i></div>
-                 </div>`;
+              return `<div class="glass p-4 rounded-2xl cursor-pointer hover:border-[#EFBF6A] transition flex items-center gap-4" onclick="openGroupGallery('${g.id}')">
+                <div class="w-14 h-14 rounded-full bg-[#37729C]/40 border-2 border-[#EFBF6A] flex items-center justify-center overflow-hidden shrink-0 text-xl font-bold text-[#EFBF6A]">${av}</div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-bold text-[#E9E4DE] text-base truncate">${esc(g.name)}</h4>
+                  <p class="text-xs text-[#7699AE] truncate mt-0.5">${esc(g.bio || "Tidak ada deskripsi")}</p>
+                </div>
+                <div class="text-[#7699AE]"><i class="ph-bold ph-caret-right"></i></div>
+              </div>`;
             })
             .join("");
-        };
-
-        window.openGroupGallery = (id) => {
-          const g = S.groups.find((x) => x.id === id);
-          if (!g) return;
-
-          $("#ggTitle").textContent = g.name;
-          $("#ggBio").textContent = g.bio || "Tidak ada deskripsi.";
-
-          const avBox = $("#ggHeaderAvatar");
-          if (g.avatar_url) {
-            avBox.innerHTML = `<img src="${g.avatar_url}" class="w-full h-full object-cover" />`;
-          } else {
-            avBox.textContent = g.name[0].toUpperCase();
-          }
-
-          $("#groupGalleryModal").classList.remove("hidden");
-          $("#groupGalleryModal").classList.add("flex");
         };
 
         window.openCreateGroupModal = () => {
           $("#cgName").value = "";
           $("#cgBio").value = "";
           $("#cgImg").classList.add("hidden");
-          $("#cgImg").src = "";
           $("#cgInit").classList.remove("hidden");
           $("#cgFile").value = "";
           $("#createGroupModal").classList.remove("hidden");
@@ -3328,7 +2987,6 @@
 
           $("#ggTitle").textContent = g.name;
           $("#ggBio").textContent = g.bio || "Tidak ada deskripsi.";
-
           const avBox = $("#ggHeaderAvatar");
           if (g.avatar_url) {
             avBox.innerHTML = `<img src="${g.avatar_url}" class="w-full h-full object-cover" />`;
@@ -3338,9 +2996,6 @@
 
           $("#groupGalleryModal").classList.remove("hidden");
           $("#groupGalleryModal").classList.add("flex");
-
-          $("#ggGrid").innerHTML = '<div class="col-span-full text-center py-10"><div class="spinner mx-auto mb-3"></div><p class="text-[#7699AE] text-sm">Memuat galeri...</p></div>';
-          $("#ggMembersList").innerHTML = '<div class="text-center py-5"><div class="spinner mx-auto scale-75"></div></div>';
           $("#btnEditGroup").classList.add("hidden");
 
           if (sb) {
@@ -3349,21 +3004,13 @@
 
             const { data: members } = await sb.from("group_members").select("*").eq("group_id", id);
             if (members) {
-              const userIds = members.map((m) => m.user_id);
-              const { data: profiles } = await sb.from("profiles").select("id, avatar_url").in("id", userIds);
-
-              currentGroupMembers = members.map((m) => {
-                const p = profiles?.find((x) => x.id === m.user_id);
-                return { ...m, avatar_url: p?.avatar_url };
-              });
-
+              currentGroupMembers = members;
               const myMember = currentGroupMembers.find((m) => m.user_id === (S.account ? S.account.userKey : ""));
               if (myMember && myMember.role === "admin") {
                 $("#btnEditGroup").classList.remove("hidden");
               }
             }
           }
-
           renderGroupGallery();
           renderGroupMembers();
         };
@@ -3371,20 +3018,15 @@
         function renderGroupMembers() {
           const list = $("#ggMembersList");
           if (!list) return;
-          if (currentGroupMembers.length === 0) {
-            list.innerHTML = '<p class="text-xs text-[#7699AE]">Belum ada anggota.</p>';
-            return;
-          }
           list.innerHTML = currentGroupMembers
             .map((m) => {
               const init = m.username ? m.username[0].toUpperCase() : "?";
-              const av = m.avatar_url ? `<img src="${m.avatar_url}" class="w-full h-full object-cover">` : `<span>${init}</span>`;
               const roleBadge = m.role === "admin" ? '<span class="ml-auto text-[9px] bg-[#EFBF6A] text-[#091F46] px-1.5 py-0.5 rounded font-bold">Admin</span>' : "";
-              return `<div class="flex items-center gap-2 p-2 rounded-xl bg-[#05122B]/30 hover:bg-[#37729C]/20 border border-[#37729C]/20 transition cursor-pointer" onclick="viewUserProfile('${m.user_id}')">
-                    <div class="w-8 h-8 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A] text-xs overflow-hidden shrink-0">${av}</div>
-                    <p class="text-sm text-[#E9E4DE] font-semibold truncate flex-1">${esc(m.username)}</p>
-                    ${roleBadge}
-                </div>`;
+              return `<div class="flex items-center gap-2 p-2 rounded-xl bg-[#05122B]/30 cursor-pointer" onclick="viewUserProfile('${m.user_id}')">
+                <div class="w-8 h-8 rounded-full bg-[#37729C]/40 flex items-center justify-center font-bold text-[#EFBF6A] text-xs">${init}</div>
+                <p class="text-sm text-[#E9E4DE] font-semibold truncate flex-1">${esc(m.username)}</p>
+                ${roleBadge}
+              </div>`;
             })
             .join("");
         }
@@ -3393,7 +3035,7 @@
           const grid = $("#ggGrid");
           if (!grid) return;
           if (currentGroupFiles.length === 0) {
-            grid.innerHTML = '<div class="col-span-full text-center py-10"><i class="ph-duotone ph-image text-6xl text-[#7699AE] mb-3"></i><p class="text-[#7699AE] text-sm">Belum ada foto di grup ini. Mulai unggah!</p></div>';
+            grid.innerHTML = '<div class="col-span-full text-center py-10"><p class="text-[#7699AE] text-sm">Belum ada foto di grup ini.</p></div>';
             return;
           }
           grid.innerHTML = currentGroupFiles
@@ -3401,29 +3043,10 @@
               let imgUrl = f.path;
               if (sb && !imgUrl.startsWith("http")) {
                 imgUrl = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
-              } else if (!sb && S.urls.has("gf_" + f.id)) {
-                imgUrl = S.urls.get("gf_" + f.id);
               }
-
-              const isMine = f.uploaded_by === (S.account ? S.account.userKey : "");
-              const isAdmin = currentGroupMembers.some((m) => m.user_id === (S.account ? S.account.userKey : "") && m.role === "admin");
-              const canDelete = isMine || isAdmin;
-
-              return `<div class="card relative aspect-[4/5] sm:aspect-square group border-[#37729C]/40" data-id="${f.id}">
-                    <img src="${imgUrl}" class="w-full h-full object-cover cursor-pointer" data-act="openGroupMedia" title="Buka Gambar">
-                    <div class="card-overlay opacity-100 sm:opacity-0 sm:group-hover:opacity-100 flex-col justify-end gap-2 pointer-events-none" style="z-index: 10;">
-                        <div class="w-full flex justify-between items-end gap-1">
-                            <div class="min-w-0 pointer-events-auto bg-black/40 px-2 py-1 rounded-lg backdrop-blur-md">
-                                <p class="text-[10px] text-[#E9E4DE] font-bold truncate"><i class="ph-fill ph-user text-[#EFBF6A] mr-1"></i> ${esc(f.uploader_name)}</p>
-                            </div>
-                            <div class="flex gap-1 shrink-0 pointer-events-auto" data-act="ignore">
-                                <button class="btn icon-btn bg-[#37729C] hover:opacity-90 text-white !w-8 !h-8 text-xs" data-act="shareGroupCard" title="Kirim/Bagikan"><i class="ph-bold ph-share-network pointer-events-none"></i></button>
-                                <button class="btn icon-btn bg-[#EFBF6A] hover:opacity-90 text-[#091F46] !w-8 !h-8 text-xs" data-act="dlGroupCard" title="Unduh"><i class="ph-bold ph-download-simple pointer-events-none"></i></button>
-                                ${canDelete ? `<button class="btn icon-btn bg-[#A55D35] hover:opacity-90 text-white !w-8 !h-8 text-xs" data-act="delGroupCard" title="Hapus"><i class="ph-bold ph-trash pointer-events-none"></i></button>` : ""}
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+              return `<div class="card relative aspect-square" data-id="${f.id}">
+                <img src="${imgUrl}" class="w-full h-full object-cover cursor-pointer" data-act="openGroupMedia">
+              </div>`;
             })
             .join("");
         }
@@ -3432,139 +3055,50 @@
         if (ggFile) {
           ggFile.addEventListener("change", async (e) => {
             const files = e.target.files;
-            if (!files || files.length === 0) return;
-            if (!currentGroupId) return;
-
+            if (!files || !files.length || !currentGroupId || !sb) return;
             toast(`Mengunggah ${files.length} foto ke grup...`, "info");
-
-            for (let i = 0; i < files.length; i++) {
-              const file = files[i];
-              if (!file.type.startsWith("image/")) continue;
-
+            for (const file of files) {
               const fileId = uid("gf_");
               const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
               const path = `group_galleries/${currentGroupId}/${fileId}_${safeName}`;
-              let publicUrl = "";
-
-              if (sb) {
-                const { data: upData, error } = await sb.storage.from("vault").upload(path, file, { upsert: true });
-                if (!error && upData) {
-                  publicUrl = path;
-                }
-              } else {
-                S.urls.set("gf_" + fileId, URL.createObjectURL(file));
-                publicUrl = path;
-              }
-
-              const rec = {
-                id: fileId,
-                group_id: currentGroupId,
-                uploaded_by: S.account ? S.account.userKey : "local",
-                uploader_name: S.account ? S.account.username : "Guest",
-                path: publicUrl,
-                name: file.name,
-                createdAt: Date.now(),
-              };
-
-              if (sb) {
+              const { data: upData } = await sb.storage.from("vault").upload(path, file, { upsert: true });
+              if (upData) {
+                const rec = {
+                  id: fileId,
+                  group_id: currentGroupId,
+                  uploaded_by: S.account.userKey,
+                  uploader_name: S.account.username,
+                  path,
+                  name: file.name,
+                  createdAt: Date.now(),
+                };
                 await sb.from("group_files").insert(rec);
+                currentGroupFiles.unshift(rec);
               }
-              currentGroupFiles.unshift(rec);
             }
-
             ggFile.value = "";
             renderGroupGallery();
             toast("Berhasil mengunggah foto grup!", "success");
           });
         }
 
-        const cgFile = $("#cgFile");
-        if (cgFile) {
-          cgFile.addEventListener("change", (e) => {
-            const file = e.target.files && e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              $("#cgImg").src = evt.target.result;
-              $("#cgImg").classList.remove("hidden");
-              $("#cgInit").classList.add("hidden");
-            };
-            reader.readAsDataURL(file);
-          });
-        }
-
         window.submitCreateGroup = async () => {
           const n = $("#cgName").value.trim();
           const b = $("#cgBio").value.trim();
-          if (!n) return toast("Nama grup wajib diisi!", "error");
-          if (!S.account || !sb) return toast("Gagal: Database tidak terhubung", "error");
-
+          if (!n || !S.account || !sb) return toast("Nama grup wajib diisi!", "error");
           const groupId = uid("grp_");
-          const file = $("#cgFile").files[0];
-          let avatarUrl = "";
-
-          toast("Sedang membuat grup...", "info");
-
-          try {
-            if (file) {
-              const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-              const path = `groups/${groupId}_${safeName}`;
-              const { data: upData, error: upErr } = await sb.storage.from("vault").upload(path, file, { upsert: true });
-              if (upData) {
-                avatarUrl = sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
-              }
-            }
-
-            await sb.from("groups").insert({
-              id: groupId,
-              name: n,
-              bio: b,
-              avatar_url: avatarUrl,
-              created_by: S.account.userKey,
-              createdAt: Date.now(),
-            });
-
-            await sb.from("group_members").insert({
-              group_id: groupId,
-              user_id: S.account.userKey,
-              username: S.account.username,
-              role: "admin",
-            });
-
-            toast("Grup berhasil dibuat!", "success");
-            closeCreateGroupModal();
-            loadGroups();
-          } catch (e) {
-            toast("Terjadi kesalahan saat membuat grup", "error");
-          }
+          await sb.from("groups").insert({ id: groupId, name: n, bio: b, created_by: S.account.userKey, createdAt: Date.now() });
+          await sb.from("group_members").insert({ group_id: groupId, user_id: S.account.userKey, username: S.account.username, role: "admin" });
+          toast("Grup berhasil dibuat!", "success");
+          closeCreateGroupModal();
+          loadGroups();
         };
-
-        // --- FUNGSI EDIT GRUP ---
-        let tempEditGroupAvatar = null;
 
         window.openEditGroupModal = () => {
           const g = S.groups.find((x) => x.id === currentGroupId);
           if (!g) return;
-
           $("#egName").value = g.name || "";
           $("#egBio").value = g.bio || "";
-          tempEditGroupAvatar = g.avatar_url || null;
-
-          const egImg = $("#egImg");
-          const egInit = $("#egInit");
-
-          if (tempEditGroupAvatar) {
-            egImg.src = tempEditGroupAvatar;
-            egImg.classList.remove("hidden");
-            egInit.classList.add("hidden");
-          } else {
-            egImg.src = "";
-            egImg.classList.add("hidden");
-            egInit.classList.remove("hidden");
-            egInit.innerHTML = `<span class="text-3xl font-bold">${g.name[0].toUpperCase()}</span>`;
-          }
-
-          $("#egFile").value = "";
           $("#editGroupModal").classList.remove("hidden");
           $("#editGroupModal").classList.add("flex");
         };
@@ -3574,69 +3108,63 @@
           $("#editGroupModal").classList.remove("flex");
         };
 
-        const egFile = $("#egFile");
-        if (egFile) {
-          egFile.addEventListener("change", (e) => {
-            const file = e.target.files && e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              tempEditGroupAvatar = evt.target.result;
-              $("#egImg").src = tempEditGroupAvatar;
-              $("#egImg").classList.remove("hidden");
-              $("#egInit").classList.add("hidden");
-            };
-            reader.readAsDataURL(file);
-          });
-        }
+        window.openUpgradeModal = () => {
+          if (!S.account) return toast("Silakan masuk terlebih dahulu", "error");
+          $("#upgradeModal").classList.remove("hidden");
+          $("#upgradeModal").classList.add("flex");
+        };
+
+        window.closeUpgradeModal = () => {
+          $("#upgradeModal").classList.add("hidden");
+          $("#upgradeModal").classList.remove("flex");
+        };
+
+        window.confirmUpgrade10TB = async () => {
+          if (!S.account) return;
+          const method = $("#upPayMethod") ? $("#upPayMethod").value : "QRIS";
+          const proofInput = $("#upProofFile");
+
+          if (sb) {
+            try {
+              if (proofInput && proofInput.files && proofInput.files[0]) {
+                const pFile = proofInput.files[0];
+                const pPath = `${S.account.userKey}/payments/upgrade_10tb_${Date.now()}_${pFile.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+                await sb.storage.from("vault").upload(pPath, pFile, { upsert: true });
+              }
+              await sb.auth.updateUser({
+                data: {
+                  storage_plan: "10tb",
+                  upgraded_at: Date.now(),
+                  payment_method: method,
+                  payment_amount: 50000,
+                },
+              });
+            } catch (e) {
+              console.warn("Upgrade sync warning:", e);
+            }
+          }
+
+          S.account.plan = "10tb";
+          updateStats();
+          closeUpgradeModal();
+          toast("Selamat! Kapasitas Archive Anda resmi naik menjadi 10 TB!", "success", 4500);
+        };
 
         window.submitEditGroup = async () => {
           const n = $("#egName").value.trim();
           const b = $("#egBio").value.trim();
-          if (!n) return toast("Nama grup tidak boleh kosong", "error");
-          if (!sb) return toast("Mode offline, tidak dapat edit grup", "info");
-
-          toast("Menyimpan perubahan...", "info");
-
-          let newAvatarUrl = tempEditGroupAvatar;
-          const file = $("#egFile").files[0];
-
-          try {
-            if (file) {
-              const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-              const path = `groups/${currentGroupId}_${safeName}`;
-              const { data, error } = await sb.storage.from("vault").upload(path, file, { upsert: true });
-              if (data) {
-                newAvatarUrl = sb.storage.from("vault").getPublicUrl(path).data.publicUrl;
-              }
-            }
-
-            const { error: dbErr } = await sb.from("groups").update({ name: n, bio: b, avatar_url: newAvatarUrl }).eq("id", currentGroupId);
-            if (dbErr) throw dbErr;
-
-            const g = S.groups.find((x) => x.id === currentGroupId);
-            if (g) {
-              g.name = n;
-              g.bio = b;
-              g.avatar_url = newAvatarUrl;
-            }
-
-            // Perbarui Header UI di Galeri
-            $("#ggTitle").textContent = n;
-            $("#ggBio").textContent = b || "Tidak ada deskripsi.";
-            const avBox = $("#ggHeaderAvatar");
-            if (newAvatarUrl && newAvatarUrl.startsWith("http")) {
-              avBox.innerHTML = `<img src="${newAvatarUrl}" class="w-full h-full object-cover" />`;
-            } else {
-              avBox.textContent = n[0].toUpperCase();
-            }
-
-            window.renderGroups();
-            closeEditGroupModal();
-            toast("Info grup diperbarui!", "success");
-          } catch (e) {
-            toast("Terjadi kesalahan saat menyimpan", "error");
+          if (!n || !sb) return;
+          await sb.from("groups").update({ name: n, bio: b }).eq("id", currentGroupId);
+          const g = S.groups.find((x) => x.id === currentGroupId);
+          if (g) {
+            g.name = n;
+            g.bio = b;
           }
+          $("#ggTitle").textContent = n;
+          $("#ggBio").textContent = b;
+          window.renderGroups();
+          closeEditGroupModal();
+          toast("Info grup diperbarui!", "success");
         };
 
         /* =====================================================================
@@ -3675,16 +3203,6 @@
             const r = S.files.find((f) => f.id === id);
             if (r) deleteRec(r);
           },
-          dl: (b, e) => {
-            if (e) e.stopPropagation();
-            const r = S.files.find((f) => f.id === b.closest("[data-id]")?.dataset.id);
-            if (r) downloadRec(r);
-          },
-          del: (b, e) => {
-            if (e) e.stopPropagation();
-            const r = S.files.find((f) => f.id === b.closest("[data-id]")?.dataset.id);
-            if (r) deleteRec(r);
-          },
           renameFolder: (b, e) => {
             if (e) e.stopPropagation();
             const id = b.closest("[data-id]").dataset.id;
@@ -3706,7 +3224,6 @@
             const ok = await confirmBox("Hapus Folder?", `Folder "${f.name}" akan dihapus.`);
             if (!ok) return;
 
-            // FAST RESPON (Optimistic UI)
             S.folders = S.folders.filter((x) => x.id !== id);
             S.files.forEach((file) => {
               if (file.folderId === id) file.folderId = null;
@@ -3714,7 +3231,6 @@
             toast("Folder berhasil dihapus", "success");
             renderGrid();
 
-            // Hapus Database di Background
             if (sb) {
               try {
                 sb.from("folders")
@@ -3754,15 +3270,9 @@
             const visFiles = visibleFiles().map((f) => f.id);
             const allVis = [...visFolders, ...visFiles];
             if (allVis.length === 0) return;
-
-            // Cek apakah semua item di layar sudah terpilih
             const allSelected = allVis.every((id) => S.selectedItems.has(id));
-
-            if (allSelected) {
-              allVis.forEach((id) => S.selectedItems.delete(id)); // Batal pilih semua
-            } else {
-              allVis.forEach((id) => S.selectedItems.add(id)); // Pilih semua
-            }
+            if (allSelected) allVis.forEach((id) => S.selectedItems.delete(id));
+            else allVis.forEach((id) => S.selectedItems.add(id));
             updateSelectUI();
             renderGrid();
           },
@@ -3774,20 +3284,14 @@
           delSelected: () => bulkDelete(),
           setView: (b) => {
             S.viewSize = b.dataset.s;
-
-            // Reset semua tombol ke tampilan pasif (abu-abu/biru pudar)
             $$(".view-btn").forEach((btn) => {
               btn.classList.remove("text-[#EFBF6A]", "bg-[#37729C]/30", "on");
               btn.classList.add("text-[#7699AE]");
             });
-
-            // Berikan sorotan (highlight) pada tombol yang diklik
             b.classList.remove("text-[#7699AE]");
             b.classList.add("text-[#EFBF6A]", "bg-[#37729C]/30", "on");
-
             renderGrid();
           },
-          edit: (b) => openEditor(b.closest("[data-id]").dataset.id),
           lbClose: () => closeLightbox(),
           lbPrev: () => lbNav(-1),
           lbNext: () => lbNav(1),
@@ -3798,17 +3302,71 @@
             LB.x = LB.y = 0;
             lbApply();
           },
+          lbEdit: () => {
+            const f = LB.list[LB.i];
+            if (f) {
+              closeLightbox();
+              openEditor(f.id);
+            }
+          },
           lbDl: () => {
             const f = LB.list[LB.i];
             if (f) downloadRec(f);
           },
           lbDel: () => lbDelete(),
           edClose: () => closeEditor(),
-          editGroup: () => window.openEditGroupModal(),
-          ignore: (b, e) => {
-            if (e) e.stopPropagation();
+          edTab: (b) => switchEdTab(b.dataset.tab),
+          edReset: () => {
+            E.layers = [];
+            if ($("#fBright")) $("#fBright").value = 100;
+            if ($("#fContrast")) $("#fContrast").value = 100;
+            if ($("#fSat")) $("#fSat").value = 100;
+            renderEditor();
           },
-
+          addText: () => {
+            const txt = $("#edText").value.trim();
+            if (!txt || !E.base) return;
+            E.layers.push({
+              type: "text",
+              text: txt,
+              color: $("#edColor").value,
+              size: Number($("#edSize").value),
+              fontFamily: $("#edFont").value,
+              x: E.base.width / 2,
+              y: E.base.height / 2,
+            });
+            E.dirty = true;
+            renderEditor();
+          },
+          addSticker: (b) => {
+            if (!E.base) return;
+            E.layers.push({
+              type: "sticker",
+              emoji: b.dataset.e,
+              size: Math.round(E.base.width * 0.12),
+              x: E.base.width / 2,
+              y: E.base.height / 2,
+            });
+            E.dirty = true;
+            renderEditor();
+          },
+          edDownload: async () => {
+            if (!cv) return;
+            const blob = await toBlobP(cv, "image/png", 0.92);
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "edited_" + (E.rec ? E.rec.name : "image.png");
+            a.click();
+          },
+          edSave: async () => {
+            if (!cv || !E.rec) return;
+            busy(true, "Menyimpan ke Archive...");
+            const blob = await toBlobP(cv, "image/jpeg", 0.9);
+            const file = new File([blob], "edited_" + E.rec.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
+            hideEditor();
+            await handleFiles([file]);
+          },
+          editGroup: () => window.openEditGroupModal(),
           openGroupMedia: (b, e) => {
             if (e) e.stopPropagation();
             const id = b.closest("[data-id]")?.dataset.id;
@@ -3816,87 +3374,7 @@
             if (!f) return;
             let url = f.path;
             if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
-            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
             window.open(url, "_blank");
-          },
-
-          shareGroupCard: async (b, e) => {
-            if (e) e.preventDefault();
-            if (e) e.stopPropagation();
-            const id = b.closest("[data-id]")?.dataset.id;
-            const f = currentGroupFiles.find((x) => x.id === id);
-            if (!f) return;
-            let url = f.path;
-            if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
-            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
-
-            if (navigator.share) {
-              try {
-                await navigator.share({ title: f.name, url: url });
-              } catch (err) {
-                console.log("Batal share");
-              }
-            } else {
-              try {
-                await navigator.clipboard.writeText(url);
-                toast("Link foto berhasil disalin ke clipboard!", "success");
-              } catch (err) {
-                toast("Gagal membagikan link", "error");
-              }
-            }
-          },
-          dlGroupCard: async (b, e) => {
-            if (e) e.preventDefault();
-            if (e) e.stopPropagation();
-            const id = b.closest("[data-id]")?.dataset.id;
-            const f = currentGroupFiles.find((x) => x.id === id);
-            if (!f) return;
-            let url = f.path;
-            if (sb && !url.startsWith("http")) url = sb.storage.from("vault").getPublicUrl(f.path).data.publicUrl;
-            else if (S.urls.has("gf_" + f.id)) url = S.urls.get("gf_" + f.id);
-
-            toast("Mengunduh foto...", "info");
-            try {
-              const res = await fetch(url);
-              const blob = await res.blob();
-              const blobUrl = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = blobUrl;
-              a.download = f.name || "download.jpg";
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-              setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
-            } catch (err) {
-              toast("Gagal mengunduh foto", "error");
-            }
-          },
-          delGroupCard: async (b, e) => {
-            if (e) e.preventDefault();
-            if (e) e.stopPropagation();
-            const id = b.closest("[data-id]")?.dataset.id;
-            const f = currentGroupFiles.find((x) => x.id === id);
-            if (!f) return;
-            const ok = await confirmBox("Hapus Foto?", "Foto ini akan dihapus permanen dari galeri grup.");
-            if (!ok) return;
-
-            toast("Menghapus foto...", "info");
-            if (sb) {
-              try {
-                const { error: dbErr } = await sb.from("group_files").delete().eq("id", id);
-                if (dbErr) throw dbErr;
-
-                if (f.path && !f.path.startsWith("http")) {
-                  await sb.storage.from("vault").remove([f.path]);
-                }
-              } catch (err) {
-                console.error("Del Err:", err);
-                return toast("Gagal menghapus", "error");
-              }
-            }
-            currentGroupFiles = currentGroupFiles.filter((x) => x.id !== id);
-            renderGroupGallery();
-            toast("Foto berhasil dihapus", "success");
           },
         };
 
@@ -3914,23 +3392,17 @@
           renderGrid();
         });
 
-        // Handler Upload Foto Profil
         const profFile = $("#profFile");
         if (profFile) {
           profFile.addEventListener("change", (e) => {
             const file = e.target.files && e.target.files[0];
             if (!file) return;
-            if (!file.type.startsWith("image/")) return toast("Pilih file gambar!", "error");
-
             const reader = new FileReader();
             reader.onload = (evt) => {
               tempAvatarData = evt.target.result;
-              const pImg = $("#profImg");
-              const pInit = $("#profInit");
-              pImg.src = tempAvatarData;
-              pImg.classList.remove("hidden");
-              pInit.classList.add("hidden");
-              toast("Foto profil dipilih. Klik Simpan untuk memperbarui.", "info");
+              $("#profImg").src = tempAvatarData;
+              $("#profImg").classList.remove("hidden");
+              $("#profInit").classList.add("hidden");
             };
             reader.readAsDataURL(file);
           });

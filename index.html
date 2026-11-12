@@ -842,9 +842,14 @@
             <div class="h-2 rounded-full bg-[#0D2652] overflow-hidden">
               <div id="deviceBar" class="h-full rounded-full bg-gradient-to-r from-[#EFBF6A] to-[#A55D35] transition-all duration-700" style="width: 0%"></div>
             </div>
-            <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center justify-between mt-2 gap-1">
               <p id="statPlanLabel" class="text-[10px] text-[#7699AE]">Paket Dasar · Max : 5 TB</p>
-              <button id="btnUpgradePlan" onclick="openUpgradeModal()" class="btn btn-primary px-2.5 py-1 rounded-full text-[10px] font-extrabold flex items-center gap-1 shadow-md"><i class="ph-bold ph-crown"></i> Upgrade 10 TB</button>
+              <div class="flex items-center gap-1.5">
+                <button onclick="syncCleanStorage()" class="btn btn-ghost px-2 py-1 rounded-full text-[10px] font-semibold text-[#7699AE] hover:text-[#EFBF6A]" title="Bersihkan sisa data hantu/yatim di database">
+                  <i class="ph-bold ph-broom"></i> Sync
+                </button>
+                <button id="btnUpgradePlan" onclick="openUpgradeModal()" class="btn btn-primary px-2.5 py-1 rounded-full text-[10px] font-extrabold flex items-center gap-1 shadow-md"><i class="ph-bold ph-crown"></i> Upgrade 10 TB</button>
+              </div>
             </div>
           </div>
         </section>
@@ -1679,15 +1684,23 @@
             devEl = $("#statDevice");
           const planLabelEl = $("#statPlanLabel"),
             btnUpgradeEl = $("#btnUpgradePlan");
-          const totalSize = S.files.reduce((acc, f) => acc + (f.size || 0), 0);
+
+          // Hanya hitung file valid yang benar-benar ada (di Root atau di dalam Folder yang masih aktif)
+          const validFolderIds = new Set(S.folders.map((fld) => String(fld.id)));
+          const activeFiles = S.files.filter((f) => {
+            const fid = f.folderId || f.folder_id || null;
+            return !fid || validFolderIds.has(String(fid));
+          });
+
+          const totalSize = activeFiles.reduce((acc, f) => acc + (Number(f.size) || 0), 0);
           // Kapasitas dasar 5 TB (kecuali akun sudah aktif paket Pro 10 TB)
           const isPro = S.account && S.account.plan === "10tb";
           const maxTB = isPro ? 10 : 5;
           const maxBytes = maxTB * 1024 * 1024 * 1024 * 1024;
 
-          if (countEl) countEl.textContent = S.files.length.toString();
+          if (countEl) countEl.textContent = activeFiles.length.toString();
           if (sizeEl) sizeEl.textContent = fmtBytes(totalSize);
-          const pct = Math.min(100, Math.max(0.5, (totalSize / maxBytes) * 100));
+          const pct = totalSize === 0 ? 0 : Math.min(100, Math.max(0.5, (totalSize / maxBytes) * 100));
           if (barEl) barEl.style.width = pct.toFixed(2) + "%";
           if (devEl) devEl.textContent = `${fmtBytes(totalSize)} / ${maxTB} TB`;
 
@@ -1819,87 +1832,65 @@
           try {
             const { data, error } = await sb.from("files").select("*").eq("userKey", S.account.userKey);
             if (!error && data) {
-              S.files = data.map((f) => ({
-                ...f,
-                id: String(f.id),
-                category: f.category || catOf(f.mime, f.name),
-                folderId: f.folderId || f.folder_id || null,
-                createdAt: f.createdAt || f.created_at || Date.now(),
-              }));
+              const validFolderIds = new Set(S.folders.map((fld) => String(fld.id)));
+              const orphanIds = [];
+              const validList = [];
+
+              data.forEach((f) => {
+                const rawFolder = f.folderId || f.folder_id || null;
+                if (rawFolder && !validFolderIds.has(String(rawFolder))) {
+                  orphanIds.push(String(f.id));
+                } else {
+                  validList.push({
+                    ...f,
+                    id: String(f.id),
+                    category: f.category || catOf(f.mime, f.name),
+                    folderId: rawFolder ? String(rawFolder) : null,
+                    createdAt: f.createdAt || f.created_at || Date.now(),
+                  });
+                }
+              });
+
+              S.files = validList;
               S.files.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            }
-          } catch (e) {}
-        }
 
-        async function loadFriends() {
-          if (!sb || !S.account) return;
-          try {
-            const { data } = await sb.from("friends").select("*").eq("userKey", S.account.userKey);
-            if (data) S.friends = data;
-          } catch (e) {}
-        }
-
-        async function loadGroups() {
-          if (!sb || !S.account) return;
-          try {
-            const { data: mems } = await sb.from("group_members").select("group_id").eq("user_id", S.account.userKey);
-            if (mems && mems.length > 0) {
-              const gIds = mems.map((m) => m.group_id);
-              const { data: grps } = await sb.from("groups").select("*").in("id", gIds);
-              if (grps) {
-                S.groups = grps;
-                if (typeof window.renderGroups === "function") window.renderGroups();
+              // Bersihkan otomatis catatan file yatim yang folder induknya sudah dihapus
+              if (orphanIds.length > 0) {
+                sb.from("files")
+                  .delete()
+                  .in("id", orphanIds)
+                  .eq("userKey", S.account.userKey)
+                  .then(() => {});
               }
             }
           } catch (e) {}
         }
 
-        // Masuk ke Vault secara instan tanpa menunggu network selesai
-        function enterVault(user) {
-          if (!user) return;
-          const isSameUser = S.account && S.account.userKey === user.id;
-          S.account = accFromUser(user);
+        window.syncCleanStorage = async () => {
+          if (!S.account || !sb) return;
+          const validFolderIds = new Set(S.folders.map((fld) => String(fld.id)));
+          const orphans = S.files.filter((f) => {
+            const fid = f.folderId || f.folder_id || null;
+            return fid && !validFolderIds.has(String(fid));
+          });
 
-          $("#authScreen").classList.add("hidden");
-          $("#app").classList.remove("hidden");
-          $("#app").classList.add("flex");
-          setAuthBusy(false);
-
-          $("#hdrName").textContent = S.account.username;
-          $("#hdrKey").textContent = `ID: ${S.account.userKey.slice(0, 8)}...`;
-          updateAvatarUI(S.account.avatarUrl, S.account.username);
-          updateStats();
-
-          if (!isSameUser && sb) {
-            // Sinkronisasi profil & seluruh data secara paralel di background
-            Promise.allSettled([
-              sb
-                .from("profiles")
-                .select("*")
-                .eq("id", S.account.userKey)
-                .single()
-                .then(({ data }) => {
-                  if (data) {
-                    S.account.username = data.username || S.account.username;
-                    S.account.bio = data.bio || S.account.bio;
-                    S.account.instagram = data.instagram || S.account.instagram;
-                    S.account.whatsapp = data.whatsapp || S.account.whatsapp;
-                    S.account.avatarUrl = data.avatar_url || S.account.avatarUrl;
-                    $("#hdrName").textContent = S.account.username;
-                    updateAvatarUI(S.account.avatarUrl, S.account.username);
-                  } else {
-                    upsertProfile(S.account);
-                  }
-                }),
-              loadFolders().then(() => renderGrid()),
-              loadFiles().then(() => {
-                renderGrid();
-                updateStats();
-              }),
-              loadFriends(),
-              loadGroups(),
-            ]);
+          if (orphans.length > 0) {
+            const ids = orphans.map((o) => o.id);
+            await sb.from("files").delete().in("id", ids).eq("userKey", S.account.userKey);
+            S.files = S.files.filter((f) => !ids.includes(f.id));
           }
+
+          await loadFolders();
+          await loadFiles();
+          renderGrid();
+          updateStats();
+          toast("Kapasitas storage & file berhasil disinkronkan!", "success");
+        };
+
+        async function logout() {
+          if (sb) await sb.auth.signOut();
+          showAuthScreen();
+          toast("Anda telah keluar dari brankas.", "info");
         }
 
         function showAuthScreen() {
@@ -1909,18 +1900,87 @@
           S.friends = [];
           S.groups = [];
           S.currentFolder = null;
+          S.isSelecting = false;
+          S.selectedItems.clear();
           $("#app").classList.add("hidden");
           $("#app").classList.remove("flex");
           $("#authScreen").classList.remove("hidden");
+          $("#authScreen").classList.add("flex");
           setAuthBusy(false);
         }
 
+        async function enterVault(user) {
+          if (!user) return showAuthScreen();
+          S.account = accFromUser(user);
+          $("#hdrName").textContent = S.account.username;
+          $("#hdrKey").textContent = "ID: " + S.account.userKey.slice(0, 8) + "...";
+          updateAvatarUI(S.account.avatarUrl, S.account.username);
+
+          // Fast Login: langsung buka tampilan brankas tanpa menunggu fetch selesai
+          $("#authScreen").classList.add("hidden");
+          $("#authScreen").classList.remove("flex");
+          $("#app").classList.remove("hidden");
+          $("#app").classList.add("flex");
+          setAuthBusy(false);
+          renderGrid();
+          updateStats();
+
+          // Muat profil lengkap, folder, file, teman, dan grup secara paralel di latar belakang
+          try {
+            if (sb) {
+              const { data: prof } = await sb.from("profiles").select("*").eq("id", S.account.userKey).maybeSingle();
+              if (prof) {
+                S.account.username = prof.username || S.account.username;
+                S.account.bio = prof.bio || "";
+                S.account.instagram = prof.instagram || "";
+                S.account.whatsapp = prof.whatsapp || "";
+                if (prof.avatar_url) S.account.avatarUrl = prof.avatar_url;
+                $("#hdrName").textContent = S.account.username;
+                updateAvatarUI(S.account.avatarUrl, S.account.username);
+              } else {
+                upsertProfile(S.account);
+              }
+            }
+            await loadFolders();
+            await loadFiles();
+            renderGrid();
+            updateStats();
+            loadFriends();
+            loadGroups();
+          } catch (e) {
+            console.warn("Background sync warning:", e);
+          }
+        }
+
+        async function loadFriends() {
+          if (!sb || !S.account) return;
+          try {
+            const { data } = await sb.from("friends").select("*").or(`userKey.eq.${S.account.userKey},friendId.eq.${S.account.userKey}`);
+            if (data) S.friends = data;
+          } catch (e) {}
+        }
+
+        async function loadGroups() {
+          if (!sb || !S.account) return;
+          try {
+            const { data: memberships } = await sb.from("group_members").select("group_id").eq("user_id", S.account.userKey);
+            if (memberships && memberships.length > 0) {
+              const gids = memberships.map((m) => m.group_id);
+              const { data: grps } = await sb.from("groups").select("*").in("id", gids);
+              if (grps) S.groups = grps;
+            } else {
+              S.groups = [];
+            }
+            if (window.renderGroups) window.renderGroups();
+          } catch (e) {}
+        }
+
         async function doLogin(e) {
-          e.preventDefault();
+          if (e) e.preventDefault();
+          if (!sb) return toast("Konfigurasi Supabase belum siap.", "error");
           const email = $("#loginUser").value.trim();
           const password = $("#loginPin").value;
           if (!email || !password) return;
-          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
 
           setAuthBusy(true, "Membuka brankas...");
           try {
@@ -1929,72 +1989,67 @@
               setAuthBusy(false);
               $("#authCard").classList.add("shake");
               setTimeout(() => $("#authCard").classList.remove("shake"), 500);
-              if (/invalid api key/i.test(error.message)) {
-                openApiConfigModal();
-              }
-              return toast(authMsg(error.message), "error", 5000);
+              return toast(authMsg(error.message), "error");
             }
             if (data && data.user) {
-              enterVault(data.user);
-              toast(`Selamat datang kembali, ${accFromUser(data.user).username}!`, "success");
+              await enterVault(data.user);
             }
           } catch (err) {
             setAuthBusy(false);
-            toast("Gagal masuk ke akun", "error");
+            toast("Gagal terhubung ke server autentikasi.", "error");
           }
         }
 
         async function doRegister(e) {
-          e.preventDefault();
+          if (e) e.preventDefault();
+          if (!sb) return toast("Konfigurasi Supabase belum siap.", "error");
           const email = $("#regUser").value.trim();
           const p1 = $("#regPin").value;
           const p2 = $("#regPin2").value;
-          if (p1.length < 6) return toast("Password minimal 6 karakter", "error");
-          if (p1 !== p2) return toast("Konfirmasi password tidak cocok", "error");
-          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
+          if (p1.length < 6) return toast("Password minimal 6 karakter.", "error");
+          if (p1 !== p2) return toast("Konfirmasi password tidak cocok.", "error");
 
-          setAuthBusy(true, "Membuat brankas baru...");
+          setAuthBusy(true, "Membuat akun baru...");
           try {
             const { data, error } = await sb.auth.signUp({
               email,
               password: p1,
-              options: {
-                data: {
-                  full_name: email.split("@")[0],
-                  storage_plan: "5tb",
-                },
-              },
+              options: { data: { full_name: email.split("@")[0], storage_plan: "5tb" } },
             });
             if (error) {
               setAuthBusy(false);
               return toast(authMsg(error.message), "error");
             }
             if (data && data.session && data.user) {
-              enterVault(data.user);
-              toast("Akun berhasil dibuat! Kapasitas 5 TB siap digunakan.", "success");
+              await enterVault(data.user);
+              toast("Akun berhasil dibuat!", "success");
             } else {
               setAuthBusy(false);
               switchAuth("login");
-              toast("Pendaftaran berhasil! Silakan cek email atau langsung masuk.", "success", 4500);
+              toast("Pendaftaran berhasil! Silakan cek email atau langsung masuk.", "success");
             }
           } catch (err) {
             setAuthBusy(false);
-            toast("Gagal mendaftar akun", "error");
+            toast("Gagal mendaftar akun.", "error");
           }
         }
 
         async function doGoogle() {
-          if (!sb) return toast("Koneksi Supabase tidak tersedia", "error");
+          if (!sb) return toast("Konfigurasi Supabase belum siap.", "error");
+          setAuthBusy(true, "Menghubungkan ke Google...");
           const { error } = await sb.auth.signInWithOAuth({
             provider: "google",
             options: { redirectTo: window.location.href },
           });
-          if (error) toast(authMsg(error.message), "error");
+          if (error) {
+            setAuthBusy(false);
+            toast(authMsg(error.message), "error");
+          }
         }
 
         window.doForgot = async () => {
           const email = $("#forgotEmail").value.trim();
-          if (!email) return toast("Masukkan alamat email", "error");
+          if (!email) return toast("Masukkan alamat email Anda.", "error");
           if (!sb) return;
           const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
           if (error) return toast(authMsg(error.message), "error");
@@ -2002,12 +2057,6 @@
           $("#forgotModal").classList.remove("flex");
           toast("Link reset password telah dikirim ke email Anda.", "success");
         };
-
-        async function logout() {
-          if (sb) await sb.auth.signOut();
-          showAuthScreen();
-          toast("Anda telah keluar dari brankas.", "info");
-        }
 
         // Cek sesi aktif saat halaman dibuka & dengarkan perubahan auth secara stabil
         function bindAuthListeners() {
@@ -2213,26 +2262,36 @@
           const ok = await confirmBox("Hapus File?", `Yakin menghapus "${rec.name}"?`);
           if (!ok) return false;
 
-          S.files = S.files.filter((f) => f.id !== rec.id);
+          const prevFiles = [...S.files];
+          S.files = S.files.filter((f) => String(f.id) !== String(rec.id));
           revokeFor(rec.id);
-          toast("File dihapus", "success");
           renderGrid();
           updateStats();
 
           try {
-            if (sb) {
-              sb.from("files")
-                .delete()
-                .eq("id", rec.id)
-                .then(() => {
-                  const paths = [];
-                  if (rec.path) paths.push(rec.path);
-                  if (rec.thumb_path) paths.push(rec.thumb_path);
-                  if (paths.length) sb.storage.from("vault").remove(paths);
-                });
+            if (sb && S.account) {
+              const { error } = await sb.from("files").delete().eq("id", rec.id).eq("userKey", S.account.userKey);
+
+              if (error) {
+                S.files = prevFiles;
+                renderGrid();
+                updateStats();
+                toast(`Gagal menghapus dari cloud: ${error.message}`, "error");
+                return false;
+              }
+
+              const paths = [];
+              if (rec.path) paths.push(rec.path);
+              if (rec.thumb_path) paths.push(rec.thumb_path);
+              if (paths.length) await sb.storage.from("vault").remove(paths);
             }
+            toast("File & kapasitas storage berhasil diperbarui", "success");
             return true;
           } catch (e) {
+            S.files = prevFiles;
+            renderGrid();
+            updateStats();
+            toast("Terjadi kesalahan saat menghapus file", "error");
             return false;
           }
         }
@@ -2531,173 +2590,138 @@
           const fileIds = Array.from(S.selectedItems).filter((id) => id.startsWith("f_"));
           const folderIds = Array.from(S.selectedItems).filter((id) => id.startsWith("dir_"));
 
-          const filesToDel = S.files.filter((f) => fileIds.includes(f.id));
+          const filesToDel = S.files.filter((f) => fileIds.includes(String(f.id)));
           const storagePaths = [];
           filesToDel.forEach((f) => {
             if (f.path) storagePaths.push(f.path);
             if (f.thumb_path) storagePaths.push(f.thumb_path);
+            revokeFor(f.id);
           });
 
-          if (fileIds.length > 0) S.files = S.files.filter((f) => !fileIds.includes(f.id));
+          if (fileIds.length > 0) S.files = S.files.filter((f) => !fileIds.includes(String(f.id)));
           if (folderIds.length > 0) {
-            S.folders = S.folders.filter((f) => !folderIds.includes(f.id));
+            S.folders = S.folders.filter((f) => !folderIds.includes(String(f.id)));
             S.files.forEach((f) => {
-              if (folderIds.includes(f.folderId)) f.folderId = null;
+              if (folderIds.includes(String(f.folderId))) {
+                f.folderId = null;
+                f.folder_id = null;
+              }
             });
           }
 
-          toast(`${count} item dihapus`, "success");
           S.isSelecting = false;
           updateSelectUI();
           renderGrid();
           updateStats();
 
           try {
-            if (fileIds.length > 0 && sb) {
-              sb.from("files")
-                .delete()
-                .in("id", fileIds)
-                .then(() => {
-                  if (storagePaths.length > 0) sb.storage.from("vault").remove(storagePaths);
-                });
+            if (fileIds.length > 0 && sb && S.account) {
+              const { error } = await sb.from("files").delete().in("id", fileIds).eq("userKey", S.account.userKey);
+              if (!error && storagePaths.length > 0) {
+                await sb.storage.from("vault").remove(storagePaths);
+              }
             }
-            if (folderIds.length > 0 && sb) {
-              sb.from("folders")
-                .delete()
-                .in("id", folderIds)
-                .then(async () => {
-                  let { error: bErr } = await sb.from("files").update({ folderId: null }).in("folderId", folderIds);
-                  if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
-                });
+            if (folderIds.length > 0 && sb && S.account) {
+              await sb.from("folders").delete().in("id", folderIds);
+              let { error: bErr } = await sb.from("files").update({ folderId: null, folder_id: null }).in("folderId", folderIds);
+              if (bErr) await sb.from("files").update({ folder_id: null }).in("folder_id", folderIds);
             }
-          } catch (e) {}
+            toast(`${count} item dihapus & storage disinkronkan`, "success");
+          } catch (e) {
+            toast("Sebagian item gagal dihapus dari server", "error");
+          }
         }
 
         /* =====================================================================
-           LIGHTBOX LOGIC
+           STUDIO EDITOR LOGIC & LIGHTBOX
            ===================================================================== */
-        const LB = { list: [], i: 0, s: 1, x: 0, y: 0, open: false };
-        const lbImg = () => $("#lbImg");
+        const LB = { open: false, list: [], i: 0, s: 1, x: 0, y: 0 };
+
+        function lbApply() {
+          const img = $("#lbStage img.lb-img");
+          if (img) img.style.transform = `translate(${LB.x}px, ${LB.y}px) scale(${LB.s})`;
+          const zv = $("#lbZoomVal");
+          if (zv) zv.textContent = Math.round(LB.s * 100) + "%";
+        }
+
+        function lbZoom(factor) {
+          LB.s = clamp(LB.s * factor, 0.5, 5);
+          if (LB.s <= 1) {
+            LB.x = 0;
+            LB.y = 0;
+          }
+          lbApply();
+        }
+
+        function renderLightbox() {
+          const f = LB.list[LB.i];
+          if (!f) return closeLightbox();
+          $("#lbName").textContent = f.name;
+          $("#lbMeta").textContent = `${fmtBytes(f.size)} · ${fmtDate(f.createdAt)}`;
+          $("#lbEditBtn").classList.toggle("hidden", f.category !== "image");
+          $("#lbZoomBox").classList.toggle("hidden", f.category !== "image");
+          $("#lbPrev").classList.toggle("hidden", LB.list.length <= 1);
+          $("#lbNext").classList.toggle("hidden", LB.list.length <= 1);
+
+          const stage = $("#lbStage");
+          const url = urlFor(f, "full");
+          if (f.category === "image") {
+            stage.innerHTML = `<img src="${url}" alt="${esc(f.name)}" class="lb-img" draggable="false" />`;
+          } else if (f.category === "video") {
+            stage.innerHTML = `<video src="${url}" controls autoplay playsinline class="max-w-[92vw] max-h-[78vh] rounded-2xl shadow-2xl bg-black"></video>`;
+          } else if (f.category === "audio") {
+            stage.innerHTML = `<div class="glass p-8 rounded-3xl text-center max-w-sm w-full"><i class="ph-duotone ph-file-audio text-6xl text-[#EFBF6A] mb-4"></i><p class="font-bold text-sm mb-4 truncate">${esc(f.name)}</p><audio src="${url}" controls autoplay class="w-full"></audio></div>`;
+          } else {
+            const ic = iconFor(f);
+            stage.innerHTML = `<div class="glass p-8 rounded-3xl text-center max-w-sm w-full"><i class="ph-duotone ${ic.i} text-6xl ${ic.c} mb-3"></i><p class="font-bold text-sm mb-1 truncate">${esc(f.name)}</p><p class="text-xs text-[#7699AE] mb-5">${fmtBytes(f.size)}</p><button onclick="document.querySelector('[data-act=lbDl]').click()" class="btn btn-primary px-5 py-2.5 rounded-xl text-xs font-bold">Unduh Dokumen</button></div>`;
+          }
+          LB.s = 1;
+          LB.x = 0;
+          LB.y = 0;
+          lbApply();
+        }
 
         function openLightbox(id) {
-          if (S.isSelecting) {
-            toggleSelection(id);
-            return;
-          }
-          LB.list = visibleFiles();
-          LB.i = LB.list.findIndex((f) => f.id === id);
-          if (LB.i < 0) return;
+          const list = visibleFiles();
+          const idx = list.findIndex((x) => String(x.id) === String(id));
+          if (idx === -1) return;
+          LB.list = list;
+          LB.i = idx;
           LB.open = true;
           const lb = $("#lightbox");
           lb.classList.remove("hidden");
           lb.classList.add("show");
-          renderLB();
+          renderLightbox();
         }
 
         function closeLightbox() {
-          if (!LB.open) return;
           LB.open = false;
-          killMedia();
-          $("#lbStage").innerHTML = "";
           const lb = $("#lightbox");
           lb.classList.add("hidden");
           lb.classList.remove("show");
+          $("#lbStage").innerHTML = "";
         }
 
-        function killMedia() {
-          $$("#lbStage video, #lbStage audio").forEach((m) => {
-            try {
-              m.pause();
-              m.removeAttribute("src");
-              m.load();
-            } catch (e) {}
-          });
-        }
-
-        function renderLB() {
-          const f = LB.list[LB.i];
-          if (!f) return;
-          killMedia();
-          LB.s = 1;
-          LB.x = LB.y = 0;
-          const stage = $("#lbStage"),
-            url = urlFor(f, "full");
-          const isPdf = f.mime === "application/pdf",
-            isText = (f.mime || "").startsWith("text/");
-          let html = "";
-
-          if (f.category === "image") {
-            html = `<img id="lbImg" class="lb-img" src="${url}" alt="${esc(f.name)}" draggable="false">`;
-          } else if (f.category === "video") {
-            const isMov = extOf(f.name) === "mov" || f.mime === "video/quicktime";
-            html = `<div class="flex flex-col items-center justify-center max-w-[94vw]">
-              <video class="max-w-[94vw] max-h-[72vh] rounded-2xl bg-black shadow-2xl border border-white/15" src="${url}" controls autoplay playsinline onerror="this.nextElementSibling.classList.remove('hidden')"></video>
-              <div class="${isMov ? "" : "hidden"} mt-3 glass px-4 py-2.5 rounded-2xl flex items-center gap-3 text-xs text-[#E9E4DE]">
-                <i class="ph-fill ph-apple-logo text-lg text-[#EFBF6A]"></i>
-                <span>Format video <b>.MOV (iPhone)</b>. Jika layar video hitam di browser PC/Windows, klik <b>Unduh</b> untuk memutarnya.</span>
-                <button data-act="lbDl" class="btn btn-primary px-3 py-1.5 rounded-xl text-xs shrink-0">Unduh</button>
-              </div>
-            </div>`;
-          } else if (f.category === "audio") {
-            html = `<div class="glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ph-file-audio text-7xl text-[#EFBF6A]"></i><p class="font-bold mt-3 truncate text-[#E9E4DE]">${esc(f.name)}</p><audio class="w-full mt-4" src="${url}" controls autoplay></audio></div>`;
-          } else if (isPdf || isText) {
-            html = `<iframe class="w-[min(96vw,1000px)] h-[78vh] rounded-xl bg-white" src="${url}" title="${esc(f.name)}"></iframe>`;
-          } else {
-            const ic = iconFor(f);
-            html = `<div class="glass rounded-3xl p-8 text-center w-[min(92vw,420px)]"><i class="ph-duotone ${ic.i} text-7xl ${ic.c}"></i><p class="font-bold mt-3 break-all text-[#E9E4DE]">${esc(f.name)}</p><p class="text-xs text-[#7699AE] mt-1">Pratinjau tidak tersedia.</p><button data-act="lbDl" class="btn btn-primary mt-5 px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2"><i class="ph-bold ph-download-simple"></i> Unduh File</button></div>`;
-          }
-
-          stage.innerHTML = html;
-          $("#lbName").textContent = f.name;
-          $("#lbMeta").textContent = `${LB.i + 1}/${LB.list.length} · ${fmtDate(f.createdAt)} · ${fmtBytes(f.size)}`;
-          const isImg = f.category === "image";
-          $("#lbEditBtn").classList.toggle("hidden", !isImg);
-          $("#lbZoomBox").classList.toggle("hidden", !isImg);
-          $("#lbZoomBox").classList.toggle("sm:flex", isImg);
-          const multi = LB.list.length > 1;
-          $("#lbPrev").classList.toggle("hidden", !multi);
-          $("#lbNext").classList.toggle("hidden", !multi);
-          lbApply();
-        }
-
-        function lbApply() {
-          const im = lbImg();
-          if (im) im.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`;
-          $("#lbZoomVal").textContent = Math.round(LB.s * 100) + "%";
-        }
-
-        function lbZoom(f) {
-          LB.s = clamp(LB.s * f, 1, 6);
-          if (LB.s <= 1.001) {
-            LB.s = 1;
-            LB.x = LB.y = 0;
-          }
-          lbApply();
-        }
-
-        function lbNav(d) {
-          const n = LB.list.length;
-          if (n < 2) return;
-          LB.i = (LB.i + d + n) % n;
-          renderLB();
+        function lbNav(dir) {
+          if (LB.list.length <= 1) return;
+          LB.i = (LB.i + dir + LB.list.length) % LB.list.length;
+          renderLightbox();
         }
 
         async function lbDelete() {
           const f = LB.list[LB.i];
           if (!f) return;
-          if (await deleteRec(f)) {
-            LB.list = LB.list.filter((x) => x.id !== f.id);
-            if (!LB.list.length) closeLightbox();
+          const deleted = await deleteRec(f);
+          if (deleted) {
+            LB.list.splice(LB.i, 1);
+            if (LB.list.length === 0) closeLightbox();
             else {
-              LB.i = Math.min(LB.i, LB.list.length - 1);
-              renderLB();
+              LB.i = LB.i % LB.list.length;
+              renderLightbox();
             }
           }
         }
 
-        /* =====================================================================
-           STUDIO EDITOR LOGIC
-           ===================================================================== */
         const MAXPX = 3200;
         const cv = $("#edCanvas"),
           cx = cv ? cv.getContext("2d") : null;
